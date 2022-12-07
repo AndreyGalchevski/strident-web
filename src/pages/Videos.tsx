@@ -50,10 +50,10 @@ const Videos: FunctionComponent = () => {
                   <iframe
                     title={video.name}
                     src={video.url}
-                    allow="autoplay; encrypted-media"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     width="100%"
-                    height="60%"
+                    height="315"
                     style={{ borderRadius: 30 }}
                   />
                 </CardContent>
