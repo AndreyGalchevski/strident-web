@@ -45,7 +45,7 @@ const ManageGig: FunctionComponent = () => {
   useEffect(() => {
     async function fetchVideo(gigID: string): Promise<void> {
       setLoading(true);
-      const resource = await fetchResource<Gig>("gigs", gigID);
+      const resource = await fetchResource("gigs", gigID);
       setGig({ ...resource, date: new Date(resource.date) });
       setLoading(false);
     }

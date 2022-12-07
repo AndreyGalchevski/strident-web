@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useMediaQuery = (query: string): boolean => {
   const mediaMatch = window.matchMedia(query);
@@ -8,7 +8,7 @@ const useMediaQuery = (query: string): boolean => {
     const handler = (e: MediaQueryListEvent): void => setMatches(e.matches);
     mediaMatch.addListener(handler);
     return (): void => mediaMatch.removeListener(handler);
-  });
+  }, [mediaMatch]);
 
   return matches;
 };

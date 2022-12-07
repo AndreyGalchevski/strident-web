@@ -41,10 +41,7 @@ const ManageMerchandise: FunctionComponent = () => {
 
   async function fetchMerchandise(merchandiseID: string): Promise<void> {
     setLoading(true);
-    const resource = await fetchResource<Merchandise>(
-      "merchandise",
-      merchandiseID
-    );
+    const resource = await fetchResource("merchandise", merchandiseID);
     setMerchandise(resource);
     setLoading(false);
   }

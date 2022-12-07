@@ -1,9 +1,4 @@
-import {
-  FunctionComponent,
-  PropsWithChildren,
-  useState,
-  useEffect,
-} from "react";
+import { FunctionComponent, PropsWithChildren } from "react";
 import styled from "@emotion/styled";
 
 const Container = styled.div({
@@ -27,15 +22,7 @@ const Loader: FunctionComponent<PropsWithChildren<Props>> = ({
   isLoading,
   children,
 }) => {
-  const [shouldDisplayLoading, setDisplayLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setDisplayLoading(false);
-    }, 500);
-  }, []);
-
-  return isLoading || shouldDisplayLoading ? (
+  return isLoading ? (
     <Container>
       <picture>
         <source

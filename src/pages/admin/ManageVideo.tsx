@@ -33,7 +33,7 @@ const ManageVideo: FunctionComponent = () => {
   useEffect(() => {
     async function fetchVideo(videoID: string): Promise<void> {
       setLoading(true);
-      const resource = await fetchResource<Video>("videos", videoID);
+      const resource = await fetchResource("videos", videoID);
       setVideo({ ...resource, date: new Date(resource.date) });
       setLoading(false);
     }

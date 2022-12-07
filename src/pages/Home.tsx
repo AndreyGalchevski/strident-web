@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useEffect } from "react";
+import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import ImageGallery from "react-image-gallery";
@@ -10,8 +10,7 @@ import { Card, CardContent, CardTitle, CardAction } from "../styled/Card";
 import ResponsiveText from "../styled/ResponsiveText";
 import Header from "../components/Header";
 import { COLORS, homeImages } from "../utils/constants";
-import { fetchResources } from "../api/utils";
-import { Gig } from "../api/types";
+import useQueryGigs from "../hooks/useQueryGigs";
 
 const BannerContainer = styled.div({
   marginBottom: 20,
@@ -32,20 +31,7 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 const Home: FunctionComponent = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
 
-  const [latestGigs, setLatestGigs] = useState<Gig[]>([]);
-  const [isLoading, setLoading] = useState(false);
-
-  async function fetchLatestGigs(): Promise<void> {
-    setLoading(true);
-    const gigs = await fetchResources<Gig>("gigs");
-    const lastThreeGigs = gigs.slice(0, 3);
-    setLatestGigs(lastThreeGigs);
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    fetchLatestGigs();
-  }, []);
+  const { data: gigsData, isLoading: gigsLoading } = useQueryGigs();
 
   return (
     <Container>
@@ -102,7 +88,6 @@ const Home: FunctionComponent = () => {
               width="100%"
               height="100%"
               src="https://www.youtube.com/embed/3MpjGJpmG-Y"
-              frameBorder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               style={{ borderTopLeftRadius: 30, borderTopRightRadius: 30 }}
@@ -117,13 +102,13 @@ const Home: FunctionComponent = () => {
       </Wrapper>
       <ImageGallery items={homeImages} />
       <Wrapper isMobile={isMobile} style={{ marginTop: 20 }}>
-        {isLoading ? (
+        {gigsLoading ? (
           <p>Loading...</p>
         ) : (
           <Card style={{ margin: 8, flex: 1 }}>
             <CardContent>
               <CardTitle>Gigs</CardTitle>
-              {latestGigs.map((gig) => (
+              {gigsData?.slice(0, 3).map((gig) => (
                 <div key={gig.id}>
                   <p>{new Date(gig.date).toDateString()}</p>
                   <p>
@@ -148,7 +133,6 @@ const Home: FunctionComponent = () => {
               src="https://open.spotify.com/embed/artist/1iLO8tqlkfiQMWf7JqaNE3"
               width="100%"
               height="100%"
-              frameBorder="0"
               allow="encrypted-media"
               style={{ borderTopLeftRadius: 30, borderTopRightRadius: 30 }}
             />

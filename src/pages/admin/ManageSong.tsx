@@ -27,7 +27,7 @@ const ManageSong: FunctionComponent = () => {
   useEffect(() => {
     async function fetchSong(songID: string): Promise<void> {
       setLoading(true);
-      const resource = await fetchResource<Song>("songs", songID);
+      const resource = await fetchResource("songs", songID);
       setSong(resource);
       setLoading(false);
     }

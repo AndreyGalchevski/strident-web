@@ -27,7 +27,7 @@ const ManageLyric: FunctionComponent = () => {
 
   async function fetchLyric(lyricID: string): Promise<void> {
     setLoading(true);
-    const resource = await fetchResource<Lyric>("lyrics", lyricID);
+    const resource = await fetchResource("lyrics", lyricID);
     setLyric(resource);
     setLoading(false);
   }

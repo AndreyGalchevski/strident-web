@@ -1,14 +1,8 @@
-import {
-  FunctionComponent,
-  useEffect,
-  useState,
-  MouseEventHandler,
-} from "react";
+import { FunctionComponent, MouseEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import { fetchResources, deleteResource } from "../api/utils";
-import { Merchandise } from "../api/types";
+import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
@@ -29,6 +23,7 @@ import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import ShoppingCartIcon from "../components/icons/ShoppingCart";
 import EuroIcon from "../components/icons/Euro";
+import useQueryMerchandise from "../hooks/useQueryMerchandise";
 
 const PriceContainer = styled.p({
   display: "flex",
@@ -41,19 +36,8 @@ const Merchandises: FunctionComponent = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const navigate = useNavigate();
 
-  const [merchandises, setMerchandises] = useState<Merchandise[]>([]);
-  const [isLoading, setLoading] = useState(false);
-
-  async function fetchMerchandises(): Promise<void> {
-    setLoading(true);
-    const resources = await fetchResources<Merchandise>("merchandise");
-    setMerchandises(resources);
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    fetchMerchandises();
-  }, []);
+  const { data: merchandiseData, isLoading: merchandiseLoading } =
+    useQueryMerchandise();
 
   function handleUpdateClick(merchandiseId: string): MouseEventHandler {
     return (): void => {
@@ -65,7 +49,6 @@ const Merchandises: FunctionComponent = () => {
     return async (): Promise<void> => {
       if (window.confirm("Are you sure you want to delete the merch?")) {
         const res = await deleteResource("merchandise", merchandiseId);
-        fetchMerchandises();
         window.alert(res);
       }
     };
@@ -75,9 +58,9 @@ const Merchandises: FunctionComponent = () => {
     <Container>
       <Header title="Merch" />
       {authState.isAuthenticated && <Fab url="/admin/merch/new" />}
-      <Loader isLoading={isLoading}>
+      <Loader isLoading={merchandiseLoading}>
         <Masonry isMobile={isMobile}>
-          {merchandises.map((merchandise) => (
+          {merchandiseData?.map((merchandise) => (
             <MasonryBrick key={merchandise.id}>
               <Card>
                 <div>

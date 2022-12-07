@@ -1,13 +1,7 @@
-import {
-  FunctionComponent,
-  useEffect,
-  useState,
-  MouseEventHandler,
-} from "react";
+import { FunctionComponent, MouseEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { fetchResources, deleteResource } from "../api/utils";
-import { Song } from "../api/types";
+import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
@@ -19,25 +13,14 @@ import Fab from "../components/Fab";
 import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
+import useQuerySongs from "../hooks/useQuerySongs";
 
 const Songs: FunctionComponent = () => {
   const [authState] = useAuthContext();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const navigate = useNavigate();
 
-  const [songs, setSongs] = useState<Song[]>([]);
-  const [isLoading, setLoading] = useState(false);
-
-  async function fetchSongs(): Promise<void> {
-    setLoading(true);
-    const resources = await fetchResources<Song>("songs");
-    setSongs(resources);
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    fetchSongs();
-  }, []);
+  const { data: songsData, isLoading: songsLoading } = useQuerySongs();
 
   function handleUpdateClick(songId: string): MouseEventHandler {
     return (): void => {
@@ -49,7 +32,6 @@ const Songs: FunctionComponent = () => {
     return async (): Promise<void> => {
       if (window.confirm("Are you sure you want to delete the song?")) {
         const res = await deleteResource("songs", songId);
-        fetchSongs();
         window.alert(res);
       }
     };
@@ -59,9 +41,9 @@ const Songs: FunctionComponent = () => {
     <Container>
       <Header title="Songs" />
       {authState.isAuthenticated && <Fab url="/admin/songs/new" />}
-      <Loader isLoading={isLoading}>
+      <Loader isLoading={songsLoading}>
         <Masonry isMobile={isMobile}>
-          {songs.map((song) => (
+          {songsData?.map((song) => (
             <MasonryBrick key={song.id}>
               <Card>
                 <CardContent style={{ padding: 0 }}>

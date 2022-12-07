@@ -1,13 +1,7 @@
-import {
-  FunctionComponent,
-  useState,
-  useEffect,
-  MouseEventHandler,
-} from "react";
+import { FunctionComponent, MouseEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Gig } from "../api/types";
-import { fetchResources, deleteResource } from "../api/utils";
+import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { formatDate, formatTime } from "../utils/general";
@@ -23,25 +17,14 @@ import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import DirectionsIcon from "../components/icons/Directions";
 import EventIcon from "../components/icons/Event";
+import useQueryGigs from "../hooks/useQueryGigs";
 
 const Gigs: FunctionComponent = () => {
   const [authState] = useAuthContext();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const navigate = useNavigate();
 
-  const [gigs, setGigs] = useState<Gig[]>([]);
-  const [isLoading, setLoading] = useState(false);
-
-  async function fetchGigs(): Promise<void> {
-    setLoading(true);
-    const resources = await fetchResources<Gig>("gigs");
-    setGigs(resources);
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    fetchGigs();
-  }, []);
+  const { data: gigsData, isLoading: gigsLoading } = useQueryGigs();
 
   function handleUpdateClick(gigId: string): MouseEventHandler {
     return (): void => {
@@ -53,7 +36,6 @@ const Gigs: FunctionComponent = () => {
     return async (): Promise<void> => {
       if (window.confirm("Are you sure you want to delete the gig?")) {
         const res = await deleteResource("gigs", gigId);
-        fetchGigs();
         window.alert(res);
       }
     };
@@ -63,9 +45,9 @@ const Gigs: FunctionComponent = () => {
     <Container>
       <Header title="Gigs" />
       {authState.isAuthenticated && <Fab url="/admin/gigs/new" />}
-      <Loader isLoading={isLoading}>
+      <Loader isLoading={gigsLoading}>
         <Masonry isMobile={isMobile}>
-          {gigs.map((gig) => (
+          {gigsData?.map((gig) => (
             <MasonryBrick key={gig.id}>
               <Card>
                 <div>

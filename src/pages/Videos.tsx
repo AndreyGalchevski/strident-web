@@ -1,13 +1,7 @@
-import {
-  FunctionComponent,
-  useState,
-  useEffect,
-  MouseEventHandler,
-} from "react";
+import { FunctionComponent, MouseEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { fetchResources, deleteResource } from "../api/utils";
-import { Video } from "../api/types";
+import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
@@ -19,25 +13,14 @@ import Fab from "../components/Fab";
 import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
+import useQueryVideos from "../hooks/useQueryVideos";
 
 const Videos: FunctionComponent = () => {
   const [authState] = useAuthContext();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const navigate = useNavigate();
 
-  const [videos, setVideos] = useState<Video[]>([]);
-  const [isLoading, setLoading] = useState(false);
-
-  async function fetchVideos(): Promise<void> {
-    setLoading(true);
-    const resources = await fetchResources<Video>("videos");
-    setVideos(resources);
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    fetchVideos();
-  }, []);
+  const { data: videosData, isLoading: videosLoading } = useQueryVideos();
 
   function handleUpdateClick(videoId: string): MouseEventHandler {
     return (): void => {
@@ -49,7 +32,6 @@ const Videos: FunctionComponent = () => {
     return async (): Promise<void> => {
       if (window.confirm("Are you sure you want to delete the video?")) {
         const res = await deleteResource("videos", videoId);
-        fetchVideos();
         window.alert(res);
       }
     };
@@ -59,9 +41,9 @@ const Videos: FunctionComponent = () => {
     <Container>
       <Header title="Videos" />
       {authState.isAuthenticated && <Fab url="/admin/videos/new" />}
-      <Loader isLoading={isLoading}>
+      <Loader isLoading={videosLoading}>
         <Masonry isMobile={isMobile}>
-          {videos.map((video) => (
+          {videosData?.map((video) => (
             <MasonryBrick key={video.id}>
               <Card>
                 <CardContent style={{ padding: 0 }}>
@@ -70,7 +52,6 @@ const Videos: FunctionComponent = () => {
                     src={video.url}
                     allow="autoplay; encrypted-media"
                     allowFullScreen
-                    frameBorder="0"
                     width="100%"
                     height="60%"
                     style={{ borderRadius: 30 }}

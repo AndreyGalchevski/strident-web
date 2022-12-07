@@ -1,14 +1,8 @@
-import {
-  FunctionComponent,
-  useState,
-  useEffect,
-  MouseEventHandler,
-} from "react";
+import { FunctionComponent, MouseEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
-import { Member } from "../api/types";
-import { fetchResources, deleteResource } from "../api/utils";
+import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
@@ -25,6 +19,7 @@ import Fab from "../components/Fab";
 import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
+import useQueryMembers from "../hooks/useQueryMembers";
 
 const MembersContainer = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   display: "flex",
@@ -42,19 +37,7 @@ const Members: FunctionComponent = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const navigate = useNavigate();
 
-  const [members, setMembers] = useState<Member[]>([]);
-  const [isLoading, setLoading] = useState(false);
-
-  async function fetchMembers(): Promise<void> {
-    setLoading(true);
-    const resources = await fetchResources<Member>("members");
-    setMembers(resources);
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    fetchMembers();
-  }, []);
+  const { data: membersData, isLoading: membersLoading } = useQueryMembers();
 
   function handleUpdateClick(memberId: string): MouseEventHandler {
     return (): void => {
@@ -66,7 +49,6 @@ const Members: FunctionComponent = () => {
     return async (): Promise<void> => {
       if (window.confirm("Are you sure you want to delete the member?")) {
         const res = await deleteResource("members", memberId);
-        fetchMembers();
         window.alert(res);
       }
     };
@@ -76,9 +58,9 @@ const Members: FunctionComponent = () => {
     <Container>
       <Header title="Members" />
       {authState.isAuthenticated && <Fab url="/admin/members/new" />}
-      <Loader isLoading={isLoading}>
+      <Loader isLoading={membersLoading}>
         <MembersContainer isMobile={isMobile}>
-          {members.map((member) => (
+          {membersData?.map((member) => (
             <MemberItem key={member.id}>
               <Card>
                 <div>

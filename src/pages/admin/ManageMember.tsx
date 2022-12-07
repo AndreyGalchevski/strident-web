@@ -40,7 +40,7 @@ const ManageMember: FunctionComponent = () => {
 
   async function fetchMember(memberID: string): Promise<void> {
     setLoading(true);
-    const resource = await fetchResource<Member>("members", memberID);
+    const resource = await fetchResource("members", memberID);
     setMember(resource);
     setLoading(false);
   }

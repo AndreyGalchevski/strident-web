@@ -1,4 +1,13 @@
-import { Credentials, LoginResponse } from "./types";
+import {
+  Credentials,
+  Gig,
+  LoginResponse,
+  Lyric,
+  Member,
+  Merchandise,
+  Song,
+  Video,
+} from "./types";
 
 const baseURL = process.env.API_URL;
 
@@ -29,7 +38,31 @@ export async function login(creds: Credentials): Promise<LoginResponse> {
   return token;
 }
 
-export async function fetchResources<T>(resourceName: string): Promise<T[]> {
+export type ResourceName =
+  | "gigs"
+  | "lyrics"
+  | "members"
+  | "merchandise"
+  | "songs"
+  | "videos";
+
+type Resource<T> = T extends "gigs"
+  ? Gig
+  : T extends "lyrics"
+  ? Lyric
+  : T extends "members"
+  ? Member
+  : T extends "merchandise"
+  ? Merchandise
+  : T extends "songs"
+  ? Song
+  : T extends "videos"
+  ? Video
+  : never;
+
+export async function fetchResources<T extends ResourceName>(
+  resourceName: T
+): Promise<Resource<T>[]> {
   const response = await fetch(
     `${process.env.REACT_APP_API_URL}/${resourceName}`,
     options
@@ -38,12 +71,12 @@ export async function fetchResources<T>(resourceName: string): Promise<T[]> {
   return responseBody.data;
 }
 
-export async function fetchResource<T>(
-  resourceName: string,
-  resourceId: string
-): Promise<T> {
+export async function fetchResource<T extends ResourceName>(
+  resourceName: T,
+  resourceID: string
+): Promise<Resource<T>> {
   const response = await fetch(
-    `${baseURL}/${resourceName}/${resourceId}`,
+    `${baseURL}/${resourceName}/${resourceID}`,
     options
   );
   const resources = await response.json();
@@ -80,10 +113,10 @@ export async function createResource<T>(
 
 export async function updateResource<T>(
   resourceName: string,
-  resourceId: string,
+  resourceID: string,
   data: T
 ): Promise<string> {
-  const response = await fetch(`${baseURL}/${resourceName}/${resourceId}`, {
+  const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
     ...options,
     method: "PUT",
     headers: {
@@ -109,9 +142,9 @@ export async function updateResource<T>(
 
 export async function deleteResource(
   resourceName: string,
-  resourceId: string
+  resourceID: string
 ): Promise<string> {
-  const response = await fetch(`${baseURL}/${resourceName}/${resourceId}`, {
+  const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
     ...options,
     method: "DELETE",
     headers: {
