@@ -9,39 +9,15 @@ const Container = styled.div({
   height: "70%",
 });
 
-const SpinnerImage = styled.img({
-  width: "70%",
-});
-
 export interface Props {
   isLoading: boolean;
 }
 
-// @ts-ignore
 const Loader: FunctionComponent<PropsWithChildren<Props>> = ({
   isLoading,
   children,
 }) => {
-  return isLoading ? (
-    <Container>
-      <picture>
-        <source
-          srcSet="https://res.cloudinary.com/dqvimfd8b/image/upload/v1571751521/strident/app/strident_rat_ng.webp"
-          type="image/webp"
-        />
-        <source
-          srcSet="https://res.cloudinary.com/dqvimfd8b/image/upload/v1571751421/strident/app/strident_rat.gif"
-          type="image/jpeg"
-        />
-        <SpinnerImage
-          src="https://res.cloudinary.com/dqvimfd8b/image/upload/v1571751421/strident/app/strident_rat.gif"
-          alt=""
-        />
-      </picture>
-    </Container>
-  ) : (
-    children
-  );
+  return isLoading ? <Container>Loading...</Container> : <>{children}</>;
 };
 
 export default Loader;

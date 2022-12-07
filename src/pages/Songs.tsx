@@ -17,7 +17,7 @@ import useQuerySongs from "../hooks/useQuerySongs";
 
 const Songs: FunctionComponent = () => {
   const [authState] = useAuthContext();
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
   const { data: songsData, isLoading: songsLoading } = useQuerySongs();

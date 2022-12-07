@@ -1,18 +1,16 @@
 import styled from "styled-components";
 
-import { COLORS } from "../utils/constants";
-
-export const Card = styled.div({
+export const Card = styled.div(({ theme: { colors } }) => ({
   position: "relative",
   marginTop: 8,
   marginRight: 0,
   marginBottom: 16,
   marginLeft: 0,
-  boxShadow: `0 4px 8px 0 ${COLORS.BLACK}, 0 6px 20px 0 ${COLORS.BLACK}`,
-  backgroundColor: COLORS.BLACK,
-  color: COLORS.WHITE,
+  boxShadow: `0 4px 8px 0 ${colors.black}, 0 6px 20px 0 ${colors.black}`,
+  backgroundColor: colors.black,
+  color: colors.white,
   borderRadius: 30,
-});
+}));
 
 export const CardContent = styled.div({
   padding: 24,
@@ -26,10 +24,10 @@ export const CardTitle = styled.p({
   paddingTop: 8,
 });
 
-export const CardAction = styled.div({
+export const CardAction = styled.div(({ theme: { colors } }) => ({
   backgroundColor: "inherit",
   borderTopStyle: `solid`,
-  borderTopColor: COLORS.DARK_GREY,
+  borderTopColor: colors.darkGrey,
   borderTopWidth: 1,
   paddingTop: 16,
   paddingBottom: 16,
@@ -39,7 +37,7 @@ export const CardAction = styled.div({
   borderTopRightRadius: 0,
   borderBottomLeftRadius: "inherit",
   borderBottomRightRadius: "inherit",
-});
+}));
 
 export const CardImage = styled.img({
   display: "block",

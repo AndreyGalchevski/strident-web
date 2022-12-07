@@ -24,7 +24,7 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 }));
 
 const ManageGig: FunctionComponent = () => {
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery();
   const params = useParams<{ id: string }>();
   const navigate = useNavigate();
 

@@ -24,7 +24,7 @@ const Text = styled.pre({
 
 const Lyrics: FunctionComponent = () => {
   const [authState] = useAuthContext();
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
   const { data: lyricsData, isLoading: lyricsLoading } = useQueryLyrics();

@@ -1,22 +1,22 @@
 import { PropsWithChildren, FunctionComponent, MouseEventHandler } from "react";
 import styled from "styled-components";
 
-import { COLORS } from "../utils/constants";
-
-const StyledButton = styled.button<{ isPrimary: boolean }>(({ isPrimary }) => ({
-  border: "none",
-  borderRadius: 2,
-  display: "inline-block",
-  height: 36,
-  padding: "0 16px",
-  textTransform: "uppercase",
-  verticalAlign: "middle",
-  WebkitTapHighlightColor: "transparent",
-  marginRight: "1em",
-  marginLeft: "1em",
-  backgroundColor: isPrimary ? COLORS.RED : COLORS.GREY,
-  color: COLORS.WHITE,
-}));
+const StyledButton = styled.button<{ isPrimary: boolean }>(
+  ({ theme: { colors }, isPrimary }) => ({
+    border: "none",
+    borderRadius: 2,
+    display: "inline-block",
+    height: 36,
+    padding: "0 16px",
+    textTransform: "uppercase",
+    verticalAlign: "middle",
+    WebkitTapHighlightColor: "transparent",
+    marginRight: "1em",
+    marginLeft: "1em",
+    backgroundColor: isPrimary ? colors.red : colors.grey,
+    color: colors.white,
+  })
+);
 
 export interface Props {
   isPrimary?: boolean;

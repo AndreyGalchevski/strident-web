@@ -1,8 +1,6 @@
 import { FunctionComponent, ChangeEvent, useState } from "react";
 import styled from "styled-components";
 
-import { COLORS } from "../utils/constants";
-
 const Wrapper = styled.div({
   display: "flex",
   flexDirection: "column",
@@ -11,11 +9,11 @@ const Wrapper = styled.div({
 
 const InputContainer = styled.label({});
 
-const InputButton = styled.p({
+const InputButton = styled.p(({ theme: { colors } }) => ({
   padding: 8,
-  backgroundColor: COLORS.RED,
-  color: COLORS.WHITE,
-});
+  backgroundColor: colors.red,
+  color: colors.white,
+}));
 
 export interface Props {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;

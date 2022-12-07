@@ -23,7 +23,7 @@ export interface Props {
 }
 
 const Header: FunctionComponent<Props> = ({ title }) => {
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery();
 
   return (
     <div>

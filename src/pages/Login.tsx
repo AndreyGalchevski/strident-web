@@ -24,7 +24,7 @@ const Login: FunctionComponent = () => {
   const navigate = useNavigate();
 
   const [, dispatch] = useAuthContext();
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery();
 
   function handleUsernameChange(e: ChangeEvent<HTMLInputElement>): void {
     setUsername(e.target.value);

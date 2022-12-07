@@ -33,7 +33,7 @@ const PriceContainer = styled.p({
 
 const Merchandises: FunctionComponent = () => {
   const [authState] = useAuthContext();
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
   const { data: merchandiseData, isLoading: merchandiseLoading } =

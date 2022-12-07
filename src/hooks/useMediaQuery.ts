@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 
-const useMediaQuery = (query: string): boolean => {
+import theme from "../utils/theme";
+
+const useMediaQuery = (
+  query = `(max-width: ${theme.breakpoints.mobile})`
+): boolean => {
   const mediaMatch = window.matchMedia(query);
   const [matches, setMatches] = useState(mediaMatch.matches);
 
   useEffect(() => {
     const handler = (e: MediaQueryListEvent): void => setMatches(e.matches);
-    mediaMatch.addListener(handler);
-    return (): void => mediaMatch.removeListener(handler);
+    mediaMatch.addEventListener("change", handler);
+    return (): void => mediaMatch.addEventListener("change", handler);
   }, [mediaMatch]);
 
   return matches;

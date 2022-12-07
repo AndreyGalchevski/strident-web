@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import AddIcon from "./icons/Add";
-import { COLORS } from "../utils/constants";
 
 const FixedActionButton = styled.div({
   position: "fixed",
@@ -14,13 +13,13 @@ const FixedActionButton = styled.div({
   zIndex: 997,
 });
 
-const RoundButton = styled.div({
+const RoundButton = styled.div(({ theme: { colors } }) => ({
   width: 56,
   height: 56,
   fontSize: 16,
   borderRadius: 50,
-  backgroundColor: COLORS.RED,
-});
+  backgroundColor: colors.red,
+}));
 
 export interface Props {
   url: string;

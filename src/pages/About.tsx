@@ -13,7 +13,7 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 }));
 
 const About: FunctionComponent = () => {
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery();
 
   return (
     <Container>

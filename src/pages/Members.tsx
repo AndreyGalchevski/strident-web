@@ -34,7 +34,7 @@ const MemberItem = styled.div({
 
 const Members: FunctionComponent = () => {
   const [authState] = useAuthContext();
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
   const { data: membersData, isLoading: membersLoading } = useQueryMembers();

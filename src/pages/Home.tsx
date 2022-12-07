@@ -9,18 +9,19 @@ import Container from "../styled/Container";
 import { Card, CardContent, CardTitle, CardAction } from "../styled/Card";
 import ResponsiveText from "../styled/ResponsiveText";
 import Header from "../components/Header";
-import { COLORS, homeImages } from "../utils/constants";
+import { homeImages } from "../utils/constants";
 import useQueryGigs from "../hooks/useQueryGigs";
+import theme from "../utils/theme";
 
 const BannerContainer = styled.div({
   marginBottom: 20,
 });
 
-const Banner = styled.img({
+const Banner = styled.img(({ theme: { colors } }) => ({
   height: "74vh",
   maxWidth: "90vw",
-  boxShadow: `0 4px 8px 0 ${COLORS.BLACK}, 0 6px 20px 0 ${COLORS.BLACK}`,
-});
+  boxShadow: `0 4px 8px 0 ${colors.black}, 0 6px 20px 0 ${colors.black}`,
+}));
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   display: "flex",
@@ -29,7 +30,7 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 }));
 
 const Home: FunctionComponent = () => {
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery();
 
   const { data: gigsData, isLoading: gigsLoading } = useQueryGigs();
 
@@ -76,7 +77,7 @@ const Home: FunctionComponent = () => {
             </ResponsiveText>
           </CardContent>
           <CardAction>
-            <Link to="about" style={{ color: COLORS.WHITE }}>
+            <Link to="about" style={{ color: theme.colors.white }}>
               Read more
             </Link>
           </CardAction>
@@ -94,7 +95,7 @@ const Home: FunctionComponent = () => {
             />
           </CardContent>
           <CardAction>
-            <Link to="/videos" style={{ color: COLORS.WHITE }}>
+            <Link to="/videos" style={{ color: theme.colors.white }}>
               More videos
             </Link>
           </CardAction>
@@ -120,7 +121,7 @@ const Home: FunctionComponent = () => {
               ))}
             </CardContent>
             <CardAction>
-              <Link to="/gigs" style={{ color: COLORS.WHITE }}>
+              <Link to="/gigs" style={{ color: theme.colors.white }}>
                 More gigs
               </Link>
             </CardAction>
@@ -138,7 +139,7 @@ const Home: FunctionComponent = () => {
             />
           </CardContent>
           <CardAction>
-            <Link to="/songs" style={{ color: COLORS.WHITE }}>
+            <Link to="/songs" style={{ color: theme.colors.white }}>
               More songs
             </Link>
           </CardAction>

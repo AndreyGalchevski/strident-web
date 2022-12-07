@@ -17,7 +17,7 @@ import useQueryVideos from "../hooks/useQueryVideos";
 
 const Videos: FunctionComponent = () => {
   const [authState] = useAuthContext();
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
   const { data: videosData, isLoading: videosLoading } = useQueryVideos();

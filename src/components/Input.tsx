@@ -2,24 +2,23 @@ import { FunctionComponent, ChangeEvent } from "react";
 import styled from "styled-components";
 
 import { capitalize } from "../utils/general";
-import { COLORS } from "../utils/constants";
 
-const StyledInput = styled.input({
+const StyledInput = styled.input(({ theme: { colors } }) => ({
   width: "100%",
   fontSize: 16,
   padding: 10,
   paddingLeft: 0,
   backgroundColor: "initial",
-  color: COLORS.WHITE,
+  color: colors.white,
   border: "none",
   borderBottomWidth: 2,
   borderBottomStyle: "solid",
-  borderBottomColor: COLORS.WHITE,
+  borderBottomColor: colors.white,
   ":focus": {
     outline: "none",
-    borderBottomColor: COLORS.RED,
+    borderBottomColor: colors.red,
   },
-});
+}));
 
 export interface Props {
   name: string;

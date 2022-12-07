@@ -21,7 +21,7 @@ import useQueryGigs from "../hooks/useQueryGigs";
 
 const Gigs: FunctionComponent = () => {
   const [authState] = useAuthContext();
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
   const { data: gigsData, isLoading: gigsLoading } = useQueryGigs();

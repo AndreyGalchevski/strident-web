@@ -1,10 +1,10 @@
 import { FunctionComponent, CSSProperties } from "react";
 import { NavLink } from "react-router-dom";
 
-import { COLORS } from "../utils/constants";
+import theme from "../utils/theme";
 
 const baseLinkStyle = {
-  color: COLORS.WHITE,
+  color: theme.colors.white,
   margin: "auto",
 };
 
