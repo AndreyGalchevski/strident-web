@@ -23,8 +23,11 @@ const MenuItem: FunctionComponent<MenuItemProps> = ({
 }) => (
   <NavLink
     to={path}
-    style={{ ...baseLinkStyle, ...style }}
-    // activeStyle={{ fontSize: 16, color: COLORS.RED }}
+    style={({ isActive }) => ({
+      ...baseLinkStyle,
+      ...style,
+      ...(isActive ? { fontSize: 16, color: theme.colors.red } : {}),
+    })}
     onClick={onClick}
   >
     {text}
