@@ -1,6 +1,6 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 
 import { Video } from "../../api/types";
 import { fetchResource, updateResource, createResource } from "../../api/utils";

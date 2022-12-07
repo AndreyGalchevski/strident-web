@@ -1,8 +1,9 @@
-import styled from '@emotion/styled';
-import { COLORS } from '../utils/constants';
+import styled from "styled-components";
+
+import { COLORS } from "../utils/constants";
 
 const HalfwayTab = styled.a({
-  position: 'absolute',
+  position: "absolute",
   width: 40,
   height: 40,
   borderRadius: 20,

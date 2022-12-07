@@ -1,5 +1,5 @@
 import { FunctionComponent, ChangeEvent } from "react";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 
 import { capitalize } from "../utils/general";
 import { COLORS } from "../utils/constants";

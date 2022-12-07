@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 
 import AddIcon from "./icons/Add";
 import { COLORS } from "../utils/constants";

@@ -1,5 +1,5 @@
 import { FunctionComponent, CSSProperties } from "react";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 
 import MenuIcon from "./icons/Menu";
 

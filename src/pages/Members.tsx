@@ -1,6 +1,6 @@
 import { FunctionComponent, MouseEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 
 import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";

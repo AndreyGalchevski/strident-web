@@ -1,9 +1,9 @@
-import styled from '@emotion/styled';
+import styled from "styled-components";
 
-import { COLORS } from '../utils/constants';
+import { COLORS } from "../utils/constants";
 
 export const Card = styled.div({
-  position: 'relative',
+  position: "relative",
   marginTop: 8,
   marginRight: 0,
   marginBottom: 16,
@@ -27,7 +27,7 @@ export const CardTitle = styled.p({
 });
 
 export const CardAction = styled.div({
-  backgroundColor: 'inherit',
+  backgroundColor: "inherit",
   borderTopStyle: `solid`,
   borderTopColor: COLORS.DARK_GREY,
   borderTopWidth: 1,
@@ -37,13 +37,13 @@ export const CardAction = styled.div({
   paddingLeft: 24,
   borderTopLeftRadius: 0,
   borderTopRightRadius: 0,
-  borderBottomLeftRadius: 'inherit',
-  borderBottomRightRadius: 'inherit',
+  borderBottomLeftRadius: "inherit",
+  borderBottomRightRadius: "inherit",
 });
 
 export const CardImage = styled.img({
-  display: 'block',
+  display: "block",
   borderTopLeftRadius: 30,
   borderTopRightRadius: 30,
-  width: '100%',
+  width: "100%",
 });

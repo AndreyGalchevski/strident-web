@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 
 import { Song } from "../../api/types";
 import { fetchResource, updateResource, createResource } from "../../api/utils";

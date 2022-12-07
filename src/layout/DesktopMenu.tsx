@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 
 import Logo from "./Logo";
 import MenuItem from "./MenuItem";

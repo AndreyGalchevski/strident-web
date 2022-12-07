@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from "styled-components";
 
 const ResponsiveText = styled.p<{ isMobile: boolean }>(({ isMobile }) => ({
   marginTop: 0,

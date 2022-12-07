@@ -1,5 +1,5 @@
 import { FunctionComponent, useState, ChangeEvent } from "react";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";

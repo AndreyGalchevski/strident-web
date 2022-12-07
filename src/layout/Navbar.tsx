@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from "react";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 
 import { COLORS } from "../utils/constants";
 import useMediaQuery from "../hooks/useMediaQuery";

@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 
 const LogoImage = styled.img({
   width: "88px",
