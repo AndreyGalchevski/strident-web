@@ -9,6 +9,8 @@ import {
   Video,
 } from "./types";
 
+const GENERAL_ERROR = "Something went wrong";
+
 const baseURL = process.env.REACT_APP_API_URL;
 
 const options = {
@@ -25,6 +27,11 @@ export async function login(credentials: LoginCredentials): Promise<string> {
   });
 
   const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw Error(responseBody.error || GENERAL_ERROR);
+  }
+
   return responseBody.data;
 }
 
@@ -55,6 +62,11 @@ export async function fetchResources<T extends ResourceName>(
 ): Promise<Resource<T>[]> {
   const response = await fetch(`${baseURL}/${resourceName}`, options);
   const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw Error(responseBody.error || GENERAL_ERROR);
+  }
+
   return responseBody.data;
 }
 
@@ -66,8 +78,13 @@ export async function fetchResource<T extends ResourceName>(
     `${baseURL}/${resourceName}/${resourceID}`,
     options
   );
-  const resources = await response.json();
-  return resources;
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw Error(responseBody.error || GENERAL_ERROR);
+  }
+
+  return responseBody.data;
 }
 
 export async function createResource<T>(
@@ -84,18 +101,13 @@ export async function createResource<T>(
     body: JSON.stringify(data),
   });
 
-  switch (response.status) {
-    case 200:
-      return "Created Successfully";
-    case 401:
-      return "Not Authorized";
-    case 422:
-      return "Fill Out All The fields";
-    case 500:
-      return "Something Went Wrong";
-    default:
-      return "";
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw Error(responseBody.error || GENERAL_ERROR);
   }
+
+  return responseBody.data;
 }
 
 export async function updateResource<T>(
@@ -113,18 +125,13 @@ export async function updateResource<T>(
     body: JSON.stringify(data),
   });
 
-  switch (response.status) {
-    case 200:
-      return "Updated Successfully";
-    case 401:
-      return "Not Authorized";
-    case 422:
-      return "Fill Out All The Fields";
-    case 500:
-      return "Something Went Wrong";
-    default:
-      return "";
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw Error(responseBody.error || GENERAL_ERROR);
   }
+
+  return responseBody.data;
 }
 
 export async function deleteResource(
@@ -139,18 +146,13 @@ export async function deleteResource(
     },
   });
 
-  switch (response.status) {
-    case 200:
-      return "Deleted Successfully";
-    case 401:
-      return "Not Authorized";
-    case 422:
-      return "Fill Out All The Fields";
-    case 500:
-      return "Something Went Wrong";
-    default:
-      return "";
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw Error(responseBody.error || GENERAL_ERROR);
   }
+
+  return responseBody.data;
 }
 
 interface ImageUploadResponse {
@@ -174,17 +176,11 @@ export async function uploadImage(
     }
   );
 
-  if (response.status >= 400) {
-    switch (response.status) {
-      case 400:
-        throw new Error("Choose exactly one image");
-      case 401:
-        throw new Error("Not Authorized");
-      default:
-        throw new Error("Something Went Wrong");
-    }
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw Error(responseBody.error || GENERAL_ERROR);
   }
 
-  const result: ImageUploadResponse = await response.json();
-  return result;
+  return responseBody.data;
 }
