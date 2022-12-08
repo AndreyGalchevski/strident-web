@@ -2,7 +2,6 @@ import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { useAuthContext } from "../context/AuthContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
 import {
@@ -20,6 +19,7 @@ import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import useQueryMembers from "../hooks/queries/useQueryMembers";
 import useModal from "../hooks/useModal";
+import useAuth from "../hooks/useAuth";
 
 const MembersContainer = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   display: "flex",
@@ -33,7 +33,7 @@ const MemberItem = styled.div({
 });
 
 const Members: FunctionComponent = () => {
-  const [authState] = useAuthContext();
+  const auth = useAuth();
   const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
@@ -56,7 +56,7 @@ const Members: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Members" />
-      {authState.isAuthenticated && <Fab url="/admin/members/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/members/new" />}
       <Loader isLoading={membersLoading}>
         <MembersContainer isMobile={isMobile}>
           {membersData?.map((member) => (
@@ -73,7 +73,7 @@ const Members: FunctionComponent = () => {
                   <CardTitle>{member.name}</CardTitle>
                   <p>{member.instrument}</p>
                 </CardContent>
-                {authState.isAuthenticated && (
+                {auth.isAuthenticated && (
                   <CardAction>
                     <Button handleClick={() => handleUpdateClick(member.id)}>
                       <EditIcon />

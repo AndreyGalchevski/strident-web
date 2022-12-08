@@ -2,7 +2,6 @@ import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { useAuthContext } from "../context/AuthContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
 import { Masonry, MasonryBrick } from "../styled/Masonry";
@@ -15,6 +14,7 @@ import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import useQueryLyrics from "../hooks/queries/useQueryLyrics";
 import useModal from "../hooks/useModal";
+import useAuth from "../hooks/useAuth";
 
 const Text = styled.pre({
   fontFamily: '"Special Elite", cursive',
@@ -23,7 +23,7 @@ const Text = styled.pre({
 });
 
 const Lyrics: FunctionComponent = () => {
-  const [authState] = useAuthContext();
+  const auth = useAuth();
   const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
@@ -46,7 +46,7 @@ const Lyrics: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Lyrics" />
-      {authState.isAuthenticated && <Fab url="/admin/lyrics/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/lyrics/new" />}
       <Loader isLoading={lyricsLoading}>
         <Masonry isMobile={isMobile}>
           {lyricsData?.map((lyric) => (
@@ -56,7 +56,7 @@ const Lyrics: FunctionComponent = () => {
                 <CardContent style={{ paddingTop: 0 }}>
                   <Text>{lyric.text}</Text>
                 </CardContent>
-                {authState.isAuthenticated && (
+                {auth.isAuthenticated && (
                   <CardAction>
                     <Button handleClick={() => handleUpdateClick(lyric.id)}>
                       <EditIcon />

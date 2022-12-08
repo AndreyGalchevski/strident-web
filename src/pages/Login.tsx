@@ -9,6 +9,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import useMutationLogin from "../hooks/mutations/useMutationLogin";
 import useModal from "../hooks/useModal";
+import useAuth from "../hooks/useAuth";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -26,6 +27,8 @@ const Login: FunctionComponent = () => {
   const isMobile = useMediaQuery();
 
   const modal = useModal();
+
+  const auth = useAuth();
 
   function handleUsernameChange(e: ChangeEvent<HTMLInputElement>): void {
     setEmail(e.target.value);
@@ -48,6 +51,7 @@ const Login: FunctionComponent = () => {
       { email, password },
       {
         onSuccess: () => {
+          auth.authenticate();
           navigate("/");
         },
         onError: (e) => {

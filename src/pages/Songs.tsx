@@ -1,7 +1,6 @@
 import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuthContext } from "../context/AuthContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
 import { Masonry, MasonryBrick } from "../styled/Masonry";
@@ -14,9 +13,10 @@ import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import useQuerySongs from "../hooks/queries/useQuerySongs";
 import useModal from "../hooks/useModal";
+import useAuth from "../hooks/useAuth";
 
 const Songs: FunctionComponent = () => {
-  const [authState] = useAuthContext();
+  const auth = useAuth();
   const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const Songs: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Songs" />
-      {authState.isAuthenticated && <Fab url="/admin/songs/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/songs/new" />}
       <Loader isLoading={songsLoading}>
         <Masonry isMobile={isMobile}>
           {songsData?.map((song) => (
@@ -55,7 +55,7 @@ const Songs: FunctionComponent = () => {
                     style={{ borderRadius: 30 }}
                   />
                 </CardContent>
-                {authState.isAuthenticated && (
+                {auth.isAuthenticated && (
                   <CardAction>
                     <Button handleClick={() => handleUpdateClick(song.id)}>
                       <EditIcon />

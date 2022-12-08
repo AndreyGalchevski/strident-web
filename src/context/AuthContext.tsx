@@ -1,25 +1,32 @@
-import {
-  createContext,
-  useContext,
-  FunctionComponent,
-  useReducer,
-  PropsWithChildren,
-} from "react";
+import { makeAutoObservable } from "mobx";
+import { createContext, FunctionComponent, PropsWithChildren } from "react";
 
-import { initialState, reducer } from "./authReducer";
+export class AuthState {
+  isAuthenticated = !!localStorage.getItem("stridentToken");
 
-const AuthContext = createContext({});
+  constructor() {
+    makeAutoObservable(this);
+  }
 
-export function useAuthContext(): any {
-  return useContext(AuthContext);
+  authenticate() {
+    this.isAuthenticated = true;
+  }
+
+  invalidate() {
+    this.isAuthenticated = false;
+  }
 }
+
+const AuthContext = createContext<AuthState | undefined>(undefined);
 
 export const AuthProvider: FunctionComponent<PropsWithChildren> = ({
   children,
 }) => {
   return (
-    <AuthContext.Provider value={useReducer(reducer, initialState)}>
+    <AuthContext.Provider value={new AuthState()}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export default AuthContext;

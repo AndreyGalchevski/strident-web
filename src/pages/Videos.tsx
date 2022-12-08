@@ -2,7 +2,6 @@ import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
-import { useAuthContext } from "../context/AuthContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
 import { Masonry, MasonryBrick } from "../styled/Masonry";
@@ -15,9 +14,10 @@ import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import useQueryVideos from "../hooks/queries/useQueryVideos";
 import useModal from "../hooks/useModal";
+import useAuth from "../hooks/useAuth";
 
 const Videos: FunctionComponent = () => {
-  const [authState] = useAuthContext();
+  const auth = useAuth();
   const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ const Videos: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Videos" />
-      {authState.isAuthenticated && <Fab url="/admin/videos/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/videos/new" />}
       <Loader isLoading={videosLoading}>
         <Masonry isMobile={isMobile}>
           {videosData?.map((video) => (
@@ -57,7 +57,7 @@ const Videos: FunctionComponent = () => {
                     style={{ borderRadius: 30 }}
                   />
                 </CardContent>
-                {authState.isAuthenticated && (
+                {auth.isAuthenticated && (
                   <CardAction>
                     <Button handleClick={() => handleUpdateClick(video.id)}>
                       <EditIcon />

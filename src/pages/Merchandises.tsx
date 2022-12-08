@@ -2,7 +2,6 @@ import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { useAuthContext } from "../context/AuthContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
 import { Masonry, MasonryBrick } from "../styled/Masonry";
@@ -24,6 +23,7 @@ import ShoppingCartIcon from "../components/icons/ShoppingCart";
 import EuroIcon from "../components/icons/Euro";
 import useQueryMerchandise from "../hooks/queries/useQueryMerchandise";
 import useModal from "../hooks/useModal";
+import useAuth from "../hooks/useAuth";
 
 const PriceContainer = styled.p({
   display: "flex",
@@ -32,7 +32,7 @@ const PriceContainer = styled.p({
 });
 
 const Merchandises: FunctionComponent = () => {
-  const [authState] = useAuthContext();
+  const auth = useAuth();
   const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
@@ -56,7 +56,7 @@ const Merchandises: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Merch" />
-      {authState.isAuthenticated && <Fab url="/admin/merchandise/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/merchandise/new" />}
       <Loader isLoading={merchandiseLoading}>
         <Masonry isMobile={isMobile}>
           {merchandiseData?.map((merchandise) => (
@@ -85,7 +85,7 @@ const Merchandises: FunctionComponent = () => {
                     <span> {merchandise.price} EUR</span>
                   </PriceContainer>
                 </CardContent>
-                {authState.isAuthenticated && (
+                {auth.isAuthenticated && (
                   <CardAction>
                     <Button
                       handleClick={() => handleUpdateClick(merchandise.id)}

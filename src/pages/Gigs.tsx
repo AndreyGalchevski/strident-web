@@ -1,7 +1,6 @@
 import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuthContext } from "../context/AuthContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { formatDate, formatTime } from "../utils/general";
 import Container from "../styled/Container";
@@ -18,9 +17,10 @@ import DirectionsIcon from "../components/icons/Directions";
 import EventIcon from "../components/icons/Event";
 import useQueryGigs from "../hooks/queries/useQueryGigs";
 import useModal from "../hooks/useModal";
+import useAuth from "../hooks/useAuth";
 
 const Gigs: FunctionComponent = () => {
-  const [authState] = useAuthContext();
+  const auth = useAuth();
   const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
@@ -43,7 +43,7 @@ const Gigs: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Gigs" />
-      {authState.isAuthenticated && <Fab url="/admin/gigs/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/gigs/new" />}
       <Loader isLoading={gigsLoading}>
         <Masonry isMobile={isMobile}>
           {gigsData?.map((gig) => (
@@ -79,7 +79,7 @@ const Gigs: FunctionComponent = () => {
                   <p>{formatDate(new Date(gig.date))}</p>
                   <p>{formatTime(new Date(gig.date))}</p>
                 </CardContent>
-                {authState.isAuthenticated && (
+                {auth.isAuthenticated && (
                   <CardAction>
                     <Button handleClick={() => handleUpdateClick(gig.id)}>
                       <EditIcon />
