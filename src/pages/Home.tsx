@@ -10,7 +10,7 @@ import { Card, CardContent, CardTitle, CardAction } from "../styled/Card";
 import ResponsiveText from "../styled/ResponsiveText";
 import Header from "../components/Header";
 import { homeImages } from "../utils/constants";
-import useQueryGigs from "../hooks/useQueryGigs";
+import useQueryGigs from "../hooks/queries/useQueryGigs";
 import theme from "../utils/theme";
 
 const BannerContainer = styled.div({

@@ -13,7 +13,7 @@ import Fab from "../components/Fab";
 import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
-import useQuerySongs from "../hooks/useQuerySongs";
+import useQuerySongs from "../hooks/queries/useQuerySongs";
 
 const Songs: FunctionComponent = () => {
   const [authState] = useAuthContext();

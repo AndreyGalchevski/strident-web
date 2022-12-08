@@ -14,7 +14,7 @@ import Fab from "../components/Fab";
 import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
-import useQueryLyrics from "../hooks/useQueryLyrics";
+import useQueryLyrics from "../hooks/queries/useQueryLyrics";
 
 const Text = styled.pre({
   fontFamily: '"Special Elite", cursive',

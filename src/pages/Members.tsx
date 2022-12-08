@@ -19,7 +19,7 @@ import Fab from "../components/Fab";
 import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
-import useQueryMembers from "../hooks/useQueryMembers";
+import useQueryMembers from "../hooks/queries/useQueryMembers";
 
 const MembersContainer = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   display: "flex",

@@ -13,7 +13,7 @@ import Fab from "../components/Fab";
 import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
-import useQueryVideos from "../hooks/useQueryVideos";
+import useQueryVideos from "../hooks/queries/useQueryVideos";
 
 const Videos: FunctionComponent = () => {
   const [authState] = useAuthContext();

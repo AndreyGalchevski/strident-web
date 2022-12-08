@@ -17,7 +17,7 @@ import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import DirectionsIcon from "../components/icons/Directions";
 import EventIcon from "../components/icons/Event";
-import useQueryGigs from "../hooks/useQueryGigs";
+import useQueryGigs from "../hooks/queries/useQueryGigs";
 
 const Gigs: FunctionComponent = () => {
   const [authState] = useAuthContext();

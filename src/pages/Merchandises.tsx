@@ -23,7 +23,7 @@ import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import ShoppingCartIcon from "../components/icons/ShoppingCart";
 import EuroIcon from "../components/icons/Euro";
-import useQueryMerchandise from "../hooks/useQueryMerchandise";
+import useQueryMerchandise from "../hooks/queries/useQueryMerchandise";
 
 const PriceContainer = styled.p({
   display: "flex",

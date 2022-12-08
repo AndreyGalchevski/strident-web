@@ -1,8 +1,8 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from "react-query";
 
-import { Member } from "../api/types";
-import { fetchResources } from "../api/utils";
-import { membersQueryKey } from "../utils/queryKeys";
+import { Member } from "../../api/types";
+import { fetchResources } from "../../api/utils";
+import { membersQueryKey } from "../../utils/queryKeys";
 
 const useQueryMembers = (
   options: UseQueryOptions<Member[], Error, Member[]> = {}

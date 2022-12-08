@@ -1,8 +1,8 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from "react-query";
 
-import { Song } from "../api/types";
-import { fetchResources } from "../api/utils";
-import { songsQueryKey } from "../utils/queryKeys";
+import { Song } from "../../api/types";
+import { fetchResources } from "../../api/utils";
+import { songsQueryKey } from "../../utils/queryKeys";
 
 const useQuerySongs = (
   options: UseQueryOptions<Song[], Error, Song[]> = {}

@@ -1,8 +1,8 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from "react-query";
 
-import { Gig } from "../api/types";
-import { fetchResources } from "../api/utils";
-import { gigsQueryKey } from "../utils/queryKeys";
+import { Gig } from "../../api/types";
+import { fetchResources } from "../../api/utils";
+import { gigsQueryKey } from "../../utils/queryKeys";
 
 const useQueryGigs = (
   options: UseQueryOptions<Gig[], Error, Gig[]> = {}
