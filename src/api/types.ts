@@ -1,11 +1,6 @@
-export interface Credentials {
+export interface LoginCredentials {
   username: string;
   password: string;
-}
-
-export interface LoginResponse {
-  token: string;
-  err: string;
 }
 
 export interface TokenClaims {

@@ -2,14 +2,12 @@ import { FunctionComponent, useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
-import { LOGIN_SUCCESS } from "../context/authActionTypes";
-import { login } from "../api/utils";
 import { Card, CardContent, CardAction } from "../styled/Card";
 import Loader from "../components/Loader";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import useMutationLogin from "../hooks/mutations/useMutationLogin";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -19,11 +17,11 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 const Login: FunctionComponent = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setLoading] = useState(false);
+
+  const { mutate: login, isLoading: loginLoading } = useMutationLogin();
 
   const navigate = useNavigate();
 
-  const [, dispatch] = useAuthContext();
   const isMobile = useMediaQuery();
 
   function handleUsernameChange(e: ChangeEvent<HTMLInputElement>): void {
@@ -34,21 +32,28 @@ const Login: FunctionComponent = () => {
     setPassword(e.target.value);
   }
 
-  async function handleLogin(): Promise<void> {
-    setLoading(true);
-    try {
-      const token = await login({ username, password });
-      dispatch({ type: LOGIN_SUCCESS, payload: token });
-      navigate("/");
-    } catch (error) {
-      window.alert((error as Error).message);
+  function handleLogin(): void {
+    if (!username || !password) {
+      window.alert("Please fill out the required fields");
+      return;
     }
-    setLoading(false);
+
+    login(
+      { username, password },
+      {
+        onSuccess: () => {
+          navigate("/");
+        },
+        onError: (e) => {
+          window.alert(e.message);
+        },
+      }
+    );
   }
 
   return (
     <>
-      <Loader isLoading={isLoading}>
+      <Loader isLoading={loginLoading}>
         <section>
           <h2>Login</h2>
           <Wrapper isMobile={isMobile}>

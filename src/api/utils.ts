@@ -1,7 +1,7 @@
+import { AUTH_TOKEN_NAME } from "../utils/constants";
 import {
-  Credentials,
   Gig,
-  LoginResponse,
+  LoginCredentials,
   Lyric,
   Member,
   Merchandise,
@@ -9,7 +9,7 @@ import {
   Video,
 } from "./types";
 
-const baseURL = process.env.API_URL;
+const baseURL = process.env.REACT_APP_API_URL;
 
 const options = {
   headers: {
@@ -17,25 +17,15 @@ const options = {
   },
 };
 
-export async function login(creds: Credentials): Promise<LoginResponse> {
+export async function login(credentials: LoginCredentials): Promise<string> {
   const response = await fetch(`${baseURL}/auth/login`, {
     ...options,
     method: "POST",
-    body: JSON.stringify(creds),
+    body: JSON.stringify(credentials),
   });
 
-  if (response.status >= 400) {
-    switch (response.status) {
-      case 404:
-        throw new Error("User not found");
-      case 400:
-        throw new Error("Wrong credentials");
-      default:
-        throw new Error("Something went wrong");
-    }
-  }
-  const { token } = await response.json();
-  return token;
+  const responseBody = await response.json();
+  return responseBody.data;
 }
 
 export type ResourceName =
@@ -63,10 +53,7 @@ type Resource<T> = T extends "gigs"
 export async function fetchResources<T extends ResourceName>(
   resourceName: T
 ): Promise<Resource<T>[]> {
-  const response = await fetch(
-    `${process.env.REACT_APP_API_URL}/${resourceName}`,
-    options
-  );
+  const response = await fetch(`${baseURL}/${resourceName}`, options);
   const responseBody = await response.json();
   return responseBody.data;
 }
@@ -92,7 +79,7 @@ export async function createResource<T>(
     method: "POST",
     headers: {
       ...options.headers,
-      Authorization: `Bearer ${localStorage.getItem("stridentToken")}`,
+      Authorization: `Bearer ${localStorage.getItem(AUTH_TOKEN_NAME)}`,
     },
     body: JSON.stringify(data),
   });
@@ -121,7 +108,7 @@ export async function updateResource<T>(
     method: "PUT",
     headers: {
       ...options.headers,
-      Authorization: `Bearer ${localStorage.getItem("stridentToken")}`,
+      Authorization: `Bearer ${localStorage.getItem(AUTH_TOKEN_NAME)}`,
     },
     body: JSON.stringify(data),
   });
@@ -148,7 +135,7 @@ export async function deleteResource(
     ...options,
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("stridentToken")}`,
+      Authorization: `Bearer ${localStorage.getItem(AUTH_TOKEN_NAME)}`,
     },
   });
 
@@ -181,7 +168,7 @@ export async function uploadImage(
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("stridentToken")}`,
+        Authorization: `Bearer ${localStorage.getItem(AUTH_TOKEN_NAME)}`,
       },
       body: image,
     }
