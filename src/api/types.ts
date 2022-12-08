@@ -1,10 +1,10 @@
 export interface LoginCredentials {
-  username: string;
+  email: string;
   password: string;
 }
 
 export interface TokenClaims {
-  username: string;
+  userID: string;
   exp: number;
 }
 

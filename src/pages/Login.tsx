@@ -15,7 +15,7 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 }));
 
 const Login: FunctionComponent = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const { mutate: login, isLoading: loginLoading } = useMutationLogin();
@@ -25,7 +25,7 @@ const Login: FunctionComponent = () => {
   const isMobile = useMediaQuery();
 
   function handleUsernameChange(e: ChangeEvent<HTMLInputElement>): void {
-    setUsername(e.target.value);
+    setEmail(e.target.value);
   }
 
   function handlePasswordChange(e: ChangeEvent<HTMLInputElement>): void {
@@ -33,13 +33,13 @@ const Login: FunctionComponent = () => {
   }
 
   function handleLogin(): void {
-    if (!username || !password) {
+    if (!email || !password) {
       window.alert("Please fill out the required fields");
       return;
     }
 
     login(
-      { username, password },
+      { email, password },
       {
         onSuccess: () => {
           navigate("/");
@@ -60,10 +60,10 @@ const Login: FunctionComponent = () => {
             <Card>
               <CardContent>
                 <Input
-                  name="username"
+                  name="email"
                   type="text"
                   onChange={handleUsernameChange}
-                  value={username}
+                  value={email}
                 />
                 <Input
                   name="password"
