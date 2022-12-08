@@ -1,5 +1,6 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 
 import { Song } from "../../api/types";
 import { fetchResource, updateResource, createResource } from "../../api/utils";
@@ -9,7 +10,8 @@ import { Card, CardContent, CardAction } from "../../styled/Card";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Loader from "../../components/Loader";
-import { useNavigate, useParams } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import useModal from "../../hooks/useModal";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -19,10 +21,11 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 const ManageSong: FunctionComponent = () => {
   const isMobile = useMediaQuery();
   const params = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   const [song, setSong] = useState<Song>({} as Song);
   const [isLoading, setLoading] = useState(false);
+
+  const modal = useModal();
 
   useEffect(() => {
     async function fetchSong(songID: string): Promise<void> {
@@ -42,16 +45,14 @@ const ManageSong: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    let res = "";
     setLoading(true);
     if (params.id) {
-      res = await updateResource<Song>("songs", params.id, song);
+      await updateResource<Song>("songs", params.id, song);
     } else {
-      res = await createResource<Song>("songs", song);
+      await createResource<Song>("songs", song);
     }
-    navigate("/songs");
     setLoading(false);
-    window.alert(res);
+    modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "songs" });
   }
 
   const action = params.id ? "Update" : "Create";
@@ -94,4 +95,4 @@ const ManageSong: FunctionComponent = () => {
   );
 };
 
-export default ManageSong;
+export default observer(ManageSong);

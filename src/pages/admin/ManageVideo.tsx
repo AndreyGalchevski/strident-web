@@ -1,6 +1,7 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { observer } from "mobx-react-lite";
 
 import { Video } from "../../api/types";
 import { fetchResource, updateResource, createResource } from "../../api/utils";
@@ -11,6 +12,7 @@ import { Card, CardContent, CardAction } from "../../styled/Card";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Loader from "../../components/Loader";
+import useModal from "../../hooks/useModal";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -20,7 +22,6 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 const ManageVideo: FunctionComponent = () => {
   const isMobile = useMediaQuery();
   const params = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   const [video, setVideo] = useState<Video>({
     id: "",
@@ -29,6 +30,8 @@ const ManageVideo: FunctionComponent = () => {
     date: new Date(),
   });
   const [isLoading, setLoading] = useState(false);
+
+  const modal = useModal();
 
   useEffect(() => {
     async function fetchVideo(videoID: string): Promise<void> {
@@ -52,16 +55,14 @@ const ManageVideo: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    let res = "";
     setLoading(true);
     if (params.id) {
-      res = await updateResource<Video>("videos", params.id, video);
+      await updateResource<Video>("videos", params.id, video);
     } else {
-      res = await createResource<Video>("videos", video);
+      await createResource<Video>("videos", video);
     }
     setLoading(false);
-    navigate("/videos");
-    window.alert(res);
+    modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "videos" });
   }
 
   const action = params.id ? "Update" : "Create";
@@ -104,4 +105,4 @@ const ManageVideo: FunctionComponent = () => {
   );
 };
 
-export default ManageVideo;
+export default observer(ManageVideo);

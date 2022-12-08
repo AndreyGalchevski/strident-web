@@ -1,7 +1,7 @@
-import { FunctionComponent, MouseEventHandler } from "react";
+import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
-import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
@@ -14,6 +14,7 @@ import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import useQueryVideos from "../hooks/queries/useQueryVideos";
+import useModal from "../hooks/useModal";
 
 const Videos: FunctionComponent = () => {
   const [authState] = useAuthContext();
@@ -22,19 +23,18 @@ const Videos: FunctionComponent = () => {
 
   const { data: videosData, isLoading: videosLoading } = useQueryVideos();
 
-  function handleUpdateClick(videoId: string): MouseEventHandler {
-    return (): void => {
-      navigate(`/admin/videos/edit/${videoId}`);
-    };
+  const modal = useModal();
+
+  function handleUpdateClick(videoID: string): void {
+    navigate(`/admin/videos/edit/${videoID}`);
   }
 
-  function handleDeleteClick(videoId: string): MouseEventHandler {
-    return async (): Promise<void> => {
-      if (window.confirm("Are you sure you want to delete the video?")) {
-        const res = await deleteResource("videos", videoId);
-        window.alert(res);
-      }
-    };
+  function handleDeleteClick(videoID: string): void {
+    modal.showModal({
+      modalType: "CONFIRM_DELETION",
+      resourceID: videoID,
+      resourceName: "videos",
+    });
   }
 
   return (
@@ -59,10 +59,13 @@ const Videos: FunctionComponent = () => {
                 </CardContent>
                 {authState.isAuthenticated && (
                   <CardAction>
-                    <Button handleClick={handleUpdateClick(video.id)}>
+                    <Button handleClick={() => handleUpdateClick(video.id)}>
                       <EditIcon />
                     </Button>
-                    <Button isPrimary handleClick={handleDeleteClick(video.id)}>
+                    <Button
+                      isPrimary
+                      handleClick={() => handleDeleteClick(video.id)}
+                    >
                       <DeleteIcon />
                     </Button>
                   </CardAction>
@@ -76,4 +79,4 @@ const Videos: FunctionComponent = () => {
   );
 };
 
-export default Videos;
+export default observer(Videos);

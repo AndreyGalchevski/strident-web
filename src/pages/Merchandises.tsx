@@ -1,8 +1,7 @@
-import { FunctionComponent, MouseEventHandler } from "react";
+import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
@@ -24,6 +23,7 @@ import DeleteIcon from "../components/icons/Delete";
 import ShoppingCartIcon from "../components/icons/ShoppingCart";
 import EuroIcon from "../components/icons/Euro";
 import useQueryMerchandise from "../hooks/queries/useQueryMerchandise";
+import useModal from "../hooks/useModal";
 
 const PriceContainer = styled.p({
   display: "flex",
@@ -39,25 +39,24 @@ const Merchandises: FunctionComponent = () => {
   const { data: merchandiseData, isLoading: merchandiseLoading } =
     useQueryMerchandise();
 
-  function handleUpdateClick(merchandiseId: string): MouseEventHandler {
-    return (): void => {
-      navigate(`/admin/merch/edit/${merchandiseId}`);
-    };
+  const modal = useModal();
+
+  function handleUpdateClick(merchandiseID: string): void {
+    navigate(`/admin/merchandise/edit/${merchandiseID}`);
   }
 
-  function handleDeleteClick(merchandiseId: string): MouseEventHandler {
-    return async (): Promise<void> => {
-      if (window.confirm("Are you sure you want to delete the merch?")) {
-        const res = await deleteResource("merchandise", merchandiseId);
-        window.alert(res);
-      }
-    };
+  function handleDeleteClick(merchandiseID: string): void {
+    modal.showModal({
+      modalType: "CONFIRM_DELETION",
+      resourceID: merchandiseID,
+      resourceName: "merchandise",
+    });
   }
 
   return (
     <Container>
       <Header title="Merch" />
-      {authState.isAuthenticated && <Fab url="/admin/merch/new" />}
+      {authState.isAuthenticated && <Fab url="/admin/merchandise/new" />}
       <Loader isLoading={merchandiseLoading}>
         <Masonry isMobile={isMobile}>
           {merchandiseData?.map((merchandise) => (
@@ -88,12 +87,14 @@ const Merchandises: FunctionComponent = () => {
                 </CardContent>
                 {authState.isAuthenticated && (
                   <CardAction>
-                    <Button handleClick={handleUpdateClick(merchandise.id)}>
+                    <Button
+                      handleClick={() => handleUpdateClick(merchandise.id)}
+                    >
                       <EditIcon />
                     </Button>
                     <Button
                       isPrimary
-                      handleClick={handleDeleteClick(merchandise.id)}
+                      handleClick={() => handleDeleteClick(merchandise.id)}
                     >
                       <DeleteIcon />
                     </Button>

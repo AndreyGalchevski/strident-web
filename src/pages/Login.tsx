@@ -1,13 +1,14 @@
 import { FunctionComponent, useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
 import useMediaQuery from "../hooks/useMediaQuery";
 import { Card, CardContent, CardAction } from "../styled/Card";
-import Loader from "../components/Loader";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import useMutationLogin from "../hooks/mutations/useMutationLogin";
+import useModal from "../hooks/useModal";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -24,6 +25,8 @@ const Login: FunctionComponent = () => {
 
   const isMobile = useMediaQuery();
 
+  const modal = useModal();
+
   function handleUsernameChange(e: ChangeEvent<HTMLInputElement>): void {
     setEmail(e.target.value);
   }
@@ -34,7 +37,10 @@ const Login: FunctionComponent = () => {
 
   function handleLogin(): void {
     if (!email || !password) {
-      window.alert("Please fill out the required fields");
+      modal.showModal({
+        modalType: "ERROR",
+        errorMessage: "Please fill out the required fields",
+      });
       return;
     }
 
@@ -45,42 +51,43 @@ const Login: FunctionComponent = () => {
           navigate("/");
         },
         onError: (e) => {
-          window.alert(e.message);
+          modal.showModal({
+            modalType: "ERROR",
+            errorMessage: e.message,
+          });
         },
       }
     );
   }
 
   return (
-    <>
-      <Loader isLoading={loginLoading}>
-        <section>
-          <h2>Login</h2>
-          <Wrapper isMobile={isMobile}>
-            <Card>
-              <CardContent>
-                <Input
-                  name="email"
-                  type="text"
-                  onChange={handleUsernameChange}
-                  value={email}
-                />
-                <Input
-                  name="password"
-                  type="password"
-                  onChange={handlePasswordChange}
-                  value={password}
-                />
-              </CardContent>
-              <CardAction>
-                <Button handleClick={handleLogin}>Login</Button>
-              </CardAction>
-            </Card>
-          </Wrapper>
-        </section>
-      </Loader>
-    </>
+    <section>
+      <h2>Login</h2>
+      <Wrapper isMobile={isMobile}>
+        <Card>
+          <CardContent>
+            <Input
+              name="email"
+              type="text"
+              onChange={handleUsernameChange}
+              value={email}
+            />
+            <Input
+              name="password"
+              type="password"
+              onChange={handlePasswordChange}
+              value={password}
+            />
+          </CardContent>
+          <CardAction>
+            <Button handleClick={handleLogin}>
+              {loginLoading ? "Loading..." : "Sign in"}
+            </Button>
+          </CardAction>
+        </Card>
+      </Wrapper>
+    </section>
   );
 };
 
-export default Login;
+export default observer(Login);

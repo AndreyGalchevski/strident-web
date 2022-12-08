@@ -1,7 +1,6 @@
-import { FunctionComponent, MouseEventHandler } from "react";
+import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
@@ -14,6 +13,7 @@ import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import useQuerySongs from "../hooks/queries/useQuerySongs";
+import useModal from "../hooks/useModal";
 
 const Songs: FunctionComponent = () => {
   const [authState] = useAuthContext();
@@ -22,19 +22,18 @@ const Songs: FunctionComponent = () => {
 
   const { data: songsData, isLoading: songsLoading } = useQuerySongs();
 
-  function handleUpdateClick(songId: string): MouseEventHandler {
-    return (): void => {
-      navigate(`/admin/songs/edit/${songId}`);
-    };
+  const modal = useModal();
+
+  function handleUpdateClick(songID: string): void {
+    navigate(`/admin/songs/edit/${songID}`);
   }
 
-  function handleDeleteClick(songId: string): MouseEventHandler {
-    return async (): Promise<void> => {
-      if (window.confirm("Are you sure you want to delete the song?")) {
-        const res = await deleteResource("songs", songId);
-        window.alert(res);
-      }
-    };
+  function handleDeleteClick(songID: string): void {
+    modal.showModal({
+      modalType: "CONFIRM_DELETION",
+      resourceID: songID,
+      resourceName: "videos",
+    });
   }
 
   return (
@@ -58,10 +57,13 @@ const Songs: FunctionComponent = () => {
                 </CardContent>
                 {authState.isAuthenticated && (
                   <CardAction>
-                    <Button handleClick={handleUpdateClick(song.id)}>
+                    <Button handleClick={() => handleUpdateClick(song.id)}>
                       <EditIcon />
                     </Button>
-                    <Button isPrimary handleClick={handleDeleteClick(song.id)}>
+                    <Button
+                      isPrimary
+                      handleClick={() => handleDeleteClick(song.id)}
+                    >
                       <DeleteIcon />
                     </Button>
                   </CardAction>

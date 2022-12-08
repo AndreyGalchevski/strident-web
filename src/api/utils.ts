@@ -88,7 +88,7 @@ export async function fetchResource<T extends ResourceName>(
 }
 
 export async function createResource<T>(
-  resourceName: string,
+  resourceName: ResourceName,
   data: T
 ): Promise<string> {
   const response = await fetch(`${baseURL}/${resourceName}`, {
@@ -111,7 +111,7 @@ export async function createResource<T>(
 }
 
 export async function updateResource<T>(
-  resourceName: string,
+  resourceName: ResourceName,
   resourceID: string,
   data: T
 ): Promise<string> {
@@ -134,10 +134,15 @@ export async function updateResource<T>(
   return responseBody.data;
 }
 
-export async function deleteResource(
-  resourceName: string,
-  resourceID: string
-): Promise<string> {
+export interface DeleteResourceParams {
+  resourceName: ResourceName;
+  resourceID: string;
+}
+
+export async function deleteResource({
+  resourceName,
+  resourceID,
+}: DeleteResourceParams): Promise<void> {
   const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
     ...options,
     method: "DELETE",
@@ -151,8 +156,6 @@ export async function deleteResource(
   if (!response.ok) {
     throw Error(responseBody.error || GENERAL_ERROR);
   }
-
-  return responseBody.data;
 }
 
 interface ImageUploadResponse {

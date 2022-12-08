@@ -2,13 +2,13 @@ import { useQuery, UseQueryOptions, UseQueryResult } from "react-query";
 
 import { Merchandise } from "../../api/types";
 import { fetchResources } from "../../api/utils";
-import { merchandiseQueryKey } from "../../utils/queryKeys";
+import { resourcesListQueryKey } from "../../utils/queryKeys";
 
 const useQueryMerchandise = (
   options: UseQueryOptions<Merchandise[], Error, Merchandise[]> = {}
 ): UseQueryResult<Merchandise[], Error> =>
   useQuery<Merchandise[], Error>({
-    queryKey: merchandiseQueryKey(),
+    queryKey: resourcesListQueryKey("merchandise"),
     queryFn: () => fetchResources("merchandise"),
     ...options,
   });

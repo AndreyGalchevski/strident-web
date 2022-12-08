@@ -1,7 +1,6 @@
-import { FunctionComponent, MouseEventHandler } from "react";
+import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { formatDate, formatTime } from "../utils/general";
@@ -18,6 +17,7 @@ import DeleteIcon from "../components/icons/Delete";
 import DirectionsIcon from "../components/icons/Directions";
 import EventIcon from "../components/icons/Event";
 import useQueryGigs from "../hooks/queries/useQueryGigs";
+import useModal from "../hooks/useModal";
 
 const Gigs: FunctionComponent = () => {
   const [authState] = useAuthContext();
@@ -26,19 +26,18 @@ const Gigs: FunctionComponent = () => {
 
   const { data: gigsData, isLoading: gigsLoading } = useQueryGigs();
 
-  function handleUpdateClick(gigId: string): MouseEventHandler {
-    return (): void => {
-      navigate(`/admin/gigs/edit/${gigId}`);
-    };
+  const modal = useModal();
+
+  function handleUpdateClick(gigID: string): void {
+    navigate(`/admin/gigs/edit/${gigID}`);
   }
 
-  function handleDeleteClick(gigId: string): MouseEventHandler {
-    return async (): Promise<void> => {
-      if (window.confirm("Are you sure you want to delete the gig?")) {
-        const res = await deleteResource("gigs", gigId);
-        window.alert(res);
-      }
-    };
+  function handleDeleteClick(gigID: string): void {
+    modal.showModal({
+      modalType: "CONFIRM_DELETION",
+      resourceID: gigID,
+      resourceName: "gigs",
+    });
   }
 
   return (
@@ -82,10 +81,13 @@ const Gigs: FunctionComponent = () => {
                 </CardContent>
                 {authState.isAuthenticated && (
                   <CardAction>
-                    <Button handleClick={handleUpdateClick(gig.id)}>
+                    <Button handleClick={() => handleUpdateClick(gig.id)}>
                       <EditIcon />
                     </Button>
-                    <Button isPrimary handleClick={handleDeleteClick(gig.id)}>
+                    <Button
+                      isPrimary
+                      handleClick={() => handleDeleteClick(gig.id)}
+                    >
                       <DeleteIcon />
                     </Button>
                   </CardAction>

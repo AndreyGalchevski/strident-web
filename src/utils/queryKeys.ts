@@ -1,8 +1,13 @@
+import { ResourceName } from "../api/utils";
+
 const keyPrefix = "strident";
 
-export const gigsQueryKey = () => [keyPrefix, "gigs"];
-export const lyricsQueryKey = () => [keyPrefix, "lyrics"];
-export const membersQueryKey = () => [keyPrefix, "members"];
-export const merchandiseQueryKey = () => [keyPrefix, "merchandise"];
-export const songsQueryKey = () => [keyPrefix, "songs"];
-export const videosQueryKey = () => [keyPrefix, "videos"];
+export const resourcesListQueryKey = (resourceName: ResourceName) => [
+  keyPrefix,
+  resourceName,
+];
+
+export const resourceQueryKey = (
+  resourceName: ResourceName,
+  resourceID: string
+) => [keyPrefix, resourceName, resourceID];

@@ -1,5 +1,7 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
 import { Member } from "../../api/types";
 import {
@@ -15,7 +17,7 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import FileInput from "../../components/FileInput";
 import Loader from "../../components/Loader";
-import { useNavigate, useParams } from "react-router-dom";
+import useModal from "../../hooks/useModal";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -25,7 +27,6 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 const ManageMember: FunctionComponent = () => {
   const isMobile = useMediaQuery();
   const params = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   const [member, setMember] = useState<Member>({
     id: "",
@@ -37,6 +38,8 @@ const ManageMember: FunctionComponent = () => {
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isLoading, setLoading] = useState(false);
+
+  const modal = useModal();
 
   async function fetchMember(memberID: string): Promise<void> {
     setLoading(true);
@@ -64,7 +67,6 @@ const ManageMember: FunctionComponent = () => {
   async function handleSaveClick(): Promise<void> {
     setLoading(true);
 
-    let res = "";
     let imageURL = "";
     let ngImageURL = "";
 
@@ -75,8 +77,12 @@ const ManageMember: FunctionComponent = () => {
         const result = await uploadImage("members", member.name, image);
         imageURL = result.imageURL;
         ngImageURL = result.ngImageURL;
-      } catch (error) {
-        window.alert(error);
+      } catch (e) {
+        modal.showModal({
+          modalType: "ERROR",
+          errorMessage: (e as Error).message,
+        });
+
         return;
       }
     }
@@ -87,14 +93,13 @@ const ManageMember: FunctionComponent = () => {
     }
 
     if (params.id) {
-      res = await updateResource<Member>("members", params.id, member);
+      await updateResource<Member>("members", params.id, member);
     } else {
-      res = await createResource<Member>("members", member);
+      await createResource<Member>("members", member);
     }
 
     setLoading(false);
-    navigate("/members");
-    window.alert(res);
+    modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "members" });
   }
 
   const action = params.id ? "Update" : "Create";
@@ -138,4 +143,4 @@ const ManageMember: FunctionComponent = () => {
   );
 };
 
-export default ManageMember;
+export default observer(ManageMember);

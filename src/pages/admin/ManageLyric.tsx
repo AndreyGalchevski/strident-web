@@ -1,5 +1,7 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
+import { observer } from "mobx-react-lite";
+import { useParams } from "react-router-dom";
 
 import { Lyric } from "../../api/types";
 import { fetchResource, updateResource, createResource } from "../../api/utils";
@@ -10,7 +12,7 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import TextArea from "../../components/TextArea";
 import Loader from "../../components/Loader";
-import { useNavigate, useParams } from "react-router-dom";
+import useModal from "../../hooks/useModal";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -20,10 +22,11 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 const ManageLyric: FunctionComponent = () => {
   const isMobile = useMediaQuery();
   const params = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   const [lyric, setLyric] = useState<Lyric>({} as Lyric);
   const [isLoading, setLoading] = useState(false);
+
+  const modal = useModal();
 
   async function fetchLyric(lyricID: string): Promise<void> {
     setLoading(true);
@@ -47,17 +50,15 @@ const ManageLyric: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    let res = "";
     setLoading(true);
     if (params.id) {
-      res = await updateResource<Lyric>("lyrics", params.id, lyric);
+      await updateResource<Lyric>("lyrics", params.id, lyric);
     } else {
-      res = await createResource<Lyric>("lyrics", lyric);
+      await createResource<Lyric>("lyrics", lyric);
     }
     setLoading(false);
-    navigate("/lyrics");
 
-    window.alert(res);
+    modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "lyrics" });
   }
 
   const action = params.id ? "Update" : "Create";
@@ -93,4 +94,4 @@ const ManageLyric: FunctionComponent = () => {
   );
 };
 
-export default ManageLyric;
+export default observer(ManageLyric);

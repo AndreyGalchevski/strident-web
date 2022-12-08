@@ -1,8 +1,7 @@
-import { FunctionComponent, MouseEventHandler } from "react";
+import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
@@ -15,6 +14,7 @@ import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import useQueryLyrics from "../hooks/queries/useQueryLyrics";
+import useModal from "../hooks/useModal";
 
 const Text = styled.pre({
   fontFamily: '"Special Elite", cursive',
@@ -29,19 +29,18 @@ const Lyrics: FunctionComponent = () => {
 
   const { data: lyricsData, isLoading: lyricsLoading } = useQueryLyrics();
 
-  function handleUpdateClick(lyricId: string): MouseEventHandler {
-    return (): void => {
-      navigate(`/admin/lyrics/edit/${lyricId}`);
-    };
+  const modal = useModal();
+
+  function handleUpdateClick(lyricID: string): void {
+    navigate(`/admin/lyrics/edit/${lyricID}`);
   }
 
-  function handleDeleteClick(lyricId: string): MouseEventHandler {
-    return async (): Promise<void> => {
-      if (window.confirm("Are you sure you want to delete the lyric?")) {
-        const res = await deleteResource("lyrics", lyricId);
-        window.alert(res);
-      }
-    };
+  function handleDeleteClick(lyricID: string): void {
+    modal.showModal({
+      modalType: "CONFIRM_DELETION",
+      resourceID: lyricID,
+      resourceName: "lyrics",
+    });
   }
 
   return (
@@ -59,10 +58,13 @@ const Lyrics: FunctionComponent = () => {
                 </CardContent>
                 {authState.isAuthenticated && (
                   <CardAction>
-                    <Button handleClick={handleUpdateClick(lyric.id)}>
+                    <Button handleClick={() => handleUpdateClick(lyric.id)}>
                       <EditIcon />
                     </Button>
-                    <Button isPrimary handleClick={handleDeleteClick(lyric.id)}>
+                    <Button
+                      isPrimary
+                      handleClick={() => handleDeleteClick(lyric.id)}
+                    >
                       <DeleteIcon />
                     </Button>
                   </CardAction>

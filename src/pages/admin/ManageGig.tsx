@@ -1,6 +1,7 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { observer } from "mobx-react-lite";
 
 import { Gig } from "../../api/types";
 import {
@@ -17,6 +18,7 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import FileInput from "../../components/FileInput";
 import Loader from "../../components/Loader";
+import useModal from "../../hooks/useModal";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -26,7 +28,6 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 const ManageGig: FunctionComponent = () => {
   const isMobile = useMediaQuery();
   const params = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   const [gig, setGig] = useState<Gig>({
     id: "",
@@ -41,6 +42,8 @@ const ManageGig: FunctionComponent = () => {
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isLoading, setLoading] = useState(false);
+
+  const modal = useModal();
 
   useEffect(() => {
     async function fetchVideo(gigID: string): Promise<void> {
@@ -94,8 +97,11 @@ const ManageGig: FunctionComponent = () => {
         const result = await uploadImage("gigs", fileName, image);
         imageURL = result.imageURL;
         ngImageURL = result.ngImageURL;
-      } catch (error) {
-        window.alert(error);
+      } catch (e) {
+        modal.showModal({
+          modalType: "ERROR",
+          errorMessage: (e as Error).message,
+        });
         return;
       }
     }
@@ -112,7 +118,8 @@ const ManageGig: FunctionComponent = () => {
     }
 
     setLoading(false);
-    navigate("/gigs");
+
+    modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "gigs" });
   }
 
   const action = params.id ? "Update" : "Create";
@@ -180,4 +187,4 @@ const ManageGig: FunctionComponent = () => {
   );
 };
 
-export default ManageGig;
+export default observer(ManageGig);

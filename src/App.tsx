@@ -23,6 +23,8 @@ import Footer from "./layout/Footer";
 import { AuthProvider } from "./context/authContext";
 import theme from "./utils/theme";
 import useTokenExpiration from "./hooks/useTokenExpiration";
+import { ModalProvider } from "./context/ModalContext";
+import SystemModal from "./components/SystemModal";
 
 const Main = styled.main({
   overflowY: "scroll",
@@ -48,83 +50,86 @@ const App: FunctionComponent = () => {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <Navbar />
-            <Main>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/members" element={<Members />} />
-                <Route path="/songs" element={<Songs />} />
-                <Route path="/videos" element={<Videos />} />
-                <Route path="/merch" element={<Merchandises />} />
-                <Route path="/gigs" element={<Gigs />} />
-                <Route path="/lyrics" element={<Lyrics />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/login" element={<Login />} />
-                <Route
-                  key="new-member"
-                  path="/admin/members/new"
-                  element={<ManageMember />}
-                />
-                <Route
-                  key="edit-member"
-                  path="/admin/members/edit/:id"
-                  element={<ManageMember />}
-                />
-                <Route
-                  key="new-song"
-                  path="/admin/songs/new"
-                  element={<ManageSong />}
-                />
-                <Route
-                  key="edit-song"
-                  path="/admin/songs/edit/:id"
-                  element={<ManageSong />}
-                />
-                <Route
-                  key="new-video"
-                  path="/admin/videos/new"
-                  element={<ManageVideo />}
-                />
-                <Route
-                  key="edit-video"
-                  path="/admin/videos/edit/:id"
-                  element={<ManageVideo />}
-                />
-                <Route
-                  key="new-merch"
-                  path="/admin/merch/new"
-                  element={<ManageMerchandise />}
-                />
-                <Route
-                  key="edit-merch"
-                  path="/admin/merch/edit/:id"
-                  element={<ManageMerchandise />}
-                />
-                <Route
-                  key="new-gig"
-                  path="/admin/gigs/new"
-                  element={<ManageGig />}
-                />
-                <Route
-                  key="edit-gig"
-                  path="/admin/gigs/edit/:id"
-                  element={<ManageGig />}
-                />
-                <Route
-                  key="new-lyric"
-                  path="/admin/lyrics/new"
-                  element={<ManageLyric />}
-                />
-                <Route
-                  key="edit-lyric"
-                  path="/admin/lyrics/edit/:id"
-                  element={<ManageLyric />}
-                />
-              </Routes>
-            </Main>
-            <Footer />
-          </AuthProvider>
+          <ModalProvider>
+            <AuthProvider>
+              <Navbar />
+              <Main>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/members" element={<Members />} />
+                  <Route path="/songs" element={<Songs />} />
+                  <Route path="/videos" element={<Videos />} />
+                  <Route path="/merchandise" element={<Merchandises />} />
+                  <Route path="/gigs" element={<Gigs />} />
+                  <Route path="/lyrics" element={<Lyrics />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route
+                    key="new-member"
+                    path="/admin/members/new"
+                    element={<ManageMember />}
+                  />
+                  <Route
+                    key="edit-member"
+                    path="/admin/members/edit/:id"
+                    element={<ManageMember />}
+                  />
+                  <Route
+                    key="new-song"
+                    path="/admin/songs/new"
+                    element={<ManageSong />}
+                  />
+                  <Route
+                    key="edit-song"
+                    path="/admin/songs/edit/:id"
+                    element={<ManageSong />}
+                  />
+                  <Route
+                    key="new-video"
+                    path="/admin/videos/new"
+                    element={<ManageVideo />}
+                  />
+                  <Route
+                    key="edit-video"
+                    path="/admin/videos/edit/:id"
+                    element={<ManageVideo />}
+                  />
+                  <Route
+                    key="new-merch"
+                    path="/admin/merchandise/new"
+                    element={<ManageMerchandise />}
+                  />
+                  <Route
+                    key="edit-merch"
+                    path="/admin/merchandise/edit/:id"
+                    element={<ManageMerchandise />}
+                  />
+                  <Route
+                    key="new-gig"
+                    path="/admin/gigs/new"
+                    element={<ManageGig />}
+                  />
+                  <Route
+                    key="edit-gig"
+                    path="/admin/gigs/edit/:id"
+                    element={<ManageGig />}
+                  />
+                  <Route
+                    key="new-lyric"
+                    path="/admin/lyrics/new"
+                    element={<ManageLyric />}
+                  />
+                  <Route
+                    key="edit-lyric"
+                    path="/admin/lyrics/edit/:id"
+                    element={<ManageLyric />}
+                  />
+                </Routes>
+              </Main>
+              <Footer />
+              <SystemModal />
+            </AuthProvider>
+          </ModalProvider>
         </QueryClientProvider>
       </ThemeProvider>
     </BrowserRouter>

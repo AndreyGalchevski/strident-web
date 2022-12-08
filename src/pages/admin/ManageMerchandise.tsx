@@ -1,5 +1,7 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
 import { Merchandise } from "../../api/types";
 import {
@@ -15,7 +17,7 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import FileInput from "../../components/FileInput";
 import Loader from "../../components/Loader";
-import { useNavigate, useParams } from "react-router-dom";
+import useModal from "../../hooks/useModal";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -25,7 +27,6 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 const ManageMerchandise: FunctionComponent = () => {
   const isMobile = useMediaQuery();
   const params = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   const [merchandise, setMerchandise] = useState<Merchandise>({
     id: "",
@@ -38,6 +39,8 @@ const ManageMerchandise: FunctionComponent = () => {
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isLoading, setLoading] = useState(false);
+
+  const modal = useModal();
 
   async function fetchMerchandise(merchandiseID: string): Promise<void> {
     setLoading(true);
@@ -65,7 +68,6 @@ const ManageMerchandise: FunctionComponent = () => {
   async function handleSaveClick(): Promise<void> {
     setLoading(true);
 
-    let res = "";
     let imageURL = "";
     let ngImageURL = "";
 
@@ -77,8 +79,11 @@ const ManageMerchandise: FunctionComponent = () => {
         const result = await uploadImage("merchandise", imageName, image);
         imageURL = result.imageURL;
         ngImageURL = result.ngImageURL;
-      } catch (error) {
-        window.alert(error);
+      } catch (e) {
+        modal.showModal({
+          modalType: "ERROR",
+          errorMessage: (e as Error).message,
+        });
         return;
       }
     }
@@ -89,18 +94,16 @@ const ManageMerchandise: FunctionComponent = () => {
     }
 
     if (params.id) {
-      res = await updateResource<Merchandise>(
-        "merchandise",
-        params.id,
-        merchandise
-      );
+      await updateResource<Merchandise>("merchandise", params.id, merchandise);
     } else {
-      res = await createResource<Merchandise>("merchandise", merchandise);
+      await createResource<Merchandise>("merchandise", merchandise);
     }
 
     setLoading(false);
-    navigate("/merch");
-    window.alert(res);
+    modal.showModal({
+      modalType: "RESOURCE_CREATED",
+      resourceName: "merchandise",
+    });
   }
 
   const action = params.id ? "Update" : "Create";
@@ -150,4 +153,4 @@ const ManageMerchandise: FunctionComponent = () => {
   );
 };
 
-export default ManageMerchandise;
+export default observer(ManageMerchandise);

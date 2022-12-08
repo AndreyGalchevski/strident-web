@@ -54,7 +54,7 @@ const SideMenu: FunctionComponent<Props> = ({ onClose }) => (
       style={menuItemStyle}
     />
     <MenuItem
-      path="/merch"
+      path="/merchandise"
       text="Merch"
       onClick={onClose}
       style={menuItemStyle}

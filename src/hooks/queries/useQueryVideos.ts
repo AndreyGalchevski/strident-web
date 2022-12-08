@@ -2,13 +2,13 @@ import { useQuery, UseQueryOptions, UseQueryResult } from "react-query";
 
 import { Video } from "../../api/types";
 import { fetchResources } from "../../api/utils";
-import { videosQueryKey } from "../../utils/queryKeys";
+import { resourcesListQueryKey } from "../../utils/queryKeys";
 
 const useQueryVideos = (
   options: UseQueryOptions<Video[], Error, Video[]> = {}
 ): UseQueryResult<Video[], Error> =>
   useQuery<Video[], Error>({
-    queryKey: videosQueryKey(),
+    queryKey: resourcesListQueryKey("videos"),
     queryFn: () => fetchResources("videos"),
     ...options,
   });

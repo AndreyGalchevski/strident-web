@@ -1,8 +1,7 @@
-import { FunctionComponent, MouseEventHandler } from "react";
+import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { deleteResource } from "../api/utils";
 import { useAuthContext } from "../context/authContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
@@ -20,6 +19,7 @@ import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import useQueryMembers from "../hooks/queries/useQueryMembers";
+import useModal from "../hooks/useModal";
 
 const MembersContainer = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   display: "flex",
@@ -39,19 +39,18 @@ const Members: FunctionComponent = () => {
 
   const { data: membersData, isLoading: membersLoading } = useQueryMembers();
 
-  function handleUpdateClick(memberId: string): MouseEventHandler {
-    return (): void => {
-      navigate(`/admin/members/edit/${memberId}`);
-    };
+  const modal = useModal();
+
+  function handleUpdateClick(memberID: string): void {
+    navigate(`/admin/members/edit/${memberID}`);
   }
 
-  function handleDeleteClick(memberId: string): MouseEventHandler {
-    return async (): Promise<void> => {
-      if (window.confirm("Are you sure you want to delete the member?")) {
-        const res = await deleteResource("members", memberId);
-        window.alert(res);
-      }
-    };
+  function handleDeleteClick(memberID: string): void {
+    modal.showModal({
+      modalType: "CONFIRM_DELETION",
+      resourceID: memberID,
+      resourceName: "members",
+    });
   }
 
   return (
@@ -76,12 +75,12 @@ const Members: FunctionComponent = () => {
                 </CardContent>
                 {authState.isAuthenticated && (
                   <CardAction>
-                    <Button handleClick={handleUpdateClick(member.id)}>
+                    <Button handleClick={() => handleUpdateClick(member.id)}>
                       <EditIcon />
                     </Button>
                     <Button
                       isPrimary
-                      handleClick={handleDeleteClick(member.id)}
+                      handleClick={() => handleDeleteClick(member.id)}
                     >
                       <DeleteIcon />
                     </Button>
