@@ -1,9 +1,8 @@
-import { FunctionComponent, useEffect } from "react";
+import { FunctionComponent } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import styled, { ThemeProvider } from "styled-components";
 
-import decodeJWT from "./utils/jwt";
 import Home from "./pages/Home";
 import Members from "./pages/Members";
 import Videos from "./pages/Videos";
@@ -23,6 +22,7 @@ import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import { AuthProvider } from "./context/authContext";
 import theme from "./utils/theme";
+import useTokenExpiration from "./hooks/useTokenExpiration";
 
 const Main = styled.main({
   overflowY: "scroll",
@@ -42,17 +42,7 @@ const queryClient = new QueryClient({
 });
 
 const App: FunctionComponent = () => {
-  useEffect(() => {
-    const token = localStorage.getItem("stridentToken");
-    if (token) {
-      const decodedData = decodeJWT(token);
-      const currentTime = Date.now() / 1000;
-      if (decodedData.exp < currentTime) {
-        localStorage.removeItem("stridentToken");
-        window.location.href = "/login";
-      }
-    }
-  }, []);
+  useTokenExpiration();
 
   return (
     <BrowserRouter>
