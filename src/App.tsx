@@ -20,7 +20,7 @@ import ManageGig from "./pages/admin/ManageGig";
 import ManageLyric from "./pages/admin/ManageLyric";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
-import { AuthProvider } from "./context/authContext";
+import { AuthProvider } from "./context/AuthContext";
 import theme from "./utils/theme";
 import useTokenExpiration from "./hooks/useTokenExpiration";
 import { ModalProvider } from "./context/ModalContext";

@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuthContext } from "../context/authContext";
+import { useAuthContext } from "../context/AuthContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
 import { Masonry, MasonryBrick } from "../styled/Masonry";

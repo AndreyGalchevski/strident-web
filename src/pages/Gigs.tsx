@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuthContext } from "../context/authContext";
+import { useAuthContext } from "../context/AuthContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { formatDate, formatTime } from "../utils/general";
 import Container from "../styled/Container";
