@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { createContext, FunctionComponent, PropsWithChildren } from "react";
 
-import { AUTH_KEY } from "../utils/constants";
+export const AUTH_KEY = "isAuthenticated";
 
 export class AuthState {
   isAuthenticated = localStorage.getItem(AUTH_KEY) === "true";
@@ -11,10 +11,12 @@ export class AuthState {
   }
 
   authenticate() {
+    localStorage.setItem(AUTH_KEY, "true");
     this.isAuthenticated = true;
   }
 
   invalidate() {
+    localStorage.removeItem(AUTH_KEY);
     this.isAuthenticated = false;
   }
 }

@@ -1,5 +1,6 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 
 import Home from "./pages/Home";
 import Members from "./pages/Members";
@@ -18,24 +19,22 @@ import ManageGig from "./pages/admin/ManageGig";
 import ManageLyric from "./pages/admin/ManageLyric";
 import useAuth from "./hooks/useAuth";
 import useQueryVerifyAuth from "./hooks/queries/useQueryVerifyAuth";
-import { AUTH_KEY } from "./utils/constants";
-import { useEffect } from "react";
 
 const Router = () => {
   const navigate = useNavigate();
 
-  const { isError: isVerifyAuthError } = useQueryVerifyAuth({
-    enabled: localStorage.getItem(AUTH_KEY) === "true",
-  });
-
   const auth = useAuth();
 
+  const { isError: isVerifyAuthError } = useQueryVerifyAuth({
+    enabled: auth.isAuthenticated,
+  });
+
   useEffect(() => {
-    if (isVerifyAuthError) {
-      localStorage.removeItem(AUTH_KEY);
+    if (auth.isAuthenticated && isVerifyAuthError) {
+      auth.invalidate();
       navigate("/login");
     }
-  }, [isVerifyAuthError, navigate]);
+  }, [isVerifyAuthError, navigate, auth]);
 
   return (
     <Routes>
