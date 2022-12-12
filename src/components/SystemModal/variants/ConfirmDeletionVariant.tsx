@@ -12,8 +12,11 @@ function ConfirmDeletionVariant({
   resourceID,
   handleModalClose,
 }: Props) {
-  const { mutateAsync: deleteResource, isLoading: deleteLoading } =
-    useMutationDeleteResource();
+  const {
+    mutate: deleteResource,
+    isLoading: deleteLoading,
+    error: deleteError,
+  } = useMutationDeleteResource();
 
   const onDeleteClick = () => {
     deleteResource(
@@ -30,6 +33,7 @@ function ConfirmDeletionVariant({
     <>
       <h2 style={{ marginBottom: 2, textAlign: "center" }}>Warning!</h2>
       <p>Are you sure about this?</p>
+      {deleteError && <p>{deleteError.message}</p>}
       <button onClick={onDeleteClick} disabled={deleteLoading}>
         {deleteLoading ? "Loading..." : "Delete"}
       </button>
