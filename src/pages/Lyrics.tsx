@@ -12,7 +12,7 @@ import Fab from "../components/Fab";
 import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
-import useQueryLyrics from "../hooks/queries/useQueryLyrics";
+import useQueryResources from "../hooks/queries/useQueryResources";
 import useModal from "../hooks/useModal";
 import useAuth from "../hooks/useAuth";
 
@@ -27,7 +27,8 @@ const Lyrics: FunctionComponent = () => {
   const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
-  const { data: lyricsData, isLoading: lyricsLoading } = useQueryLyrics();
+  const { data: lyricsData, isLoading: lyricsLoading } =
+    useQueryResources("lyrics");
 
   const modal = useModal();
 

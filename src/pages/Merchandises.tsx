@@ -21,7 +21,7 @@ import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import ShoppingCartIcon from "../components/icons/ShoppingCart";
 import EuroIcon from "../components/icons/Euro";
-import useQueryMerchandise from "../hooks/queries/useQueryMerchandise";
+import useQueryResources from "../hooks/queries/useQueryResources";
 import useModal from "../hooks/useModal";
 import useAuth from "../hooks/useAuth";
 
@@ -37,7 +37,7 @@ const Merchandises: FunctionComponent = () => {
   const navigate = useNavigate();
 
   const { data: merchandiseData, isLoading: merchandiseLoading } =
-    useQueryMerchandise();
+    useQueryResources("merchandise");
 
   const modal = useModal();
 

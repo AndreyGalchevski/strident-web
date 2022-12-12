@@ -49,7 +49,7 @@ export type ResourceName =
   | "songs"
   | "videos";
 
-type Resource<T> = T extends "gigs"
+export type Resource<T> = T extends "gigs"
   ? Gig
   : T extends "lyrics"
   ? Lyric

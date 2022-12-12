@@ -15,16 +15,16 @@ import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import DirectionsIcon from "../components/icons/Directions";
 import EventIcon from "../components/icons/Event";
-import useQueryGigs from "../hooks/queries/useQueryGigs";
 import useModal from "../hooks/useModal";
 import useAuth from "../hooks/useAuth";
+import useQueryResources from "../hooks/queries/useQueryResources";
 
 const Gigs: FunctionComponent = () => {
   const auth = useAuth();
   const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
-  const { data: gigsData, isLoading: gigsLoading } = useQueryGigs();
+  const { data: gigsData, isLoading: gigsLoading } = useQueryResources("gigs");
 
   const modal = useModal();
 

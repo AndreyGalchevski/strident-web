@@ -17,7 +17,7 @@ import Fab from "../components/Fab";
 import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
-import useQueryMembers from "../hooks/queries/useQueryMembers";
+import useQueryResources from "../hooks/queries/useQueryResources";
 import useModal from "../hooks/useModal";
 import useAuth from "../hooks/useAuth";
 
@@ -37,7 +37,8 @@ const Members: FunctionComponent = () => {
   const isMobile = useMediaQuery();
   const navigate = useNavigate();
 
-  const { data: membersData, isLoading: membersLoading } = useQueryMembers();
+  const { data: membersData, isLoading: membersLoading } =
+    useQueryResources("members");
 
   const modal = useModal();
 

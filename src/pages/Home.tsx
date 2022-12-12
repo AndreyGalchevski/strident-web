@@ -10,7 +10,7 @@ import { Card, CardContent, CardTitle, CardAction } from "../styled/Card";
 import ResponsiveText from "../styled/ResponsiveText";
 import Header from "../components/Header";
 import { homeImages } from "../utils/constants";
-import useQueryGigs from "../hooks/queries/useQueryGigs";
+import useQueryResources from "../hooks/queries/useQueryResources";
 import theme from "../utils/theme";
 
 const BannerContainer = styled.div({
@@ -32,7 +32,7 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 const Home: FunctionComponent = () => {
   const isMobile = useMediaQuery();
 
-  const { data: gigsData, isLoading: gigsLoading } = useQueryGigs();
+  const { data: gigsData, isLoading: gigsLoading } = useQueryResources("gigs");
 
   return (
     <Container>
