@@ -146,9 +146,8 @@ export async function deleteResource({
     method: "DELETE",
   });
 
-  const responseBody = await response.json();
-
   if (!response.ok) {
+    const responseBody = await response.json();
     throw Error(responseBody.error || GENERAL_ERROR);
   }
 }

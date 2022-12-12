@@ -59,6 +59,7 @@ const SystemModal = observer(() => {
                   <ConfirmDeletionVariant
                     resourceName={modalState.modalData.resourceName}
                     resourceID={modalState.modalData.resourceID}
+                    handleModalClose={handleModalClose}
                   />
                 );
               default:
