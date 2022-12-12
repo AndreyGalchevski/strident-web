@@ -1,7 +1,5 @@
 import { ReactImageGalleryItem } from "react-image-gallery";
 
-export const AUTH_TOKEN_NAME = "stridentToken";
-
 const baseURL = "https://res.cloudinary.com/dqvimfd8b/image/upload";
 
 export const homeImages: Array<ReactImageGalleryItem> = [

@@ -7,7 +7,6 @@ import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import { AuthProvider } from "./context/AuthContext";
 import theme from "./utils/theme";
-import useTokenExpiration from "./hooks/useTokenExpiration";
 import { ModalProvider } from "./context/ModalContext";
 import SystemModal from "./components/SystemModal";
 import Router from "./Router";
@@ -30,8 +29,6 @@ const queryClient = new QueryClient({
 });
 
 const App: FunctionComponent = () => {
-  useTokenExpiration();
-
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>

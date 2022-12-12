@@ -1,4 +1,3 @@
-import { AUTH_TOKEN_NAME } from "../utils/constants";
 import {
   Gig,
   LoginCredentials,
@@ -19,20 +18,18 @@ const options = {
   },
 };
 
-export async function login(credentials: LoginCredentials): Promise<string> {
+export async function login(credentials: LoginCredentials): Promise<void> {
   const response = await fetch(`${baseURL}/auth/login`, {
     ...options,
     method: "POST",
     body: JSON.stringify(credentials),
+    credentials: "include",
   });
 
-  const responseBody = await response.json();
-
   if (!response.ok) {
+    const responseBody = await response.json();
     throw Error(responseBody.error || GENERAL_ERROR);
   }
-
-  return responseBody.data;
 }
 
 export type ResourceName =
@@ -60,7 +57,10 @@ type Resource<T> = T extends "gigs"
 export async function fetchResources<T extends ResourceName>(
   resourceName: T
 ): Promise<Resource<T>[]> {
-  const response = await fetch(`${baseURL}/${resourceName}`, options);
+  const response = await fetch(`${baseURL}/${resourceName}`, {
+    ...options,
+    credentials: "include",
+  });
   const responseBody = await response.json();
 
   if (!response.ok) {
@@ -74,10 +74,10 @@ export async function fetchResource<T extends ResourceName>(
   resourceName: T,
   resourceID: string
 ): Promise<Resource<T>> {
-  const response = await fetch(
-    `${baseURL}/${resourceName}/${resourceID}`,
-    options
-  );
+  const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
+    ...options,
+    credentials: "include",
+  });
   const responseBody = await response.json();
 
   if (!response.ok) {
@@ -94,11 +94,8 @@ export async function createResource<T>(
   const response = await fetch(`${baseURL}/${resourceName}`, {
     ...options,
     method: "POST",
-    headers: {
-      ...options.headers,
-      Authorization: `Bearer ${localStorage.getItem(AUTH_TOKEN_NAME)}`,
-    },
     body: JSON.stringify(data),
+    credentials: "include",
   });
 
   const responseBody = await response.json();
@@ -118,10 +115,7 @@ export async function updateResource<T>(
   const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
     ...options,
     method: "PUT",
-    headers: {
-      ...options.headers,
-      Authorization: `Bearer ${localStorage.getItem(AUTH_TOKEN_NAME)}`,
-    },
+    credentials: "include",
     body: JSON.stringify(data),
   });
 
@@ -146,9 +140,7 @@ export async function deleteResource({
   const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
     ...options,
     method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem(AUTH_TOKEN_NAME)}`,
-    },
+    credentials: "include",
   });
 
   const responseBody = await response.json();
@@ -172,9 +164,7 @@ export async function uploadImage(
     `${baseURL}/images?folderName=${folderName}&fileName=${fileName}`,
     {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem(AUTH_TOKEN_NAME)}`,
-      },
+      credentials: "include",
       body: image,
     }
   );
