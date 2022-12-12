@@ -4,8 +4,7 @@ import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
 import { Video } from "../../api/types";
-import { fetchResource, updateResource, createResource } from "../../api/utils";
-import { formatDate } from "../../utils/general";
+import { updateResource, createResource } from "../../api/utils";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -13,6 +12,7 @@ import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
+import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -27,41 +27,34 @@ const ManageVideo: FunctionComponent = () => {
     id: "",
     name: "",
     url: "",
-    date: new Date(),
   });
-  const [isLoading, setLoading] = useState(false);
 
   const modal = useModal();
 
-  useEffect(() => {
-    async function fetchVideo(videoID: string): Promise<void> {
-      setLoading(true);
-      const resource = await fetchResource("videos", videoID);
-      setVideo({ ...resource, date: new Date(resource.date) });
-      setLoading(false);
+  const { data: videoData, isLoading } = useQuerySingleResource(
+    "videos",
+    params.id,
+    {
+      enabled: !!params?.id,
     }
+  );
 
-    if (params.id) {
-      fetchVideo(params.id);
+  useEffect(() => {
+    if (videoData) {
+      setVideo(videoData);
     }
-  }, [params.id]);
+  }, [videoData]);
 
   function handleFormChange(e: ChangeEvent<HTMLInputElement>): void {
     setVideo({ ...video, [e.target.name]: e.target.value });
   }
 
-  function handleDateChange(e: ChangeEvent<HTMLInputElement>): void {
-    setVideo({ ...video, date: new Date(e.target.value) });
-  }
-
   async function handleSaveClick(): Promise<void> {
-    setLoading(true);
     if (params.id) {
       await updateResource<Video>("videos", params.id, video);
     } else {
       await createResource<Video>("videos", video);
     }
-    setLoading(false);
     modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "videos" });
   }
 
@@ -86,12 +79,6 @@ const ManageVideo: FunctionComponent = () => {
                   type="text"
                   onChange={handleFormChange}
                   value={video.url}
-                />
-                <Input
-                  name="date"
-                  type="date"
-                  onChange={handleDateChange}
-                  value={formatDate(video.date)}
                 />
               </CardContent>
               <CardAction>

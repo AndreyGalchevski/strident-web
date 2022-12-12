@@ -51,7 +51,6 @@ const Gigs: FunctionComponent = () => {
               <Card>
                 <div>
                   <picture>
-                    <source srcSet={gig.imageNG} type="image/webp" />
                     <source srcSet={gig.image} type="image/jpeg" />
                     <CardImage src={gig.image} alt="" />
                   </picture>

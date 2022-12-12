@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 
 import { Song } from "../../api/types";
-import { fetchResource, updateResource, createResource } from "../../api/utils";
+import { updateResource, createResource } from "../../api/utils";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -12,6 +12,7 @@ import Input from "../../components/Input";
 import Loader from "../../components/Loader";
 import { observer } from "mobx-react-lite";
 import useModal from "../../hooks/useModal";
+import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -22,36 +23,39 @@ const ManageSong: FunctionComponent = () => {
   const isMobile = useMediaQuery();
   const params = useParams<{ id: string }>();
 
-  const [song, setSong] = useState<Song>({} as Song);
-  const [isLoading, setLoading] = useState(false);
+  const [song, setSong] = useState<Song>({
+    id: "",
+    album: "",
+    name: "",
+    url: "",
+  });
 
   const modal = useModal();
 
-  useEffect(() => {
-    async function fetchSong(songID: string): Promise<void> {
-      setLoading(true);
-      const resource = await fetchResource("songs", songID);
-      setSong(resource);
-      setLoading(false);
+  const { data: songData, isLoading } = useQuerySingleResource(
+    "songs",
+    params.id,
+    {
+      enabled: !!params?.id,
     }
+  );
 
-    if (params.id) {
-      fetchSong(params.id);
+  useEffect(() => {
+    if (songData) {
+      setSong(songData);
     }
-  }, [params.id]);
+  }, [songData]);
 
   function handleFormChange(e: ChangeEvent<HTMLInputElement>): void {
     setSong({ ...song, [e.target.name]: e.target.value });
   }
 
   async function handleSaveClick(): Promise<void> {
-    setLoading(true);
     if (params.id) {
       await updateResource<Song>("songs", params.id, song);
     } else {
       await createResource<Song>("songs", song);
     }
-    setLoading(false);
     modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "songs" });
   }
 

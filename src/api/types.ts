@@ -12,9 +12,7 @@ export interface Member {
   id: string;
   name: string;
   instrument: string;
-  info: string;
   image: string;
-  imageNG: string;
 }
 
 export interface Song {
@@ -28,7 +26,6 @@ export interface Video {
   id: string;
   name: string;
   url: string;
-  date: Date;
 }
 
 export interface Merchandise {
@@ -50,7 +47,6 @@ export interface Gig {
   date: Date;
   fbEvent: string;
   image: string;
-  imageNG: string;
 }
 
 export interface Lyric {

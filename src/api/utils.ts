@@ -76,7 +76,7 @@ export async function fetchResources<T extends ResourceName>(
   return responseBody.data;
 }
 
-export async function fetchResource<T extends ResourceName>(
+export async function fetchSingleResource<T extends ResourceName>(
   resourceName: T,
   resourceID: string
 ): Promise<Resource<T>> {

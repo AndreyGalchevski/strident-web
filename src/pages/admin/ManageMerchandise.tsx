@@ -4,12 +4,7 @@ import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 import { Merchandise } from "../../api/types";
-import {
-  fetchResource,
-  updateResource,
-  createResource,
-  uploadImage,
-} from "../../api/utils";
+import { updateResource, createResource, uploadImage } from "../../api/utils";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -18,6 +13,7 @@ import Input from "../../components/Input";
 import FileInput from "../../components/FileInput";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
+import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -38,22 +34,22 @@ const ManageMerchandise: FunctionComponent = () => {
     imageNG: "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isLoading, setLoading] = useState(false);
 
   const modal = useModal();
 
-  async function fetchMerchandise(merchandiseID: string): Promise<void> {
-    setLoading(true);
-    const resource = await fetchResource("merchandise", merchandiseID);
-    setMerchandise(resource);
-    setLoading(false);
-  }
+  const { data: merchandiseData, isLoading } = useQuerySingleResource(
+    "merchandise",
+    params.id,
+    {
+      enabled: !!params?.id,
+    }
+  );
 
   useEffect(() => {
-    if (params.id) {
-      fetchMerchandise(params.id);
+    if (merchandiseData) {
+      setMerchandise(merchandiseData);
     }
-  }, [params.id]);
+  }, [merchandiseData]);
 
   function handleFormChange(e: ChangeEvent<HTMLInputElement>): void {
     setMerchandise({ ...merchandise, [e.target.name]: e.target.value });
@@ -66,8 +62,6 @@ const ManageMerchandise: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    setLoading(true);
-
     let imageURL = "";
     let ngImageURL = "";
 
@@ -99,7 +93,6 @@ const ManageMerchandise: FunctionComponent = () => {
       await createResource<Merchandise>("merchandise", merchandise);
     }
 
-    setLoading(false);
     modal.showModal({
       modalType: "RESOURCE_CREATED",
       resourceName: "merchandise",

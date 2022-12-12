@@ -4,12 +4,7 @@ import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
 import { Gig } from "../../api/types";
-import {
-  fetchResource,
-  updateResource,
-  createResource,
-  uploadImage,
-} from "../../api/utils";
+import { updateResource, createResource, uploadImage } from "../../api/utils";
 import { formatDate, formatTime } from "../../utils/general";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
@@ -19,6 +14,7 @@ import Input from "../../components/Input";
 import FileInput from "../../components/FileInput";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
+import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -38,27 +34,24 @@ const ManageGig: FunctionComponent = () => {
     date: new Date(),
     fbEvent: "",
     image: "",
-    imageNG: "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isLoading, setLoading] = useState(false);
 
   const modal = useModal();
 
+  const { data: gigData, isLoading } = useQuerySingleResource(
+    "gigs",
+    params.id,
+    {
+      enabled: !!params?.id,
+    }
+  );
+
   useEffect(() => {
-    async function fetchVideo(gigID: string): Promise<void> {
-      setLoading(true);
-      const resource = await fetchResource("gigs", gigID);
-      setGig({ ...resource, date: new Date(resource.date) });
-      setLoading(false);
+    if (gigData) {
+      setGig({ ...gigData, date: new Date(gigData.date) });
     }
-
-    if (params.id) {
-      fetchVideo(params.id);
-    }
-  }, [params.id]);
-
-  useEffect(() => {}, []);
+  }, [gigData]);
 
   function handleTextInputChange(e: ChangeEvent<HTMLInputElement>): void {
     const { name, value } = e.target;
@@ -82,10 +75,7 @@ const ManageGig: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    setLoading(true);
-
     let imageURL = "";
-    let ngImageURL = "";
 
     if (selectedFile) {
       const image = new FormData();
@@ -96,7 +86,6 @@ const ManageGig: FunctionComponent = () => {
         )}`;
         const result = await uploadImage("gigs", fileName, image);
         imageURL = result.imageURL;
-        ngImageURL = result.ngImageURL;
       } catch (e) {
         modal.showModal({
           modalType: "ERROR",
@@ -106,9 +95,8 @@ const ManageGig: FunctionComponent = () => {
       }
     }
 
-    if (imageURL && ngImageURL) {
+    if (imageURL) {
       gig.image = imageURL;
-      gig.imageNG = ngImageURL;
     }
 
     if (params.id) {
@@ -116,8 +104,6 @@ const ManageGig: FunctionComponent = () => {
     } else {
       await createResource<Gig>("gigs", gig);
     }
-
-    setLoading(false);
 
     modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "gigs" });
   }

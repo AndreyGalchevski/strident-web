@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 
 import { Lyric } from "../../api/types";
-import { fetchResource, updateResource, createResource } from "../../api/utils";
+import { updateResource, createResource } from "../../api/utils";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -13,6 +13,7 @@ import Input from "../../components/Input";
 import TextArea from "../../components/TextArea";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
+import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -23,23 +24,27 @@ const ManageLyric: FunctionComponent = () => {
   const isMobile = useMediaQuery();
   const params = useParams<{ id: string }>();
 
-  const [lyric, setLyric] = useState<Lyric>({} as Lyric);
-  const [isLoading, setLoading] = useState(false);
+  const [lyric, setLyric] = useState<Lyric>({
+    id: "",
+    name: "",
+    text: "",
+  });
 
   const modal = useModal();
 
-  async function fetchLyric(lyricID: string): Promise<void> {
-    setLoading(true);
-    const resource = await fetchResource("lyrics", lyricID);
-    setLyric(resource);
-    setLoading(false);
-  }
+  const { data: lyricData, isLoading } = useQuerySingleResource(
+    "lyrics",
+    params.id,
+    {
+      enabled: !!params?.id,
+    }
+  );
 
   useEffect(() => {
-    if (params.id) {
-      fetchLyric(params.id);
+    if (lyricData) {
+      setLyric(lyricData);
     }
-  }, [params.id]);
+  }, [lyricData]);
 
   function handleNameChange(e: ChangeEvent<HTMLInputElement>): void {
     setLyric({ ...lyric, name: e.target.value });
@@ -50,13 +55,11 @@ const ManageLyric: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    setLoading(true);
     if (params.id) {
       await updateResource<Lyric>("lyrics", params.id, lyric);
     } else {
       await createResource<Lyric>("lyrics", lyric);
     }
-    setLoading(false);
 
     modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "lyrics" });
   }

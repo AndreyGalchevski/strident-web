@@ -4,12 +4,7 @@ import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 import { Member } from "../../api/types";
-import {
-  fetchResource,
-  updateResource,
-  createResource,
-  uploadImage,
-} from "../../api/utils";
+import { updateResource, createResource, uploadImage } from "../../api/utils";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -18,6 +13,7 @@ import Input from "../../components/Input";
 import FileInput from "../../components/FileInput";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
+import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -32,27 +28,25 @@ const ManageMember: FunctionComponent = () => {
     id: "",
     name: "",
     instrument: "",
-    info: "",
     image: "",
-    imageNG: "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isLoading, setLoading] = useState(false);
 
   const modal = useModal();
 
-  async function fetchMember(memberID: string): Promise<void> {
-    setLoading(true);
-    const resource = await fetchResource("members", memberID);
-    setMember(resource);
-    setLoading(false);
-  }
+  const { data: memberData, isLoading } = useQuerySingleResource(
+    "members",
+    params.id,
+    {
+      enabled: !!params?.id,
+    }
+  );
 
   useEffect(() => {
-    if (params.id) {
-      fetchMember(params.id);
+    if (memberData) {
+      setMember(memberData);
     }
-  }, [params.id]);
+  }, [memberData]);
 
   function handleFormChange(e: ChangeEvent<HTMLInputElement>): void {
     setMember({ ...member, [e.target.name]: e.target.value });
@@ -65,10 +59,7 @@ const ManageMember: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    setLoading(true);
-
     let imageURL = "";
-    let ngImageURL = "";
 
     if (selectedFile) {
       const image = new FormData();
@@ -76,7 +67,6 @@ const ManageMember: FunctionComponent = () => {
       try {
         const result = await uploadImage("members", member.name, image);
         imageURL = result.imageURL;
-        ngImageURL = result.ngImageURL;
       } catch (e) {
         modal.showModal({
           modalType: "ERROR",
@@ -87,9 +77,8 @@ const ManageMember: FunctionComponent = () => {
       }
     }
 
-    if (imageURL && ngImageURL) {
+    if (imageURL) {
       member.image = imageURL;
-      member.imageNG = ngImageURL;
     }
 
     if (params.id) {
@@ -98,7 +87,6 @@ const ManageMember: FunctionComponent = () => {
       await createResource<Member>("members", member);
     }
 
-    setLoading(false);
     modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "members" });
   }
 
@@ -123,12 +111,6 @@ const ManageMember: FunctionComponent = () => {
                   type="text"
                   onChange={handleFormChange}
                   value={member.instrument}
-                />
-                <Input
-                  name="info"
-                  type="text"
-                  onChange={handleFormChange}
-                  value={member.info}
                 />
                 <FileInput onChange={handleImageChange} />
               </CardContent>

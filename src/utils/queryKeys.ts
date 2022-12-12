@@ -8,12 +8,12 @@ export const authVerificationQueryKey = () => [
   "verification",
 ];
 
-export const resourcesListQueryKey = (resourceName: ResourceName) => [
+export const resourceQueryKey = (resourceName: ResourceName) => [
   keyPrefix,
   resourceName,
 ];
 
-export const resourceQueryKey = (
+export const singleResourceQueryKey = (
   resourceName: ResourceName,
   resourceID: string
 ) => [keyPrefix, resourceName, resourceID];
