@@ -1,5 +1,7 @@
 import { ReactImageGalleryItem } from "react-image-gallery";
 
+export const AUTH_KEY = "isAuthenticated";
+
 const baseURL = "https://res.cloudinary.com/dqvimfd8b/image/upload";
 
 export const homeImages: Array<ReactImageGalleryItem> = [

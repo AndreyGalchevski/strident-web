@@ -1,8 +1,10 @@
 import { makeAutoObservable } from "mobx";
 import { createContext, FunctionComponent, PropsWithChildren } from "react";
 
+import { AUTH_KEY } from "../utils/constants";
+
 export class AuthState {
-  isAuthenticated = !!localStorage.getItem("stridentToken");
+  isAuthenticated = localStorage.getItem(AUTH_KEY) === "true";
 
   constructor() {
     makeAutoObservable(this);

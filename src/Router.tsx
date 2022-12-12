@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 import Home from "./pages/Home";
@@ -17,9 +17,25 @@ import ManageMerchandise from "./pages/admin/ManageMerchandise";
 import ManageGig from "./pages/admin/ManageGig";
 import ManageLyric from "./pages/admin/ManageLyric";
 import useAuth from "./hooks/useAuth";
+import useQueryVerifyAuth from "./hooks/queries/useQueryVerifyAuth";
+import { AUTH_KEY } from "./utils/constants";
+import { useEffect } from "react";
 
 const Router = () => {
+  const navigate = useNavigate();
+
+  const { isError: isVerifyAuthError } = useQueryVerifyAuth({
+    enabled: localStorage.getItem(AUTH_KEY) === "true",
+  });
+
   const auth = useAuth();
+
+  useEffect(() => {
+    if (isVerifyAuthError) {
+      localStorage.removeItem(AUTH_KEY);
+      navigate("/login");
+    }
+  }, [isVerifyAuthError, navigate]);
 
   return (
     <Routes>

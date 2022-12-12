@@ -12,10 +12,11 @@ const GENERAL_ERROR = "Something went wrong";
 
 const baseURL = process.env.REACT_APP_API_URL;
 
-const options = {
+const options: RequestInit = {
   headers: {
     "Content-Type": "application/json",
   },
+  credentials: "include",
 };
 
 export async function login(credentials: LoginCredentials): Promise<void> {
@@ -23,8 +24,16 @@ export async function login(credentials: LoginCredentials): Promise<void> {
     ...options,
     method: "POST",
     body: JSON.stringify(credentials),
-    credentials: "include",
   });
+
+  if (!response.ok) {
+    const responseBody = await response.json();
+    throw Error(responseBody.error || GENERAL_ERROR);
+  }
+}
+
+export async function verifyAuth(): Promise<void> {
+  const response = await fetch(`${baseURL}/auth/verify`, options);
 
   if (!response.ok) {
     const responseBody = await response.json();
@@ -57,10 +66,7 @@ type Resource<T> = T extends "gigs"
 export async function fetchResources<T extends ResourceName>(
   resourceName: T
 ): Promise<Resource<T>[]> {
-  const response = await fetch(`${baseURL}/${resourceName}`, {
-    ...options,
-    credentials: "include",
-  });
+  const response = await fetch(`${baseURL}/${resourceName}`, options);
   const responseBody = await response.json();
 
   if (!response.ok) {
@@ -74,10 +80,10 @@ export async function fetchResource<T extends ResourceName>(
   resourceName: T,
   resourceID: string
 ): Promise<Resource<T>> {
-  const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
-    ...options,
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${baseURL}/${resourceName}/${resourceID}`,
+    options
+  );
   const responseBody = await response.json();
 
   if (!response.ok) {
@@ -95,7 +101,6 @@ export async function createResource<T>(
     ...options,
     method: "POST",
     body: JSON.stringify(data),
-    credentials: "include",
   });
 
   const responseBody = await response.json();
@@ -115,7 +120,6 @@ export async function updateResource<T>(
   const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
     ...options,
     method: "PUT",
-    credentials: "include",
     body: JSON.stringify(data),
   });
 
@@ -140,7 +144,6 @@ export async function deleteResource({
   const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
     ...options,
     method: "DELETE",
-    credentials: "include",
   });
 
   const responseBody = await response.json();
@@ -164,7 +167,6 @@ export async function uploadImage(
     `${baseURL}/images?folderName=${folderName}&fileName=${fileName}`,
     {
       method: "POST",
-      credentials: "include",
       body: image,
     }
   );
