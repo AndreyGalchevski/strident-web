@@ -14,6 +14,8 @@ import FileInput from "../../components/FileInput";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
+import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
+import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -41,6 +43,9 @@ const ManageMember: FunctionComponent = () => {
       enabled: !!params?.id,
     }
   );
+
+  const { mutateAsync: createResource } = useMutationCreateResource();
+  const { mutateAsync: updateResource } = useMutationUpdateResource();
 
   useEffect(() => {
     if (memberData) {
@@ -87,9 +92,13 @@ const ManageMember: FunctionComponent = () => {
     member.image = imageURL;
 
     if (params.id) {
-      await apiClient.updateResource("members", params.id, member);
+      await updateResource({
+        resourceName: "members",
+        resourceID: params.id,
+        data: member,
+      });
     } else {
-      await apiClient.createResource("members", member);
+      await createResource({ resourceName: "members", data: member });
     }
 
     modal.showModal({

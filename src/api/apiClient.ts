@@ -93,10 +93,15 @@ async function fetchSingleResource<T extends ResourceName>(
   return responseBody.data;
 }
 
-async function createResource<T extends ResourceName>(
-  resourceName: T,
-  data: Resource<T>
-): Promise<string> {
+export interface CreateResourceParams<T> {
+  resourceName: T;
+  data: Resource<T>;
+}
+
+async function createResource<T extends ResourceName>({
+  resourceName,
+  data,
+}: CreateResourceParams<T>): Promise<string> {
   const response = await fetch(`${baseURL}/${resourceName}`, {
     ...options,
     method: "POST",
@@ -112,11 +117,17 @@ async function createResource<T extends ResourceName>(
   return responseBody.data;
 }
 
-async function updateResource<T extends ResourceName>(
-  resourceName: T,
-  resourceID: string,
-  data: Resource<T>
-): Promise<string> {
+export interface UpdateResourceParams<T> {
+  resourceName: T;
+  resourceID: string;
+  data: Resource<T>;
+}
+
+async function updateResource<T extends ResourceName>({
+  resourceID,
+  resourceName,
+  data,
+}: UpdateResourceParams<T>): Promise<void> {
   const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
     ...options,
     method: "PUT",
@@ -128,8 +139,6 @@ async function updateResource<T extends ResourceName>(
   if (!response.ok) {
     throw Error(responseBody.error || GENERAL_ERROR);
   }
-
-  return responseBody.data;
 }
 
 export interface DeleteResourceParams {

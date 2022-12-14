@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 
 import { Lyric } from "../../api/types";
-import apiClient from "../../api/apiClient";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -14,6 +13,8 @@ import TextArea from "../../components/TextArea";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
+import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
+import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -40,6 +41,9 @@ const ManageLyric: FunctionComponent = () => {
     }
   );
 
+  const { mutateAsync: createResource } = useMutationCreateResource();
+  const { mutateAsync: updateResource } = useMutationUpdateResource();
+
   useEffect(() => {
     if (lyricData) {
       setLyric(lyricData);
@@ -56,9 +60,13 @@ const ManageLyric: FunctionComponent = () => {
 
   async function handleSaveClick(): Promise<void> {
     if (params.id) {
-      await apiClient.updateResource("lyrics", params.id, lyric);
+      await updateResource({
+        resourceName: "lyrics",
+        resourceID: params.id,
+        data: lyric,
+      });
     } else {
-      await apiClient.createResource("lyrics", lyric);
+      await createResource({ resourceName: "lyrics", data: lyric });
     }
 
     modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "lyrics" });

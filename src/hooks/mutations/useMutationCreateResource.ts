@@ -1,13 +1,16 @@
 import { useMutation, useQueryClient } from "react-query";
 
-import apiClient, { DeleteResourceParams } from "../../api/apiClient";
+import apiClient, {
+  ResourceName,
+  CreateResourceParams,
+} from "../../api/apiClient";
 import { resourcesQueryKey } from "../../utils/queryKeys";
 
-const useMutationDeleteResource = () => {
+const useMutationCreateResource = <T extends ResourceName>() => {
   const queryClient = useQueryClient();
 
-  return useMutation<void, Error, DeleteResourceParams>(
-    apiClient.deleteResource,
+  return useMutation<string, Error, CreateResourceParams<T>>(
+    apiClient.createResource,
     {
       onSuccess: (_, { resourceName }) => {
         queryClient.invalidateQueries(resourcesQueryKey(resourceName));
@@ -16,4 +19,4 @@ const useMutationDeleteResource = () => {
   );
 };
 
-export default useMutationDeleteResource;
+export default useMutationCreateResource;

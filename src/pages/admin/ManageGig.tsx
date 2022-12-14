@@ -15,6 +15,8 @@ import FileInput from "../../components/FileInput";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
+import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
+import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -46,6 +48,9 @@ const ManageGig: FunctionComponent = () => {
       enabled: !!params?.id,
     }
   );
+
+  const { mutateAsync: createResource } = useMutationCreateResource();
+  const { mutateAsync: updateResource } = useMutationUpdateResource();
 
   useEffect(() => {
     if (gigData) {
@@ -103,9 +108,13 @@ const ManageGig: FunctionComponent = () => {
     gig.image = imageURL;
 
     if (params.id) {
-      await apiClient.updateResource("gigs", params.id, gig);
+      await updateResource({
+        resourceName: "gigs",
+        resourceID: params.id,
+        data: gig,
+      });
     } else {
-      await apiClient.createResource("gigs", gig);
+      await createResource({ resourceName: "gigs", data: gig });
     }
 
     modal.showModal({

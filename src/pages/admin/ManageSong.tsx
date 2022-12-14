@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 
 import { Song } from "../../api/types";
-import apiClient from "../../api/apiClient";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -13,6 +12,8 @@ import Loader from "../../components/Loader";
 import { observer } from "mobx-react-lite";
 import useModal from "../../hooks/useModal";
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
+import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
+import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -40,6 +41,9 @@ const ManageSong: FunctionComponent = () => {
     }
   );
 
+  const { mutateAsync: createResource } = useMutationCreateResource();
+  const { mutateAsync: updateResource } = useMutationUpdateResource();
+
   useEffect(() => {
     if (songData) {
       setSong(songData);
@@ -52,9 +56,13 @@ const ManageSong: FunctionComponent = () => {
 
   async function handleSaveClick(): Promise<void> {
     if (params.id) {
-      await apiClient.updateResource("songs", params.id, song);
+      await updateResource({
+        resourceName: "songs",
+        resourceID: params.id,
+        data: song,
+      });
     } else {
-      await apiClient.createResource("songs", song);
+      await createResource({ resourceName: "songs", data: song });
     }
     modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "songs" });
   }

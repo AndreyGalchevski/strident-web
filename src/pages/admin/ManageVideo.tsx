@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
 import { Video } from "../../api/types";
-import apiClient from "../../api/apiClient";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -13,6 +12,8 @@ import Input from "../../components/Input";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
+import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
+import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -39,6 +40,9 @@ const ManageVideo: FunctionComponent = () => {
     }
   );
 
+  const { mutateAsync: createResource } = useMutationCreateResource();
+  const { mutateAsync: updateResource } = useMutationUpdateResource();
+
   useEffect(() => {
     if (videoData) {
       setVideo(videoData);
@@ -51,9 +55,13 @@ const ManageVideo: FunctionComponent = () => {
 
   async function handleSaveClick(): Promise<void> {
     if (params.id) {
-      await apiClient.updateResource("videos", params.id, video);
+      await updateResource({
+        resourceName: "videos",
+        resourceID: params.id,
+        data: video,
+      });
     } else {
-      await apiClient.createResource("videos", video);
+      await createResource({ resourceName: "videos", data: video });
     }
     modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "videos" });
   }
