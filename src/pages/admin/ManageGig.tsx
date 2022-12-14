@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
 import { Gig } from "../../api/types";
-import apiClient from "../../api/apiClient";
 import { formatDate, formatTime } from "../../utils/general";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
@@ -17,6 +16,7 @@ import useModal from "../../hooks/useModal";
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
 import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
+import useMutationUploadImage from "../../hooks/mutations/useMutationUploadImage";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -49,6 +49,7 @@ const ManageGig: FunctionComponent = () => {
     }
   );
 
+  const { mutateAsync: uploadImage } = useMutationUploadImage();
   const { mutateAsync: createResource } = useMutationCreateResource();
   const { mutateAsync: updateResource } = useMutationUpdateResource();
 
@@ -96,7 +97,7 @@ const ManageGig: FunctionComponent = () => {
       formData.append("file", selectedFile);
       formData.append("folderName", "gigs");
 
-      imageURL = await apiClient.uploadImage(formData);
+      imageURL = await uploadImage(formData);
     } catch (e) {
       modal.showModal({
         modalType: "ERROR",
