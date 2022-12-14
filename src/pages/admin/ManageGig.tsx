@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
 import { Gig } from "../../api/types";
-import { updateResource, createResource, uploadImage } from "../../api/utils";
+import apiClient from "../../api/apiClient";
 import { formatDate, formatTime } from "../../utils/general";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
@@ -75,37 +75,43 @@ const ManageGig: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
+    if (!selectedFile) {
+      modal.showModal({
+        modalType: "ERROR",
+        errorMessage: "Must select a file",
+      });
+      return;
+    }
+
     let imageURL = "";
 
-    if (selectedFile) {
-      const image = new FormData();
-      image.append("gigImage", selectedFile);
-      try {
-        const fileName = `${gig.venue.replace(/ /g, "")}-${formatDate(
-          gig.date
-        )}`;
-        const result = await uploadImage("gigs", fileName, image);
-        imageURL = result.imageURL;
-      } catch (e) {
-        modal.showModal({
-          modalType: "ERROR",
-          errorMessage: (e as Error).message,
-        });
-        return;
-      }
+    try {
+      const formData = new FormData();
+
+      formData.append("file", selectedFile);
+      formData.append("folderName", "gigs");
+
+      imageURL = await apiClient.uploadImage(formData);
+    } catch (e) {
+      modal.showModal({
+        modalType: "ERROR",
+        errorMessage: (e as Error).message,
+      });
+      return;
     }
 
-    if (imageURL) {
-      gig.image = imageURL;
-    }
+    gig.image = imageURL;
 
     if (params.id) {
-      await updateResource<Gig>("gigs", params.id, gig);
+      await apiClient.updateResource("gigs", params.id, gig);
     } else {
-      await createResource<Gig>("gigs", gig);
+      await apiClient.createResource("gigs", gig);
     }
 
-    modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "gigs" });
+    modal.showModal({
+      modalType: "RESOURCE_CREATED",
+      resourceName: "gigs",
+    });
   }
 
   const action = params.id ? "Update" : "Create";

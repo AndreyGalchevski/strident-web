@@ -1,6 +1,6 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from "react-query";
 
-import { fetchSingleResource, Resource, ResourceName } from "../../api/utils";
+import apiClient, { Resource, ResourceName } from "../../api/apiClient";
 import { singleResourceQueryKey } from "../../utils/queryKeys";
 
 const useQuerySingleResource = <T extends ResourceName>(
@@ -10,7 +10,7 @@ const useQuerySingleResource = <T extends ResourceName>(
 ): UseQueryResult<Resource<T>, Error> =>
   useQuery<Resource<T>, Error>({
     queryKey: singleResourceQueryKey(resourceName, resourceID!),
-    queryFn: () => fetchSingleResource(resourceName, resourceID!),
+    queryFn: () => apiClient.fetchSingleResource(resourceName, resourceID!),
     ...options,
   });
 

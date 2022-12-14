@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 
 import { Song } from "../../api/types";
-import { updateResource, createResource } from "../../api/utils";
+import apiClient from "../../api/apiClient";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -52,9 +52,9 @@ const ManageSong: FunctionComponent = () => {
 
   async function handleSaveClick(): Promise<void> {
     if (params.id) {
-      await updateResource<Song>("songs", params.id, song);
+      await apiClient.updateResource("songs", params.id, song);
     } else {
-      await createResource<Song>("songs", song);
+      await apiClient.createResource("songs", song);
     }
     modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "songs" });
   }

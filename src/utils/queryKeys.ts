@@ -1,4 +1,4 @@
-import { ResourceName } from "../api/utils";
+import { ResourceName } from "../api/apiClient";
 
 const keyPrefix = "strident";
 

@@ -1,10 +1,10 @@
 import { useMutation } from "react-query";
 
 import { LoginCredentials } from "../../api/types";
-import { login } from "../../api/utils";
+import apiClient from "../../api/apiClient";
 
 const useMutationLogin = () => {
-  return useMutation<void, Error, LoginCredentials>(login);
+  return useMutation<void, Error, LoginCredentials>(apiClient.login);
 };
 
 export default useMutationLogin;

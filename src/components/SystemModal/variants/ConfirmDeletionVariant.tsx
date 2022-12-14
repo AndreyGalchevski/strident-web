@@ -1,4 +1,4 @@
-import { ResourceName } from "../../../api/utils";
+import { ResourceName } from "../../../api/apiClient";
 import useMutationDeleteResource from "../../../hooks/mutations/useMutationDeleteResource";
 
 interface Props {

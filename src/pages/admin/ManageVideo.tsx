@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
 import { Video } from "../../api/types";
-import { updateResource, createResource } from "../../api/utils";
+import apiClient from "../../api/apiClient";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -51,9 +51,9 @@ const ManageVideo: FunctionComponent = () => {
 
   async function handleSaveClick(): Promise<void> {
     if (params.id) {
-      await updateResource<Video>("videos", params.id, video);
+      await apiClient.updateResource("videos", params.id, video);
     } else {
-      await createResource<Video>("videos", video);
+      await apiClient.createResource("videos", video);
     }
     modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "videos" });
   }

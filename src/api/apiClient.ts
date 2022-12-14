@@ -19,7 +19,7 @@ const options: RequestInit = {
   credentials: "include",
 };
 
-export async function login(credentials: LoginCredentials): Promise<void> {
+async function login(credentials: LoginCredentials): Promise<void> {
   const response = await fetch(`${baseURL}/auth/login`, {
     ...options,
     method: "POST",
@@ -32,7 +32,7 @@ export async function login(credentials: LoginCredentials): Promise<void> {
   }
 }
 
-export async function verifyAuth(): Promise<void> {
+async function verifyAuth(): Promise<void> {
   const response = await fetch(`${baseURL}/auth/verify`, options);
 
   if (!response.ok) {
@@ -63,7 +63,7 @@ export type Resource<T> = T extends "gigs"
   ? Video
   : never;
 
-export async function fetchResources<T extends ResourceName>(
+async function fetchResources<T extends ResourceName>(
   resourceName: T
 ): Promise<Resource<T>[]> {
   const response = await fetch(`${baseURL}/${resourceName}`, options);
@@ -76,7 +76,7 @@ export async function fetchResources<T extends ResourceName>(
   return responseBody.data;
 }
 
-export async function fetchSingleResource<T extends ResourceName>(
+async function fetchSingleResource<T extends ResourceName>(
   resourceName: T,
   resourceID: string
 ): Promise<Resource<T>> {
@@ -93,9 +93,9 @@ export async function fetchSingleResource<T extends ResourceName>(
   return responseBody.data;
 }
 
-export async function createResource<T>(
-  resourceName: ResourceName,
-  data: T
+async function createResource<T extends ResourceName>(
+  resourceName: T,
+  data: Resource<T>
 ): Promise<string> {
   const response = await fetch(`${baseURL}/${resourceName}`, {
     ...options,
@@ -112,10 +112,10 @@ export async function createResource<T>(
   return responseBody.data;
 }
 
-export async function updateResource<T>(
-  resourceName: ResourceName,
+async function updateResource<T extends ResourceName>(
+  resourceName: T,
   resourceID: string,
-  data: T
+  data: Resource<T>
 ): Promise<string> {
   const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
     ...options,
@@ -137,7 +137,7 @@ export interface DeleteResourceParams {
   resourceID: string;
 }
 
-export async function deleteResource({
+async function deleteResource({
   resourceName,
   resourceID,
 }: DeleteResourceParams): Promise<void> {
@@ -152,23 +152,11 @@ export async function deleteResource({
   }
 }
 
-interface ImageUploadResponse {
-  imageURL: string;
-  ngImageURL: string;
-}
-
-export async function uploadImage(
-  folderName: string,
-  fileName: string,
-  image: FormData
-): Promise<ImageUploadResponse> {
-  const response = await fetch(
-    `${baseURL}/images?folderName=${folderName}&fileName=${fileName}`,
-    {
-      method: "POST",
-      body: image,
-    }
-  );
+async function uploadImage(formData: FormData): Promise<string> {
+  const response = await fetch(`${baseURL}/images`, {
+    method: "POST",
+    body: formData,
+  });
 
   const responseBody = await response.json();
 
@@ -178,3 +166,16 @@ export async function uploadImage(
 
   return responseBody.data;
 }
+
+const apiClient = {
+  login,
+  verifyAuth,
+  fetchResources,
+  fetchSingleResource,
+  createResource,
+  updateResource,
+  deleteResource,
+  uploadImage,
+};
+
+export default apiClient;

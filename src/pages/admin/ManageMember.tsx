@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 import { Member } from "../../api/types";
-import { updateResource, createResource, uploadImage } from "../../api/utils";
+import apiClient from "../../api/apiClient";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -59,35 +59,43 @@ const ManageMember: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
+    if (!selectedFile) {
+      modal.showModal({
+        modalType: "ERROR",
+        errorMessage: "Must select a file",
+      });
+      return;
+    }
+
     let imageURL = "";
 
-    if (selectedFile) {
-      const image = new FormData();
-      image.append("memberImage", selectedFile);
-      try {
-        const result = await uploadImage("members", member.name, image);
-        imageURL = result.imageURL;
-      } catch (e) {
-        modal.showModal({
-          modalType: "ERROR",
-          errorMessage: (e as Error).message,
-        });
+    try {
+      const formData = new FormData();
 
-        return;
-      }
+      formData.append("file", selectedFile);
+      formData.append("folderName", "members");
+
+      imageURL = await apiClient.uploadImage(formData);
+    } catch (e) {
+      modal.showModal({
+        modalType: "ERROR",
+        errorMessage: (e as Error).message,
+      });
+      return;
     }
 
-    if (imageURL) {
-      member.image = imageURL;
-    }
+    member.image = imageURL;
 
     if (params.id) {
-      await updateResource<Member>("members", params.id, member);
+      await apiClient.updateResource("members", params.id, member);
     } else {
-      await createResource<Member>("members", member);
+      await apiClient.createResource("members", member);
     }
 
-    modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "members" });
+    modal.showModal({
+      modalType: "RESOURCE_CREATED",
+      resourceName: "members",
+    });
   }
 
   const action = params.id ? "Update" : "Create";

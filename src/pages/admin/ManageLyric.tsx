@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 
 import { Lyric } from "../../api/types";
-import { updateResource, createResource } from "../../api/utils";
+import apiClient from "../../api/apiClient";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -56,9 +56,9 @@ const ManageLyric: FunctionComponent = () => {
 
   async function handleSaveClick(): Promise<void> {
     if (params.id) {
-      await updateResource<Lyric>("lyrics", params.id, lyric);
+      await apiClient.updateResource("lyrics", params.id, lyric);
     } else {
-      await createResource<Lyric>("lyrics", lyric);
+      await apiClient.createResource("lyrics", lyric);
     }
 
     modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "lyrics" });

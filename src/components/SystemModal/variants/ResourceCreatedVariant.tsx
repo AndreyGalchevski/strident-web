@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { ResourceName } from "../../../api/utils";
+import { ResourceName } from "../../../api/apiClient";
 
 interface Props {
   resourceName: ResourceName;

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 import { Merchandise } from "../../api/types";
-import { updateResource, createResource, uploadImage } from "../../api/utils";
+import apiClient from "../../api/apiClient";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -62,35 +62,37 @@ const ManageMerchandise: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
+    if (!selectedFile) {
+      modal.showModal({
+        modalType: "ERROR",
+        errorMessage: "Must select a file",
+      });
+      return;
+    }
+
     let imageURL = "";
-    let ngImageURL = "";
 
-    if (selectedFile) {
-      const image = new FormData();
-      image.append("merchandiseImage", selectedFile);
-      try {
-        const imageName = `${merchandise.name}-${merchandise.type}`;
-        const result = await uploadImage("merchandise", imageName, image);
-        imageURL = result.imageURL;
-        ngImageURL = result.ngImageURL;
-      } catch (e) {
-        modal.showModal({
-          modalType: "ERROR",
-          errorMessage: (e as Error).message,
-        });
-        return;
-      }
+    try {
+      const formData = new FormData();
+
+      formData.append("file", selectedFile);
+      formData.append("folderName", "merchandise");
+
+      imageURL = await apiClient.uploadImage(formData);
+    } catch (e) {
+      modal.showModal({
+        modalType: "ERROR",
+        errorMessage: (e as Error).message,
+      });
+      return;
     }
 
-    if (imageURL && ngImageURL) {
-      merchandise.image = imageURL;
-      merchandise.imageNG = ngImageURL;
-    }
+    merchandise.image = imageURL;
 
     if (params.id) {
-      await updateResource<Merchandise>("merchandise", params.id, merchandise);
+      await apiClient.updateResource("merchandise", params.id, merchandise);
     } else {
-      await createResource<Merchandise>("merchandise", merchandise);
+      await apiClient.createResource("merchandise", merchandise);
     }
 
     modal.showModal({

@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { createContext, FunctionComponent, PropsWithChildren } from "react";
-import { ResourceName } from "../api/utils";
+import { ResourceName } from "../api/apiClient";
 
 export type ModalType = "ERROR" | "RESOURCE_CREATED" | "CONFIRM_DELETION";
 
