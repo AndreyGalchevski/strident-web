@@ -60,12 +60,12 @@ const Videos: FunctionComponent = () => {
                 </CardContent>
                 {auth.isAuthenticated && (
                   <CardAction>
-                    <Button handleClick={() => handleUpdateClick(video.id)}>
+                    <Button onClick={() => handleUpdateClick(video.id)}>
                       <EditIcon />
                     </Button>
                     <Button
                       isPrimary
-                      handleClick={() => handleDeleteClick(video.id)}
+                      onClick={() => handleDeleteClick(video.id)}
                     >
                       <DeleteIcon />
                     </Button>

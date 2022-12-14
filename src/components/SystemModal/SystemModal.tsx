@@ -4,7 +4,7 @@ import Modal, { Styles } from "react-modal";
 import useModal from "../../hooks/useModal";
 import ConfirmDeletionVariant from "./variants/ConfirmDeletionVariant";
 import ErrorVariant from "./variants/ErrorVariant";
-import ResourceCreatedVariant from "./variants/ResourceCreatedVariant";
+import ResourceSavedVariant from "./variants/ResourceSavedVariant";
 
 const customStyle: Styles = {
   content: {
@@ -42,10 +42,11 @@ const SystemModal = observer(() => {
         <>
           {(() => {
             switch (modalState.modalData.modalType) {
-              case "RESOURCE_CREATED":
+              case "RESOURCE_SAVED":
                 return (
-                  <ResourceCreatedVariant
+                  <ResourceSavedVariant
                     resourceName={modalState.modalData.resourceName}
+                    handleModalClose={handleModalClose}
                   />
                 );
               case "ERROR":

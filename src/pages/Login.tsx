@@ -84,7 +84,7 @@ const Login: FunctionComponent = () => {
             />
           </CardContent>
           <CardAction>
-            <Button handleClick={handleLogin}>
+            <Button onClick={handleLogin}>
               {loginLoading ? "Loading..." : "Sign in"}
             </Button>
           </CardAction>

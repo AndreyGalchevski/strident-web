@@ -87,14 +87,12 @@ const Merchandises: FunctionComponent = () => {
                 </CardContent>
                 {auth.isAuthenticated && (
                   <CardAction>
-                    <Button
-                      handleClick={() => handleUpdateClick(merchandise.id)}
-                    >
+                    <Button onClick={() => handleUpdateClick(merchandise.id)}>
                       <EditIcon />
                     </Button>
                     <Button
                       isPrimary
-                      handleClick={() => handleDeleteClick(merchandise.id)}
+                      onClick={() => handleDeleteClick(merchandise.id)}
                     >
                       <DeleteIcon />
                     </Button>

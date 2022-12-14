@@ -58,12 +58,12 @@ const Songs: FunctionComponent = () => {
                 </CardContent>
                 {auth.isAuthenticated && (
                   <CardAction>
-                    <Button handleClick={() => handleUpdateClick(song.id)}>
+                    <Button onClick={() => handleUpdateClick(song.id)}>
                       <EditIcon />
                     </Button>
                     <Button
                       isPrimary
-                      handleClick={() => handleDeleteClick(song.id)}
+                      onClick={() => handleDeleteClick(song.id)}
                     >
                       <DeleteIcon />
                     </Button>

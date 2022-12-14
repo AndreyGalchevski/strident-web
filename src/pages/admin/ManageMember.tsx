@@ -16,6 +16,7 @@ import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
 import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 import useMutationUploadImage from "../../hooks/mutations/useMutationUploadImage";
+import useQueryResources from "../../hooks/queries/useQueryResources";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -36,6 +37,8 @@ const ManageMember: FunctionComponent = () => {
 
   const modal = useModal();
 
+  useQueryResources("members");
+
   const { data: memberData, isLoading } = useQuerySingleResource(
     "members",
     params.id,
@@ -44,9 +47,12 @@ const ManageMember: FunctionComponent = () => {
     }
   );
 
-  const { mutateAsync: uploadImage } = useMutationUploadImage();
-  const { mutateAsync: createResource } = useMutationCreateResource();
-  const { mutateAsync: updateResource } = useMutationUpdateResource();
+  const { mutateAsync: uploadImage, isLoading: uploadImageLoading } =
+    useMutationUploadImage();
+  const { mutateAsync: createResource, isLoading: createResourceLoading } =
+    useMutationCreateResource();
+  const { mutateAsync: updateResource, isLoading: updateResourceLoading } =
+    useMutationUpdateResource();
 
   useEffect(() => {
     if (memberData) {
@@ -103,12 +109,15 @@ const ManageMember: FunctionComponent = () => {
     }
 
     modal.showModal({
-      modalType: "RESOURCE_CREATED",
+      modalType: "RESOURCE_SAVED",
       resourceName: "members",
     });
   }
 
   const action = params.id ? "Update" : "Create";
+
+  const isSaving =
+    uploadImageLoading || createResourceLoading || updateResourceLoading;
 
   return (
     <>
@@ -133,7 +142,9 @@ const ManageMember: FunctionComponent = () => {
                 <FileInput onChange={handleImageChange} />
               </CardContent>
               <CardAction>
-                <Button handleClick={handleSaveClick}>Save</Button>
+                <Button onClick={handleSaveClick} disabled={isSaving}>
+                  {isSaving ? "Saving..." : "Save"}
+                </Button>
               </CardAction>
             </Card>
           </Wrapper>

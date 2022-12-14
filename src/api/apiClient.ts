@@ -130,13 +130,12 @@ async function updateResource<T extends ResourceName>({
 }: UpdateResourceParams<T>): Promise<void> {
   const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
     ...options,
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify(data),
   });
 
-  const responseBody = await response.json();
-
   if (!response.ok) {
+    const responseBody = await response.json();
     throw Error(responseBody.error || GENERAL_ERROR);
   }
 }
@@ -163,6 +162,8 @@ async function deleteResource({
 
 async function uploadImage(formData: FormData): Promise<string> {
   const response = await fetch(`${baseURL}/images`, {
+    ...options,
+    headers: undefined,
     method: "POST",
     body: formData,
   });

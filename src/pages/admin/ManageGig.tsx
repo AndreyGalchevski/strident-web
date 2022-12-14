@@ -17,6 +17,7 @@ import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
 import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 import useMutationUploadImage from "../../hooks/mutations/useMutationUploadImage";
+import useQueryResources from "../../hooks/queries/useQueryResources";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -40,6 +41,8 @@ const ManageGig: FunctionComponent = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const modal = useModal();
+
+  useQueryResources("gigs");
 
   const { data: gigData, isLoading } = useQuerySingleResource(
     "gigs",
@@ -119,7 +122,7 @@ const ManageGig: FunctionComponent = () => {
     }
 
     modal.showModal({
-      modalType: "RESOURCE_CREATED",
+      modalType: "RESOURCE_SAVED",
       resourceName: "gigs",
     });
   }
@@ -179,7 +182,7 @@ const ManageGig: FunctionComponent = () => {
                 <FileInput onChange={handleImageChange} />
               </CardContent>
               <CardAction>
-                <Button handleClick={handleSaveClick}>Save</Button>
+                <Button onClick={handleSaveClick}>Save</Button>
               </CardAction>
             </Card>
           </Wrapper>

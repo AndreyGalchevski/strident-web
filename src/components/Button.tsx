@@ -1,4 +1,8 @@
-import { PropsWithChildren, FunctionComponent, MouseEventHandler } from "react";
+import {
+  PropsWithChildren,
+  FunctionComponent,
+  ButtonHTMLAttributes,
+} from "react";
 import styled from "styled-components";
 
 const StyledButton = styled.button<{ isPrimary: boolean }>(
@@ -18,18 +22,23 @@ const StyledButton = styled.button<{ isPrimary: boolean }>(
   })
 );
 
-export interface Props {
+export interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   isPrimary?: boolean;
-  handleClick?: MouseEventHandler;
 }
 
 const Button: FunctionComponent<PropsWithChildren<Props>> = ({
   isPrimary,
-  handleClick,
+  onClick,
   children,
+  ...rest
 }) => {
   return (
-    <StyledButton isPrimary={!!isPrimary} type="button" onClick={handleClick}>
+    <StyledButton
+      isPrimary={!!isPrimary}
+      type="button"
+      onClick={onClick}
+      {...rest}
+    >
       {children}
     </StyledButton>
   );

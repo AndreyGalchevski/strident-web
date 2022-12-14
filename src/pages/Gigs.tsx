@@ -80,13 +80,10 @@ const Gigs: FunctionComponent = () => {
                 </CardContent>
                 {auth.isAuthenticated && (
                   <CardAction>
-                    <Button handleClick={() => handleUpdateClick(gig.id)}>
+                    <Button onClick={() => handleUpdateClick(gig.id)}>
                       <EditIcon />
                     </Button>
-                    <Button
-                      isPrimary
-                      handleClick={() => handleDeleteClick(gig.id)}
-                    >
+                    <Button isPrimary onClick={() => handleDeleteClick(gig.id)}>
                       <DeleteIcon />
                     </Button>
                   </CardAction>

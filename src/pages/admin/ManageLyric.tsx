@@ -15,6 +15,7 @@ import useModal from "../../hooks/useModal";
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
 import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
+import useQueryResources from "../../hooks/queries/useQueryResources";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
@@ -32,6 +33,8 @@ const ManageLyric: FunctionComponent = () => {
   });
 
   const modal = useModal();
+
+  useQueryResources("lyrics");
 
   const { data: lyricData, isLoading } = useQuerySingleResource(
     "lyrics",
@@ -69,7 +72,7 @@ const ManageLyric: FunctionComponent = () => {
       await createResource({ resourceName: "lyrics", data: lyric });
     }
 
-    modal.showModal({ modalType: "RESOURCE_CREATED", resourceName: "lyrics" });
+    modal.showModal({ modalType: "RESOURCE_SAVED", resourceName: "lyrics" });
   }
 
   const action = params.id ? "Update" : "Create";
@@ -95,7 +98,7 @@ const ManageLyric: FunctionComponent = () => {
                 />
               </CardContent>
               <CardAction>
-                <Button handleClick={handleSaveClick}>Save</Button>
+                <Button onClick={handleSaveClick}>Save</Button>
               </CardAction>
             </Card>
           </Wrapper>

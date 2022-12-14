@@ -2,14 +2,14 @@ import { makeAutoObservable } from "mobx";
 import { createContext, FunctionComponent, PropsWithChildren } from "react";
 import { ResourceName } from "../api/apiClient";
 
-export type ModalType = "ERROR" | "RESOURCE_CREATED" | "CONFIRM_DELETION";
+export type ModalType = "ERROR" | "RESOURCE_SAVED" | "CONFIRM_DELETION";
 
 interface BasicModalData {
   modalType: ModalType;
 }
 
-export interface ResourceCreatedModalData extends BasicModalData {
-  modalType: "RESOURCE_CREATED";
+export interface ResourceSavedModalData extends BasicModalData {
+  modalType: "RESOURCE_SAVED";
   resourceName: ResourceName;
 }
 
@@ -25,7 +25,7 @@ export interface ConfirmDeletionModalData extends BasicModalData {
 }
 
 export type ModalData =
-  | ResourceCreatedModalData
+  | ResourceSavedModalData
   | ErrorModalData
   | ConfirmDeletionModalData;
 
