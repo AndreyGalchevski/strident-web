@@ -1,5 +1,4 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
@@ -13,19 +12,30 @@ import Input from "../../components/Input";
 import FileInput from "../../components/FileInput";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
-import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
-import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
-import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 import useQueryResources from "../../hooks/queries/useQueryResources";
+import { OnSaveClickParams } from "../../types";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
   margin: "auto",
 }));
 
-const ManageGig: FunctionComponent = () => {
+interface Props {
+  title: string;
+  isSaving: boolean;
+  onSaveClick: (params: OnSaveClickParams<Gig>) => Promise<void>;
+  isLoading?: boolean;
+  initialData?: Gig;
+}
+
+const GigForm: FunctionComponent<Props> = ({
+  title,
+  isSaving,
+  onSaveClick,
+  isLoading = false,
+  initialData,
+}) => {
   const isMobile = useMediaQuery();
-  const params = useParams<{ id: string }>();
 
   const [gig, setGig] = useState<Gig>({
     id: "",
@@ -37,30 +47,18 @@ const ManageGig: FunctionComponent = () => {
     fbEvent: "",
     image: "",
   });
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const modal = useModal();
 
   useQueryResources("gigs");
 
-  const { data: gigData, isLoading } = useQuerySingleResource(
-    "gigs",
-    params.id,
-    {
-      enabled: !!params?.id,
-    }
-  );
-
-  const { mutateAsync: createResource, isLoading: createResourceLoading } =
-    useMutationCreateResource();
-  const { mutateAsync: updateResource, isLoading: updateResourceLoading } =
-    useMutationUpdateResource();
-
   useEffect(() => {
-    if (gigData) {
-      setGig({ ...gigData, date: new Date(gigData.date) });
+    if (initialData) {
+      setGig({ ...initialData, date: new Date(initialData.date) });
     }
-  }, [gigData]);
+  }, [initialData]);
 
   function handleTextInputChange(e: ChangeEvent<HTMLInputElement>): void {
     const { name, value } = e.target;
@@ -84,43 +82,24 @@ const ManageGig: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    if (!selectedFile && !params.id) {
+    try {
+      await onSaveClick({ formData: gig, image: selectedFile });
+      modal.showModal({
+        modalType: "RESOURCE_SAVED",
+        resourceName: "gigs",
+      });
+    } catch (e) {
       modal.showModal({
         modalType: "ERROR",
-        errorMessage: "Must select a file",
-      });
-      return;
-    }
-
-    if (params.id) {
-      await updateResource({
-        resourceName: "gigs",
-        resourceID: params.id,
-        data: gig,
-        image: selectedFile,
-      });
-    } else {
-      await createResource({
-        resourceName: "gigs",
-        data: gig,
-        image: selectedFile,
+        errorMessage: (e as Error).message,
       });
     }
-
-    modal.showModal({
-      modalType: "RESOURCE_SAVED",
-      resourceName: "gigs",
-    });
   }
-
-  const action = params.id ? "Update" : "Create";
-
-  const isSaving = createResourceLoading || updateResourceLoading;
 
   return (
     <>
       <Container>
-        <h2>{action} Gig</h2>
+        <h2>{title}</h2>
         <Loader isLoading={isLoading}>
           <Wrapper isMobile={isMobile}>
             <Card>
@@ -182,4 +161,4 @@ const ManageGig: FunctionComponent = () => {
   );
 };
 
-export default observer(ManageGig);
+export default observer(GigForm);

@@ -15,10 +15,12 @@ import ManageMember from "./pages/admin/ManageMember";
 import ManageVideo from "./pages/admin/ManageVideo";
 import ManageSong from "./pages/admin/ManageSong";
 import ManageMerchandise from "./pages/admin/ManageMerchandise";
-import ManageGig from "./pages/admin/ManageGig";
-import ManageLyric from "./pages/admin/ManageLyric";
 import useAuth from "./hooks/useAuth";
 import useQueryVerifyAuth from "./hooks/queries/useQueryVerifyAuth";
+import GigCreate from "./pages/admin/GigCreate";
+import GigEdit from "./pages/admin/GigEdit";
+import LyricCreate from "./pages/admin/LyricCreate";
+import LyricEdit from "./pages/admin/LyricEdit";
 
 const Router = () => {
   const navigate = useNavigate();
@@ -89,22 +91,10 @@ const Router = () => {
             path="/admin/merchandise/edit/:id"
             element={<ManageMerchandise />}
           />
-          <Route key="new-gig" path="/admin/gigs/new" element={<ManageGig />} />
-          <Route
-            key="edit-gig"
-            path="/admin/gigs/edit/:id"
-            element={<ManageGig />}
-          />
-          <Route
-            key="new-lyric"
-            path="/admin/lyrics/new"
-            element={<ManageLyric />}
-          />
-          <Route
-            key="edit-lyric"
-            path="/admin/lyrics/edit/:id"
-            element={<ManageLyric />}
-          />
+          <Route path="/admin/gigs/new" element={<GigCreate />} />
+          <Route path="/admin/gigs/edit/:id" element={<GigEdit />} />
+          <Route path="/admin/lyrics/new" element={<LyricCreate />} />
+          <Route path="/admin/lyrics/edit/:id" element={<LyricEdit />} />
         </>
       )}
     </Routes>

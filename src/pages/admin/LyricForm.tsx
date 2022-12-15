@@ -1,7 +1,6 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import { useParams } from "react-router-dom";
 
 import { Lyric } from "../../api/types";
 import useMediaQuery from "../../hooks/useMediaQuery";
@@ -12,19 +11,30 @@ import Input from "../../components/Input";
 import TextArea from "../../components/TextArea";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
-import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
-import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
-import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 import useQueryResources from "../../hooks/queries/useQueryResources";
+import { OnSaveClickParams } from "../../types";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
   margin: "auto",
 }));
 
-const ManageLyric: FunctionComponent = () => {
+interface Props {
+  title: string;
+  isSaving: boolean;
+  onSaveClick: (params: OnSaveClickParams<Lyric>) => Promise<void>;
+  isLoading?: boolean;
+  initialData?: Lyric;
+}
+
+const LyricForm: FunctionComponent<Props> = ({
+  title,
+  isSaving,
+  onSaveClick,
+  isLoading = false,
+  initialData,
+}) => {
   const isMobile = useMediaQuery();
-  const params = useParams<{ id: string }>();
 
   const [lyric, setLyric] = useState<Lyric>({
     id: "",
@@ -36,24 +46,11 @@ const ManageLyric: FunctionComponent = () => {
 
   useQueryResources("lyrics");
 
-  const { data: lyricData, isLoading } = useQuerySingleResource(
-    "lyrics",
-    params.id,
-    {
-      enabled: !!params?.id,
-    }
-  );
-
-  const { mutateAsync: createResource, isLoading: createResourceLoading } =
-    useMutationCreateResource();
-  const { mutateAsync: updateResource, isLoading: updateResourceLoading } =
-    useMutationUpdateResource();
-
   useEffect(() => {
-    if (lyricData) {
-      setLyric(lyricData);
+    if (initialData) {
+      setLyric(initialData);
     }
-  }, [lyricData]);
+  }, [initialData]);
 
   function handleNameChange(e: ChangeEvent<HTMLInputElement>): void {
     setLyric({ ...lyric, name: e.target.value });
@@ -64,27 +61,21 @@ const ManageLyric: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    if (params.id) {
-      await updateResource({
-        resourceName: "lyrics",
-        resourceID: params.id,
-        data: lyric,
+    try {
+      await onSaveClick({ formData: lyric });
+      modal.showModal({ modalType: "RESOURCE_SAVED", resourceName: "lyrics" });
+    } catch (e) {
+      modal.showModal({
+        modalType: "ERROR",
+        errorMessage: (e as Error).message,
       });
-    } else {
-      await createResource({ resourceName: "lyrics", data: lyric });
     }
-
-    modal.showModal({ modalType: "RESOURCE_SAVED", resourceName: "lyrics" });
   }
-
-  const action = params.id ? "Update" : "Create";
-
-  const isSaving = createResourceLoading || updateResourceLoading;
 
   return (
     <>
       <Container>
-        <h2>{action} Lyric</h2>
+        <h2>{title}</h2>
         <Loader isLoading={isLoading}>
           <Wrapper isMobile={isMobile}>
             <Card>
@@ -114,4 +105,4 @@ const ManageLyric: FunctionComponent = () => {
   );
 };
 
-export default observer(ManageLyric);
+export default observer(LyricForm);
