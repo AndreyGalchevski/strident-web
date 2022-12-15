@@ -84,7 +84,7 @@ const ManageGig: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    if (!selectedFile && params.id) {
+    if (!selectedFile && !params.id) {
       modal.showModal({
         modalType: "ERROR",
         errorMessage: "Must select a file",
