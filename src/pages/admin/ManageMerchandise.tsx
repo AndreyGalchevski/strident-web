@@ -50,9 +50,12 @@ const ManageMerchandise: FunctionComponent = () => {
     }
   );
 
-  const { mutateAsync: uploadImage } = useMutationUploadImage();
-  const { mutateAsync: createResource } = useMutationCreateResource();
-  const { mutateAsync: updateResource } = useMutationUpdateResource();
+  const { mutateAsync: uploadImage, isLoading: uploadImageLoading } =
+    useMutationUploadImage();
+  const { mutateAsync: createResource, isLoading: createResourceLoading } =
+    useMutationCreateResource();
+  const { mutateAsync: updateResource, isLoading: updateResourceLoading } =
+    useMutationUpdateResource();
 
   useEffect(() => {
     if (merchandiseData) {
@@ -116,6 +119,9 @@ const ManageMerchandise: FunctionComponent = () => {
 
   const action = params.id ? "Update" : "Create";
 
+  const isSaving =
+    uploadImageLoading || createResourceLoading || updateResourceLoading;
+
   return (
     <>
       <Container>
@@ -151,7 +157,9 @@ const ManageMerchandise: FunctionComponent = () => {
                 <FileInput onChange={handleImageChange} />
               </CardContent>
               <CardAction>
-                <Button onClick={handleSaveClick}>Save</Button>
+                <Button onClick={handleSaveClick} isLoading={isSaving}>
+                  Save
+                </Button>
               </CardAction>
             </Card>
           </Wrapper>

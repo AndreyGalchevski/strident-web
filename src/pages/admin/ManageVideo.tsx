@@ -43,8 +43,10 @@ const ManageVideo: FunctionComponent = () => {
     }
   );
 
-  const { mutateAsync: createResource } = useMutationCreateResource();
-  const { mutateAsync: updateResource } = useMutationUpdateResource();
+  const { mutateAsync: createResource, isLoading: createResourceLoading } =
+    useMutationCreateResource();
+  const { mutateAsync: updateResource, isLoading: updateResourceLoading } =
+    useMutationUpdateResource();
 
   useEffect(() => {
     if (videoData) {
@@ -71,6 +73,8 @@ const ManageVideo: FunctionComponent = () => {
 
   const action = params.id ? "Update" : "Create";
 
+  const isSaving = createResourceLoading || updateResourceLoading;
+
   return (
     <>
       <Container>
@@ -93,7 +97,9 @@ const ManageVideo: FunctionComponent = () => {
                 />
               </CardContent>
               <CardAction>
-                <Button onClick={handleSaveClick}>Save</Button>
+                <Button onClick={handleSaveClick} isLoading={isSaving}>
+                  Save
+                </Button>
               </CardAction>
             </Card>
           </Wrapper>

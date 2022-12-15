@@ -24,10 +24,12 @@ const StyledButton = styled.button<{ isPrimary: boolean }>(
 
 export interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   isPrimary?: boolean;
+  isLoading?: boolean;
 }
 
 const Button: FunctionComponent<PropsWithChildren<Props>> = ({
   isPrimary,
+  isLoading = false,
   onClick,
   children,
   ...rest
@@ -37,9 +39,10 @@ const Button: FunctionComponent<PropsWithChildren<Props>> = ({
       isPrimary={!!isPrimary}
       type="button"
       onClick={onClick}
+      disabled={isLoading}
       {...rest}
     >
-      {children}
+      {isLoading ? "Saving..." : children}
     </StyledButton>
   );
 };

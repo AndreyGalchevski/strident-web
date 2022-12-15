@@ -25,16 +25,16 @@ const Router = () => {
 
   const auth = useAuth();
 
-  const { isSuccess: verifyAuthSuccess } = useQueryVerifyAuth({
+  const { isError: isVerifyAuthError } = useQueryVerifyAuth({
     enabled: auth.isAuthenticated,
   });
 
   useEffect(() => {
-    if (auth.isAuthenticated && !verifyAuthSuccess) {
+    if (auth.isAuthenticated && isVerifyAuthError) {
       auth.invalidate();
       navigate("/login");
     }
-  }, [verifyAuthSuccess, navigate, auth]);
+  }, [isVerifyAuthError, navigate, auth]);
 
   return (
     <Routes>

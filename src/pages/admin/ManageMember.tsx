@@ -142,8 +142,8 @@ const ManageMember: FunctionComponent = () => {
                 <FileInput onChange={handleImageChange} />
               </CardContent>
               <CardAction>
-                <Button onClick={handleSaveClick} disabled={isSaving}>
-                  {isSaving ? "Saving..." : "Save"}
+                <Button onClick={handleSaveClick} isLoading={isSaving}>
+                  Save
                 </Button>
               </CardAction>
             </Card>
