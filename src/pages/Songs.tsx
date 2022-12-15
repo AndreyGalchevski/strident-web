@@ -33,7 +33,7 @@ const Songs: FunctionComponent = () => {
     modal.showModal({
       modalType: "CONFIRM_DELETION",
       resourceID: songID,
-      resourceName: "videos",
+      resourceName: "songs",
     });
   }
 
