@@ -93,19 +93,45 @@ async function fetchSingleResource<T extends ResourceName>(
   return responseBody.data;
 }
 
+const appendFormData = <T>(resource: Resource<T>, formData: FormData) => {
+  (Object.keys(resource) as Array<keyof Resource<T>>).forEach((key) => {
+    if (typeof resource[key] === "string") {
+      formData.append(key as string, resource[key] as string);
+    }
+    if (typeof resource[key] === "number") {
+      formData.append(key as string, (resource[key] as number).toString());
+    }
+    if (resource[key] instanceof Date) {
+      formData.append(key as string, (resource[key] as Date).toString());
+    }
+  });
+};
+
 export interface CreateResourceParams<T> {
   resourceName: T;
   data: Resource<T>;
+  image?: File | null;
 }
 
 async function createResource<T extends ResourceName>({
   resourceName,
   data,
+  image,
 }: CreateResourceParams<T>): Promise<string> {
+  const formData = new FormData();
+
+  if (image) {
+    formData.append("image", image);
+    formData.append("folderName", resourceName);
+  }
+
+  appendFormData(data, formData);
+
   const response = await fetch(`${baseURL}/${resourceName}`, {
     ...options,
+    headers: undefined,
     method: "POST",
-    body: JSON.stringify(data),
+    body: formData,
   });
 
   const responseBody = await response.json();
@@ -121,17 +147,29 @@ export interface UpdateResourceParams<T> {
   resourceName: T;
   resourceID: string;
   data: Resource<T>;
+  image?: File | null;
 }
 
 async function updateResource<T extends ResourceName>({
   resourceID,
   resourceName,
   data,
+  image,
 }: UpdateResourceParams<T>): Promise<void> {
+  const formData = new FormData();
+
+  if (image) {
+    formData.append("image", image);
+    formData.append("folderName", resourceName);
+  }
+
+  appendFormData(data, formData);
+
   const response = await fetch(`${baseURL}/${resourceName}/${resourceID}`, {
     ...options,
+    headers: undefined,
     method: "PATCH",
-    body: JSON.stringify(data),
+    body: formData,
   });
 
   if (!response.ok) {
@@ -160,23 +198,6 @@ async function deleteResource({
   }
 }
 
-async function uploadImage(formData: FormData): Promise<string> {
-  const response = await fetch(`${baseURL}/images`, {
-    ...options,
-    headers: undefined,
-    method: "POST",
-    body: formData,
-  });
-
-  const responseBody = await response.json();
-
-  if (!response.ok) {
-    throw Error(responseBody.error || GENERAL_ERROR);
-  }
-
-  return responseBody.data;
-}
-
 const apiClient = {
   login,
   verifyAuth,
@@ -185,7 +206,6 @@ const apiClient = {
   createResource,
   updateResource,
   deleteResource,
-  uploadImage,
 };
 
 export default apiClient;

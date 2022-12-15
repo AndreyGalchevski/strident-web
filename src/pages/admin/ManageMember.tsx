@@ -15,7 +15,6 @@ import useModal from "../../hooks/useModal";
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
 import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
-import useMutationUploadImage from "../../hooks/mutations/useMutationUploadImage";
 import useQueryResources from "../../hooks/queries/useQueryResources";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
@@ -47,8 +46,6 @@ const ManageMember: FunctionComponent = () => {
     }
   );
 
-  const { mutateAsync: uploadImage, isLoading: uploadImageLoading } =
-    useMutationUploadImage();
   const { mutateAsync: createResource, isLoading: createResourceLoading } =
     useMutationCreateResource();
   const { mutateAsync: updateResource, isLoading: updateResourceLoading } =
@@ -71,7 +68,7 @@ const ManageMember: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    if (!selectedFile) {
+    if (!selectedFile && params.id) {
       modal.showModal({
         modalType: "ERROR",
         errorMessage: "Must select a file",
@@ -79,33 +76,19 @@ const ManageMember: FunctionComponent = () => {
       return;
     }
 
-    let imageURL = "";
-
-    try {
-      const formData = new FormData();
-
-      formData.append("file", selectedFile);
-      formData.append("folderName", "members");
-
-      imageURL = await uploadImage(formData);
-    } catch (e) {
-      modal.showModal({
-        modalType: "ERROR",
-        errorMessage: (e as Error).message,
-      });
-      return;
-    }
-
-    member.image = imageURL;
-
     if (params.id) {
       await updateResource({
         resourceName: "members",
         resourceID: params.id,
         data: member,
+        image: selectedFile,
       });
     } else {
-      await createResource({ resourceName: "members", data: member });
+      await createResource({
+        resourceName: "members",
+        data: member,
+        image: selectedFile,
+      });
     }
 
     modal.showModal({
@@ -116,8 +99,7 @@ const ManageMember: FunctionComponent = () => {
 
   const action = params.id ? "Update" : "Create";
 
-  const isSaving =
-    uploadImageLoading || createResourceLoading || updateResourceLoading;
+  const isSaving = createResourceLoading || updateResourceLoading;
 
   return (
     <>
