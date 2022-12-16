@@ -3,7 +3,7 @@ import {
   FunctionComponent,
   ButtonHTMLAttributes,
 } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const StyledButton = styled.button<{ isPrimary: boolean }>(
   ({ theme: { colors }, isPrimary }) => ({
@@ -21,12 +21,34 @@ const StyledButton = styled.button<{ isPrimary: boolean }>(
     color: isPrimary ? colors.white : colors.black,
     transitionDuration: "0.4s",
     "&:hover": {
-      color: isPrimary ? colors.black : colors.grey,
+      color: isPrimary ? colors.red : colors.grey,
       backgroundColor: isPrimary ? colors.white : colors.darkGrey,
     },
     cursor: "pointer",
   })
 );
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const ButtonSpinner = styled.div`
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 4px solid transparent;
+  border-top-color: ${(props) => props.theme.colors.white};
+  border-radius: 50%;
+  animation: ${rotate} 1s ease infinite;
+  ${StyledButton}:hover & {
+    border-top-color: ${(props) => props.theme.colors.red};
+  }
+`;
 
 export interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   isPrimary?: boolean;
@@ -54,7 +76,7 @@ const Button: FunctionComponent<PropsWithChildren<Props>> = ({
       style={{ ...style, ...(fullWidth ? { width: "100%" } : {}) }}
       {...rest}
     >
-      {isLoading ? "Saving..." : children}
+      {isLoading ? <ButtonSpinner /> : children}
     </StyledButton>
   );
 };
