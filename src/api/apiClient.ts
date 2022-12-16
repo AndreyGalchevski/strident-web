@@ -102,7 +102,10 @@ const appendFormData = <T>(resource: Resource<T>, formData: FormData) => {
       formData.append(key as string, (resource[key] as number).toString());
     }
     if (resource[key] instanceof Date) {
-      formData.append(key as string, (resource[key] as Date).toString());
+      formData.append(
+        key as string,
+        (resource[key] as Date).getTime().toString()
+      );
     }
   });
 };
