@@ -47,7 +47,7 @@ const Lyrics: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Lyrics" />
-      {auth.isAuthenticated && <Fab url="/admin/lyrics/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/lyrics/create" />}
       <Loader isLoading={lyricsLoading}>
         <Masonry isMobile={isMobile}>
           {lyricsData?.map((lyric) => (

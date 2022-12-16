@@ -43,7 +43,7 @@ const Gigs: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Gigs" />
-      {auth.isAuthenticated && <Fab url="/admin/gigs/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/gigs/create" />}
       <Loader isLoading={gigsLoading}>
         <Masonry isMobile={isMobile}>
           {gigsData?.map((gig) => (

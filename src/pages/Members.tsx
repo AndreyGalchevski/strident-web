@@ -57,7 +57,7 @@ const Members: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Members" />
-      {auth.isAuthenticated && <Fab url="/admin/members/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/members/create" />}
       <Loader isLoading={membersLoading}>
         <MembersContainer isMobile={isMobile}>
           {membersData?.map((member) => (

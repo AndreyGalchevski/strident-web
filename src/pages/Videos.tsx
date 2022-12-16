@@ -41,7 +41,7 @@ const Videos: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Videos" />
-      {auth.isAuthenticated && <Fab url="/admin/videos/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/videos/create" />}
       <Loader isLoading={videosLoading}>
         <Masonry isMobile={isMobile}>
           {videosData?.map((video) => (

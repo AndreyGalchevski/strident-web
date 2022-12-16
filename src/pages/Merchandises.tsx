@@ -56,7 +56,7 @@ const Merchandises: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Merch" />
-      {auth.isAuthenticated && <Fab url="/admin/merchandise/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/merchandise/create" />}
       <Loader isLoading={merchandiseLoading}>
         <Masonry isMobile={isMobile}>
           {merchandiseData?.map((merchandise) => (

@@ -40,7 +40,7 @@ const Songs: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Songs" />
-      {auth.isAuthenticated && <Fab url="/admin/songs/new" />}
+      {auth.isAuthenticated && <Fab url="/admin/songs/create" />}
       <Loader isLoading={songsLoading}>
         <Masonry isMobile={isMobile}>
           {songsData?.map((song) => (
