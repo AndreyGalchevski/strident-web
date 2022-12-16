@@ -43,13 +43,13 @@ const Songs: FunctionComponent = () => {
       {auth.isAuthenticated && <Fab url="/admin/songs/create" />}
       <Loader isLoading={songsLoading}>
         <Masonry isMobile={isMobile}>
-          {songsData?.map((song) => (
-            <MasonryBrick key={song.id}>
+          {songsData?.map((it) => (
+            <MasonryBrick key={it.id}>
               <Card>
                 <CardContent style={{ padding: 0 }}>
                   <iframe
-                    title={song.name}
-                    src={song.url}
+                    title={it.name}
+                    src={it.url}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     width="100%"
                     height="236"
@@ -58,13 +58,10 @@ const Songs: FunctionComponent = () => {
                 </CardContent>
                 {auth.isAuthenticated && (
                   <CardAction>
-                    <Button onClick={() => handleUpdateClick(song.id)}>
+                    <Button onClick={() => handleUpdateClick(it.id)}>
                       <EditIcon />
                     </Button>
-                    <Button
-                      isPrimary
-                      onClick={() => handleDeleteClick(song.id)}
-                    >
+                    <Button isPrimary onClick={() => handleDeleteClick(it.id)}>
                       <DeleteIcon />
                     </Button>
                   </CardAction>

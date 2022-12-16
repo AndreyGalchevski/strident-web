@@ -46,44 +46,44 @@ const Gigs: FunctionComponent = () => {
       {auth.isAuthenticated && <Fab url="/admin/gigs/create" />}
       <Loader isLoading={gigsLoading}>
         <Masonry isMobile={isMobile}>
-          {gigsData?.map((gig) => (
-            <MasonryBrick key={gig.id}>
+          {gigsData?.map((it) => (
+            <MasonryBrick key={it.id}>
               <Card>
                 <div>
                   <picture>
-                    <source srcSet={gig.image} type="image/jpeg" />
-                    <CardImage src={gig.image} alt="" />
+                    <source srcSet={it.image} type="image/jpeg" />
+                    <CardImage src={it.image} alt="" />
                   </picture>
                 </div>
                 <CardContent style={{ maxHeight: 202 }}>
                   <HalfwayTab
-                    href={gig.fbEvent}
+                    href={it.fbEvent}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <EventIcon color="#3b5998" style={{ marginTop: 8 }} />
                   </HalfwayTab>
                   <HalfwayTab
-                    href={`https://www.google.com/maps/search/?api=1&query=${gig.venue} ${gig.city}`}
+                    href={`https://www.google.com/maps/search/?api=1&query=${it.venue} ${it.city}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ right: "auto", left: 24 }}
                   >
                     <DirectionsIcon color="#4A89F3" style={{ marginTop: 8 }} />
                   </HalfwayTab>
-                  <p>{gig.venue}</p>
+                  <p>{it.venue}</p>
                   <p>
-                    {gig.address}, {gig.city}
+                    {it.address}, {it.city}
                   </p>
-                  <p>{formatDate(new Date(gig.date))}</p>
-                  <p>{formatTime(new Date(gig.date))}</p>
+                  <p>{formatDate(new Date(it.date))}</p>
+                  <p>{formatTime(new Date(it.date))}</p>
                 </CardContent>
                 {auth.isAuthenticated && (
                   <CardAction>
-                    <Button onClick={() => handleUpdateClick(gig.id)}>
+                    <Button onClick={() => handleUpdateClick(it.id)}>
                       <EditIcon />
                     </Button>
-                    <Button isPrimary onClick={() => handleDeleteClick(gig.id)}>
+                    <Button isPrimary onClick={() => handleDeleteClick(it.id)}>
                       <DeleteIcon />
                     </Button>
                   </CardAction>

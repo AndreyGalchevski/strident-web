@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Members from "./pages/Members";
 import Videos from "./pages/Videos";
 import Songs from "./pages/Songs";
-import Merchandises from "./pages/Merchandises";
+import Merchandise from "./pages/Merchandise";
 import Gigs from "./pages/Gigs";
 import Lyrics from "./pages/Lyrics";
 import About from "./pages/About";
@@ -37,7 +37,7 @@ const Router = () => {
       <Route path="/members" element={<Members />} />
       <Route path="/songs" element={<Songs />} />
       <Route path="/videos" element={<Videos />} />
-      <Route path="/merchandise" element={<Merchandises />} />
+      <Route path="/merchandise" element={<Merchandise />} />
       <Route path="/gigs" element={<Gigs />} />
       <Route path="/lyrics" element={<Lyrics />} />
       <Route path="/about" element={<About />} />

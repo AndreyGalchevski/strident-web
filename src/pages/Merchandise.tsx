@@ -20,10 +20,10 @@ import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import ShoppingCartIcon from "../components/icons/ShoppingCart";
-import EuroIcon from "../components/icons/Euro";
 import useQueryResources from "../hooks/queries/useQueryResources";
 import useModal from "../hooks/useModal";
 import useAuth from "../hooks/useAuth";
+import { formatCurrency } from "../utils/currency";
 
 const PriceContainer = styled.p({
   display: "flex",
@@ -59,18 +59,17 @@ const Merchandises: FunctionComponent = () => {
       {auth.isAuthenticated && <Fab url="/admin/merchandise/create" />}
       <Loader isLoading={merchandiseLoading}>
         <Masonry isMobile={isMobile}>
-          {merchandiseData?.map((merchandise) => (
-            <MasonryBrick key={merchandise.id}>
+          {merchandiseData?.map((it) => (
+            <MasonryBrick key={it.id}>
               <Card>
                 <div>
                   <picture>
-                    <source srcSet={merchandise.imageNG} type="image/webp" />
-                    <source srcSet={merchandise.image} type="image/jpeg" />
-                    <CardImage src={merchandise.image} alt="" />
+                    <source srcSet={it.image} type="image/jpeg" />
+                    <CardImage src={it.image} alt="" />
                   </picture>
                 </div>
                 <HalfwayTab
-                  href={merchandise.url}
+                  href={it.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ bottom: 156 }}
@@ -78,22 +77,20 @@ const Merchandises: FunctionComponent = () => {
                   <ShoppingCartIcon style={{ marginTop: 8 }} />
                 </HalfwayTab>
                 <CardContent style={{ maxHeight: 184 }}>
-                  <CardTitle>{merchandise.name}</CardTitle>
-                  <p>{merchandise.type}</p>
+                  <CardTitle>{it.name}</CardTitle>
+                  <p>{it.type}</p>
                   <PriceContainer>
-                    <EuroIcon style={{ marginRight: 4 }} />
-                    <span> {merchandise.price} EUR</span>
+                    <span style={{ fontSize: 20 }}>
+                      {formatCurrency(it.price)}
+                    </span>
                   </PriceContainer>
                 </CardContent>
                 {auth.isAuthenticated && (
                   <CardAction>
-                    <Button onClick={() => handleUpdateClick(merchandise.id)}>
+                    <Button onClick={() => handleUpdateClick(it.id)}>
                       <EditIcon />
                     </Button>
-                    <Button
-                      isPrimary
-                      onClick={() => handleDeleteClick(merchandise.id)}
-                    >
+                    <Button isPrimary onClick={() => handleDeleteClick(it.id)}>
                       <DeleteIcon />
                     </Button>
                   </CardAction>

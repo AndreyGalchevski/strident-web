@@ -50,22 +50,19 @@ const Lyrics: FunctionComponent = () => {
       {auth.isAuthenticated && <Fab url="/admin/lyrics/create" />}
       <Loader isLoading={lyricsLoading}>
         <Masonry isMobile={isMobile}>
-          {lyricsData?.map((lyric) => (
-            <MasonryBrick key={lyric.id}>
+          {lyricsData?.map((it) => (
+            <MasonryBrick key={it.id}>
               <Card>
-                <CardTitle style={{ paddingTop: 20 }}>{lyric.name}</CardTitle>
+                <CardTitle style={{ paddingTop: 20 }}>{it.name}</CardTitle>
                 <CardContent style={{ paddingTop: 0 }}>
-                  <Text>{lyric.text}</Text>
+                  <Text>{it.text}</Text>
                 </CardContent>
                 {auth.isAuthenticated && (
                   <CardAction>
-                    <Button onClick={() => handleUpdateClick(lyric.id)}>
+                    <Button onClick={() => handleUpdateClick(it.id)}>
                       <EditIcon />
                     </Button>
-                    <Button
-                      isPrimary
-                      onClick={() => handleDeleteClick(lyric.id)}
-                    >
+                    <Button isPrimary onClick={() => handleDeleteClick(it.id)}>
                       <DeleteIcon />
                     </Button>
                   </CardAction>

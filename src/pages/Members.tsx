@@ -60,28 +60,25 @@ const Members: FunctionComponent = () => {
       {auth.isAuthenticated && <Fab url="/admin/members/create" />}
       <Loader isLoading={membersLoading}>
         <MembersContainer isMobile={isMobile}>
-          {membersData?.map((member) => (
-            <MemberItem key={member.id}>
+          {membersData?.map((it) => (
+            <MemberItem key={it.id}>
               <Card>
                 <div>
                   <picture>
-                    <source srcSet={member.image} type="image/jpeg" />
-                    <CardImage src={member.image} alt="" />
+                    <source srcSet={it.image} type="image/jpeg" />
+                    <CardImage src={it.image} alt="" />
                   </picture>
                 </div>
                 <CardContent>
-                  <CardTitle>{member.name}</CardTitle>
-                  <p>{member.instrument}</p>
+                  <CardTitle>{it.name}</CardTitle>
+                  <p>{it.instrument}</p>
                 </CardContent>
                 {auth.isAuthenticated && (
                   <CardAction>
-                    <Button onClick={() => handleUpdateClick(member.id)}>
+                    <Button onClick={() => handleUpdateClick(it.id)}>
                       <EditIcon />
                     </Button>
-                    <Button
-                      isPrimary
-                      onClick={() => handleDeleteClick(member.id)}
-                    >
+                    <Button isPrimary onClick={() => handleDeleteClick(it.id)}>
                       <DeleteIcon />
                     </Button>
                   </CardAction>
