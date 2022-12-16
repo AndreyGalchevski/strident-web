@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 
@@ -45,6 +45,7 @@ const Router = () => {
       {auth.isAuthenticated && (
         <Route path="/admin/*" element={<AdminRouter />} />
       )}
+      <Route path="*" element={<Navigate replace to="/" />} />
     </Routes>
   );
 };
