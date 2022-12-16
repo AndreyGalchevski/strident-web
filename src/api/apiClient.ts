@@ -1,4 +1,3 @@
-import { sleep } from "../utils/general";
 import {
   Gig,
   LoginCredentials,
@@ -32,8 +31,6 @@ async function login(credentials: LoginCredentials): Promise<void> {
     const responseBody = await response.json();
     throw Error(responseBody.error || GENERAL_ERROR);
   }
-
-  await sleep(2000);
 }
 
 async function verifyAuth(): Promise<void> {
