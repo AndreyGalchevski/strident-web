@@ -84,8 +84,8 @@ const Login: FunctionComponent = () => {
             />
           </CardContent>
           <CardAction>
-            <Button onClick={handleLogin} fullWidth>
-              {loginLoading ? "Loading..." : "Sign in"}
+            <Button onClick={handleLogin} fullWidth isLoading={loginLoading}>
+              Sign in
             </Button>
           </CardAction>
         </Card>
