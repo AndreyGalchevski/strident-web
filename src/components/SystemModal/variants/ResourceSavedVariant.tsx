@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { ResourceName } from "../../../api/apiClient";
+import Button from "../../Button";
 
 interface Props {
   resourceName: ResourceName;
@@ -17,8 +18,8 @@ function ResourceSavedVariant({ resourceName, handleModalClose }: Props) {
   return (
     <>
       <h2 style={{ marginBottom: 2, textAlign: "center" }}>Success!</h2>
-      <p>Resource saved</p>
-      <button onClick={onViewResourceClick}>Go</button>
+      <p>Resource successfully saved</p>
+      <Button onClick={onViewResourceClick}>Go to list</Button>
     </>
   );
 }

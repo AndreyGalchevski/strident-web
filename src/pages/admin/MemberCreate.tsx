@@ -5,6 +5,7 @@ import useMutationCreateResource from "../../hooks/mutations/useMutationCreateRe
 import MemberForm from "./MemberForm";
 import { Member } from "../../api/types";
 import { OnSaveClickParams } from "../../types";
+import { FILE_NOT_SELECTED_ERROR } from "../../utils/constants";
 
 const MemberCreate: FunctionComponent = () => {
   const { mutateAsync: createResource, isLoading: createResourceLoading } =
@@ -15,7 +16,7 @@ const MemberCreate: FunctionComponent = () => {
     image,
   }: OnSaveClickParams<Member>): Promise<void> {
     if (!image) {
-      throw new Error("Must select a file");
+      throw new Error(FILE_NOT_SELECTED_ERROR);
     }
 
     await createResource({

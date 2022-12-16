@@ -5,6 +5,7 @@ import { Merchandise } from "../../api/types";
 import MerchandiseForm from "./MerchandiseForm";
 import { OnSaveClickParams } from "../../types";
 import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
+import { FILE_NOT_SELECTED_ERROR } from "../../utils/constants";
 
 const MerchandiseCreate: FunctionComponent = () => {
   const { mutateAsync: createResource, isLoading: createResourceLoading } =
@@ -15,7 +16,7 @@ const MerchandiseCreate: FunctionComponent = () => {
     image,
   }: OnSaveClickParams<Merchandise>): Promise<void> {
     if (!image) {
-      throw new Error("Must select a file");
+      throw new Error(FILE_NOT_SELECTED_ERROR);
     }
 
     await createResource({

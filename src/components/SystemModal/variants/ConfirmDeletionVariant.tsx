@@ -1,5 +1,6 @@
 import { ResourceName } from "../../../api/apiClient";
 import useMutationDeleteResource from "../../../hooks/mutations/useMutationDeleteResource";
+import Button from "../../Button";
 
 interface Props {
   resourceName: ResourceName;
@@ -34,9 +35,13 @@ function ConfirmDeletionVariant({
       <h2 style={{ marginBottom: 2, textAlign: "center" }}>Warning!</h2>
       <p>Are you sure about this?</p>
       {deleteError && <p>{deleteError.message}</p>}
-      <button onClick={onDeleteClick} disabled={deleteLoading}>
-        {deleteLoading ? "Loading..." : "Delete"}
-      </button>
+      <Button
+        onClick={onDeleteClick}
+        disabled={deleteLoading}
+        isLoading={deleteLoading}
+      >
+        Delete
+      </Button>
     </>
   );
 }
