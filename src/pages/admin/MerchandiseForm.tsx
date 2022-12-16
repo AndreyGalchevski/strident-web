@@ -1,6 +1,5 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 import { Merchandise } from "../../api/types";
@@ -12,19 +11,30 @@ import Input from "../../components/Input";
 import FileInput from "../../components/FileInput";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
-import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
-import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
-import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 import useQueryResources from "../../hooks/queries/useQueryResources";
+import { OnSaveClickParams } from "../../types";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
   margin: "auto",
 }));
 
-const ManageMerchandise: FunctionComponent = () => {
+interface Props {
+  title: string;
+  isSaving: boolean;
+  onSaveClick: (params: OnSaveClickParams<Merchandise>) => Promise<void>;
+  isLoading?: boolean;
+  initialData?: Merchandise;
+}
+
+const MerchandiseForm: FunctionComponent<Props> = ({
+  title,
+  isSaving,
+  onSaveClick,
+  isLoading = false,
+  initialData,
+}) => {
   const isMobile = useMediaQuery();
-  const params = useParams<{ id: string }>();
 
   const [merchandise, setMerchandise] = useState<Merchandise>({
     id: "",
@@ -35,30 +45,18 @@ const ManageMerchandise: FunctionComponent = () => {
     image: "",
     imageNG: "",
   });
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const modal = useModal();
 
   useQueryResources("merchandise");
 
-  const { data: merchandiseData, isLoading } = useQuerySingleResource(
-    "merchandise",
-    params.id,
-    {
-      enabled: !!params?.id,
-    }
-  );
-
-  const { mutateAsync: createResource, isLoading: createResourceLoading } =
-    useMutationCreateResource();
-  const { mutateAsync: updateResource, isLoading: updateResourceLoading } =
-    useMutationUpdateResource();
-
   useEffect(() => {
-    if (merchandiseData) {
-      setMerchandise(merchandiseData);
+    if (initialData) {
+      setMerchandise(initialData);
     }
-  }, [merchandiseData]);
+  }, [initialData]);
 
   function handleFormChange(e: ChangeEvent<HTMLInputElement>): void {
     setMerchandise({ ...merchandise, [e.target.name]: e.target.value });
@@ -71,43 +69,24 @@ const ManageMerchandise: FunctionComponent = () => {
   }
 
   async function handleSaveClick(): Promise<void> {
-    if (!selectedFile && !params.id) {
+    try {
+      await onSaveClick({ formData: merchandise, image: selectedFile });
+      modal.showModal({
+        modalType: "RESOURCE_SAVED",
+        resourceName: "merchandise",
+      });
+    } catch (e) {
       modal.showModal({
         modalType: "ERROR",
-        errorMessage: "Must select a file",
-      });
-      return;
-    }
-
-    if (params.id) {
-      await updateResource({
-        resourceName: "merchandise",
-        resourceID: params.id,
-        data: merchandise,
-        image: selectedFile,
-      });
-    } else {
-      await createResource({
-        resourceName: "merchandise",
-        data: merchandise,
-        image: selectedFile,
+        errorMessage: (e as Error).message,
       });
     }
-
-    modal.showModal({
-      modalType: "RESOURCE_SAVED",
-      resourceName: "merchandise",
-    });
   }
-
-  const action = params.id ? "Update" : "Create";
-
-  const isSaving = createResourceLoading || updateResourceLoading;
 
   return (
     <>
       <Container>
-        <h2>{action} Merch</h2>
+        <h2>{title}</h2>
         <Loader isLoading={isLoading}>
           <Wrapper isMobile={isMobile}>
             <Card>
@@ -151,4 +130,4 @@ const ManageMerchandise: FunctionComponent = () => {
   );
 };
 
-export default observer(ManageMerchandise);
+export default observer(MerchandiseForm);

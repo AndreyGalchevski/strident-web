@@ -1,6 +1,5 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
 
 import { Song } from "../../api/types";
 import useMediaQuery from "../../hooks/useMediaQuery";
@@ -11,19 +10,30 @@ import Input from "../../components/Input";
 import Loader from "../../components/Loader";
 import { observer } from "mobx-react-lite";
 import useModal from "../../hooks/useModal";
-import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
-import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
-import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 import useQueryResources from "../../hooks/queries/useQueryResources";
+import { OnSaveClickParams } from "../../types";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
   margin: "auto",
 }));
 
-const ManageSong: FunctionComponent = () => {
+interface Props {
+  title: string;
+  isSaving: boolean;
+  onSaveClick: (params: OnSaveClickParams<Song>) => Promise<void>;
+  isLoading?: boolean;
+  initialData?: Song;
+}
+
+const SongForm: FunctionComponent<Props> = ({
+  title,
+  isSaving,
+  onSaveClick,
+  isLoading = false,
+  initialData,
+}) => {
   const isMobile = useMediaQuery();
-  const params = useParams<{ id: string }>();
 
   const [song, setSong] = useState<Song>({
     id: "",
@@ -36,50 +46,32 @@ const ManageSong: FunctionComponent = () => {
 
   useQueryResources("songs");
 
-  const { data: songData, isLoading } = useQuerySingleResource(
-    "songs",
-    params.id,
-    {
-      enabled: !!params?.id,
-    }
-  );
-
-  const { mutateAsync: createResource, isLoading: createResourceLoading } =
-    useMutationCreateResource();
-  const { mutateAsync: updateResource, isLoading: updateResourceLoading } =
-    useMutationUpdateResource();
-
   useEffect(() => {
-    if (songData) {
-      setSong(songData);
+    if (initialData) {
+      setSong(initialData);
     }
-  }, [songData]);
+  }, [initialData]);
 
   function handleFormChange(e: ChangeEvent<HTMLInputElement>): void {
     setSong({ ...song, [e.target.name]: e.target.value });
   }
 
   async function handleSaveClick(): Promise<void> {
-    if (params.id) {
-      await updateResource({
-        resourceName: "songs",
-        resourceID: params.id,
-        data: song,
+    try {
+      await onSaveClick({ formData: song });
+      modal.showModal({ modalType: "RESOURCE_SAVED", resourceName: "songs" });
+    } catch (e) {
+      modal.showModal({
+        modalType: "ERROR",
+        errorMessage: (e as Error).message,
       });
-    } else {
-      await createResource({ resourceName: "songs", data: song });
     }
-    modal.showModal({ modalType: "RESOURCE_SAVED", resourceName: "songs" });
   }
-
-  const action = params.id ? "Update" : "Create";
-
-  const isSaving = createResourceLoading || updateResourceLoading;
 
   return (
     <>
       <Container>
-        <h2>{action} Song</h2>
+        <h2>{title}</h2>
         <Loader isLoading={isLoading}>
           <Wrapper isMobile={isMobile}>
             <Card>
@@ -116,4 +108,4 @@ const ManageSong: FunctionComponent = () => {
   );
 };
 
-export default observer(ManageSong);
+export default observer(SongForm);

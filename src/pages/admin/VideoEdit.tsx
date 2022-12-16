@@ -1,18 +1,18 @@
 import { FunctionComponent } from "react";
-import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
-import LyricForm from "./LyricForm";
-import { Lyric } from "../../api/types";
+import VideoForm from "./VideoForm";
 import { OnSaveClickParams } from "../../types";
+import { Video } from "../../api/types";
 
-const LyricEdit: FunctionComponent = () => {
+const VideoEdit: FunctionComponent = () => {
   const params = useParams<{ id: string }>();
 
-  const { data: lyricData, isLoading: lyricLoading } = useQuerySingleResource(
-    "lyrics",
+  const { data: videoData, isLoading: videoLoading } = useQuerySingleResource(
+    "videos",
     params.id,
     {
       enabled: !!params?.id,
@@ -24,10 +24,10 @@ const LyricEdit: FunctionComponent = () => {
 
   async function handleSaveClick({
     formData,
-  }: OnSaveClickParams<Lyric>): Promise<void> {
+  }: OnSaveClickParams<Video>): Promise<void> {
     if (params.id) {
       await updateResource({
-        resourceName: "lyrics",
+        resourceName: "videos",
         resourceID: params.id,
         data: formData,
       });
@@ -35,14 +35,14 @@ const LyricEdit: FunctionComponent = () => {
   }
 
   return (
-    <LyricForm
-      title="Edit Lyric"
+    <VideoForm
+      title="Edit Video"
       isSaving={updateResourceLoading}
       onSaveClick={handleSaveClick}
-      isLoading={lyricLoading}
-      initialData={lyricData}
+      isLoading={videoLoading}
+      initialData={videoData}
     />
   );
 };
 
-export default observer(LyricEdit);
+export default observer(VideoEdit);

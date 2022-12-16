@@ -1,84 +1,89 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
-import { Video } from "../../api/types";
+import { Member } from "../../api/types";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
+import FileInput from "../../components/FileInput";
 import Loader from "../../components/Loader";
 import useModal from "../../hooks/useModal";
-import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
-import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
-import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 import useQueryResources from "../../hooks/queries/useQueryResources";
+import { OnSaveClickParams } from "../../types";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "35vw",
   margin: "auto",
 }));
 
-const ManageVideo: FunctionComponent = () => {
-  const isMobile = useMediaQuery();
-  const params = useParams<{ id: string }>();
+interface Props {
+  title: string;
+  isSaving: boolean;
+  onSaveClick: (params: OnSaveClickParams<Member>) => Promise<void>;
+  isLoading?: boolean;
+  initialData?: Member;
+}
 
-  const [video, setVideo] = useState<Video>({
+const MemberForm: FunctionComponent<Props> = ({
+  title,
+  isSaving,
+  onSaveClick,
+  isLoading = false,
+  initialData,
+}) => {
+  const isMobile = useMediaQuery();
+
+  const [member, setMember] = useState<Member>({
     id: "",
     name: "",
-    url: "",
+    instrument: "",
+    image: "",
   });
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const modal = useModal();
 
-  useQueryResources("videos");
-
-  const { data: videoData, isLoading } = useQuerySingleResource(
-    "videos",
-    params.id,
-    {
-      enabled: !!params?.id,
-    }
-  );
-
-  const { mutateAsync: createResource, isLoading: createResourceLoading } =
-    useMutationCreateResource();
-  const { mutateAsync: updateResource, isLoading: updateResourceLoading } =
-    useMutationUpdateResource();
+  useQueryResources("members");
 
   useEffect(() => {
-    if (videoData) {
-      setVideo(videoData);
+    if (initialData) {
+      setMember(initialData);
     }
-  }, [videoData]);
+  }, [initialData]);
 
   function handleFormChange(e: ChangeEvent<HTMLInputElement>): void {
-    setVideo({ ...video, [e.target.name]: e.target.value });
+    setMember({ ...member, [e.target.name]: e.target.value });
+  }
+
+  function handleImageChange(e: ChangeEvent<HTMLInputElement>): void {
+    if (e.target.files) {
+      setSelectedFile(e.target.files[0]);
+    }
   }
 
   async function handleSaveClick(): Promise<void> {
-    if (params.id) {
-      await updateResource({
-        resourceName: "videos",
-        resourceID: params.id,
-        data: video,
+    try {
+      await onSaveClick({ formData: member, image: selectedFile });
+      modal.showModal({
+        modalType: "RESOURCE_SAVED",
+        resourceName: "members",
       });
-    } else {
-      await createResource({ resourceName: "videos", data: video });
+    } catch (e) {
+      modal.showModal({
+        modalType: "ERROR",
+        errorMessage: (e as Error).message,
+      });
     }
-    modal.showModal({ modalType: "RESOURCE_SAVED", resourceName: "videos" });
   }
-
-  const action = params.id ? "Update" : "Create";
-
-  const isSaving = createResourceLoading || updateResourceLoading;
 
   return (
     <>
       <Container>
-        <h2>{action} Video</h2>
+        <h2>{title}</h2>
         <Loader isLoading={isLoading}>
           <Wrapper isMobile={isMobile}>
             <Card>
@@ -87,14 +92,15 @@ const ManageVideo: FunctionComponent = () => {
                   name="name"
                   type="text"
                   onChange={handleFormChange}
-                  value={video.name}
+                  value={member.name}
                 />
                 <Input
-                  name="url"
+                  name="instrument"
                   type="text"
                   onChange={handleFormChange}
-                  value={video.url}
+                  value={member.instrument}
                 />
+                <FileInput onChange={handleImageChange} />
               </CardContent>
               <CardAction>
                 <Button onClick={handleSaveClick} isLoading={isSaving}>
@@ -109,4 +115,4 @@ const ManageVideo: FunctionComponent = () => {
   );
 };
 
-export default observer(ManageVideo);
+export default observer(MemberForm);

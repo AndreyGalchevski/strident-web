@@ -11,16 +11,20 @@ import Gigs from "./pages/Gigs";
 import Lyrics from "./pages/Lyrics";
 import About from "./pages/About";
 import Login from "./pages/Login";
-import ManageMember from "./pages/admin/ManageMember";
-import ManageVideo from "./pages/admin/ManageVideo";
-import ManageSong from "./pages/admin/ManageSong";
-import ManageMerchandise from "./pages/admin/ManageMerchandise";
 import useAuth from "./hooks/useAuth";
 import useQueryVerifyAuth from "./hooks/queries/useQueryVerifyAuth";
 import GigCreate from "./pages/admin/GigCreate";
 import GigEdit from "./pages/admin/GigEdit";
 import LyricCreate from "./pages/admin/LyricCreate";
 import LyricEdit from "./pages/admin/LyricEdit";
+import MemberCreate from "./pages/admin/MemberCreate";
+import MemberEdit from "./pages/admin/MemberEdit";
+import MerchandiseCreate from "./pages/admin/MerchandiseCreate";
+import MerchandiseEdit from "./pages/admin/MerchandiseEdit";
+import SongCreate from "./pages/admin/SongCreate";
+import SongEdit from "./pages/admin/SongEdit";
+import VideoEdit from "./pages/admin/VideoEdit";
+import VideoCreate from "./pages/admin/VideoCreate";
 
 const Router = () => {
   const navigate = useNavigate();
@@ -51,45 +55,35 @@ const Router = () => {
       <Route path="/login" element={<Login />} />
       {auth.isAuthenticated && (
         <>
-          <Route
-            key="new-member"
-            path="/admin/members/new"
-            element={<ManageMember />}
-          />
-          <Route
-            key="edit-member"
-            path="/admin/members/edit/:id"
-            element={<ManageMember />}
-          />
+          <Route path="/admin/members/new" element={<MemberCreate />} />
+          <Route path="/admin/members/edit/:id" element={<MemberEdit />} />
           <Route
             key="new-song"
             path="/admin/songs/new"
-            element={<ManageSong />}
+            element={<SongCreate />}
           />
           <Route
             key="edit-song"
             path="/admin/songs/edit/:id"
-            element={<ManageSong />}
+            element={<SongEdit />}
           />
           <Route
             key="new-video"
             path="/admin/videos/new"
-            element={<ManageVideo />}
+            element={<VideoCreate />}
           />
           <Route
             key="edit-video"
             path="/admin/videos/edit/:id"
-            element={<ManageVideo />}
+            element={<VideoEdit />}
           />
           <Route
-            key="new-merch"
             path="/admin/merchandise/new"
-            element={<ManageMerchandise />}
+            element={<MerchandiseCreate />}
           />
           <Route
-            key="edit-merch"
             path="/admin/merchandise/edit/:id"
-            element={<ManageMerchandise />}
+            element={<MerchandiseEdit />}
           />
           <Route path="/admin/gigs/new" element={<GigCreate />} />
           <Route path="/admin/gigs/edit/:id" element={<GigEdit />} />
