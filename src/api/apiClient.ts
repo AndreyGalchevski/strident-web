@@ -17,6 +17,7 @@ const options: RequestInit = {
     "Content-Type": "application/json",
   },
   credentials: "include",
+  mode: "cors",
 };
 
 async function login(credentials: LoginCredentials): Promise<void> {
