@@ -12,7 +12,7 @@ interface Props {
 const DeleteIcon: FunctionComponent<Props> = ({
   width = 24,
   height = 24,
-  color = theme.colors.white,
+  color = theme.colors.black,
   style = {},
 }) => (
   <svg

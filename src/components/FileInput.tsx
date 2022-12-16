@@ -1,25 +1,21 @@
-import { FunctionComponent, ChangeEvent, useState } from "react";
+import { FunctionComponent, ChangeEvent, useState, useRef } from "react";
 import styled from "styled-components";
+
+import Button from "./Button";
 
 const Wrapper = styled.div({
   display: "flex",
   flexDirection: "column",
-  paddingTop: 8,
+  alignItems: "center",
+  justifyContent: "center",
 });
-
-const InputContainer = styled.label({});
-
-const InputButton = styled.p(({ theme: { colors } }) => ({
-  padding: 8,
-  backgroundColor: colors.red,
-  color: colors.white,
-}));
 
 export interface Props {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FileInput: FunctionComponent<Props> = ({ onChange }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState("");
 
   function handleChange(event: ChangeEvent<HTMLInputElement>): void {
@@ -31,15 +27,18 @@ const FileInput: FunctionComponent<Props> = ({ onChange }) => {
 
   return (
     <Wrapper>
-      <InputContainer>
-        <InputButton>File</InputButton>
+      <label style={{ marginBottom: 5 }}>
+        <Button isPrimary={false} onClick={() => fileInputRef.current?.click()}>
+          File
+        </Button>
         <input
           type="file"
           onChange={handleChange}
           style={{ display: "none" }}
+          ref={fileInputRef}
         />
-      </InputContainer>
-      <p style={{ margin: 0 }}>{fileName}</p>
+      </label>
+      <p>{fileName}</p>
     </Wrapper>
   );
 };

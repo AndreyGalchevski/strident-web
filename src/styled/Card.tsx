@@ -25,6 +25,9 @@ export const CardTitle = styled.p({
 });
 
 export const CardAction = styled.div(({ theme: { colors } }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
   backgroundColor: "inherit",
   borderTopStyle: `solid`,
   borderTopColor: colors.darkGrey,

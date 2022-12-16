@@ -149,7 +149,11 @@ const GigForm: FunctionComponent<Props> = ({
                 <FileInput onChange={handleImageChange} />
               </CardContent>
               <CardAction>
-                <Button onClick={handleSaveClick} isLoading={isSaving}>
+                <Button
+                  onClick={handleSaveClick}
+                  isLoading={isSaving}
+                  fullWidth
+                >
                   Save
                 </Button>
               </CardAction>

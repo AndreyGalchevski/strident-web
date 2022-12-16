@@ -96,7 +96,11 @@ const SongForm: FunctionComponent<Props> = ({
                 />
               </CardContent>
               <CardAction>
-                <Button onClick={handleSaveClick} isLoading={isSaving}>
+                <Button
+                  onClick={handleSaveClick}
+                  isLoading={isSaving}
+                  fullWidth
+                >
                   Save
                 </Button>
               </CardAction>
