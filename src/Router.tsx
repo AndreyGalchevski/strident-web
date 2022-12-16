@@ -13,18 +13,7 @@ import About from "./pages/About";
 import Login from "./pages/Login";
 import useAuth from "./hooks/useAuth";
 import useQueryVerifyAuth from "./hooks/queries/useQueryVerifyAuth";
-import GigCreate from "./pages/admin/GigCreate";
-import GigEdit from "./pages/admin/GigEdit";
-import LyricCreate from "./pages/admin/LyricCreate";
-import LyricEdit from "./pages/admin/LyricEdit";
-import MemberCreate from "./pages/admin/MemberCreate";
-import MemberEdit from "./pages/admin/MemberEdit";
-import MerchandiseCreate from "./pages/admin/MerchandiseCreate";
-import MerchandiseEdit from "./pages/admin/MerchandiseEdit";
-import SongCreate from "./pages/admin/SongCreate";
-import SongEdit from "./pages/admin/SongEdit";
-import VideoEdit from "./pages/admin/VideoEdit";
-import VideoCreate from "./pages/admin/VideoCreate";
+import AdminRouter from "./pages/admin/AdminRouter";
 
 const Router = () => {
   const navigate = useNavigate();
@@ -54,42 +43,7 @@ const Router = () => {
       <Route path="/about" element={<About />} />
       <Route path="/login" element={<Login />} />
       {auth.isAuthenticated && (
-        <>
-          <Route path="/admin/members/new" element={<MemberCreate />} />
-          <Route path="/admin/members/edit/:id" element={<MemberEdit />} />
-          <Route
-            key="new-song"
-            path="/admin/songs/new"
-            element={<SongCreate />}
-          />
-          <Route
-            key="edit-song"
-            path="/admin/songs/edit/:id"
-            element={<SongEdit />}
-          />
-          <Route
-            key="new-video"
-            path="/admin/videos/new"
-            element={<VideoCreate />}
-          />
-          <Route
-            key="edit-video"
-            path="/admin/videos/edit/:id"
-            element={<VideoEdit />}
-          />
-          <Route
-            path="/admin/merchandise/new"
-            element={<MerchandiseCreate />}
-          />
-          <Route
-            path="/admin/merchandise/edit/:id"
-            element={<MerchandiseEdit />}
-          />
-          <Route path="/admin/gigs/new" element={<GigCreate />} />
-          <Route path="/admin/gigs/edit/:id" element={<GigEdit />} />
-          <Route path="/admin/lyrics/new" element={<LyricCreate />} />
-          <Route path="/admin/lyrics/edit/:id" element={<LyricEdit />} />
-        </>
+        <Route path="/admin/*" element={<AdminRouter />} />
       )}
     </Routes>
   );
