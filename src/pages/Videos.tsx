@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
@@ -9,12 +10,43 @@ import { Card, CardContent, CardAction } from "../styled/Card";
 import Header from "../components/Header";
 import Button from "../components/Button";
 import Fab from "../components/Fab";
-import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import useQueryResources from "../hooks/queries/useQueryResources";
 import useModal from "../hooks/useModal";
 import useAuth from "../hooks/useAuth";
+import theme from "../utils/theme";
+import LoadableIFrame from "../components/LoadableIFrame";
+
+const SingleSkeleton = () => {
+  return (
+    <SkeletonTheme
+      baseColor={theme.colors.darkGrey}
+      highlightColor={theme.colors.grey}
+    >
+      <Skeleton height={315} borderRadius={30} />
+    </SkeletonTheme>
+  );
+};
+
+const Skeletons: FunctionComponent<{ isMobile: boolean }> = ({ isMobile }) => {
+  return (
+    <SkeletonTheme
+      baseColor={theme.colors.darkGrey}
+      highlightColor={theme.colors.grey}
+    >
+      <Masonry isMobile={isMobile}>
+        {[1, 2, 3, 4, 5, 6].map((it) => (
+          <MasonryBrick key={it}>
+            <Card>
+              <Skeleton height={315} borderRadius={30} />
+            </Card>
+          </MasonryBrick>
+        ))}
+      </Masonry>
+    </SkeletonTheme>
+  );
+};
 
 const Videos: FunctionComponent = () => {
   const auth = useAuth();
@@ -42,33 +74,34 @@ const Videos: FunctionComponent = () => {
     <Container>
       <Header title="Videos" />
       {auth.isAuthenticated && <Fab url="/admin/videos/create" />}
-      <Loader isLoading={videosLoading}>
+      {videosLoading ? (
+        <Skeletons isMobile={isMobile} />
+      ) : (
         <Masonry isMobile={isMobile}>
-          {videosData?.map((video) => (
-            <MasonryBrick key={video.id}>
+          {videosData?.map((it) => (
+            <MasonryBrick key={it.id}>
               <Card>
                 <CardContent style={{ padding: 0 }}>
-                  <iframe
-                    title={video.name}
-                    src={video.url}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    width="100%"
-                    height="315"
+                  <LoadableIFrame
+                    title={it.name}
+                    src={it.url}
                     style={{ borderRadius: 30 }}
+                    height={315}
+                    allowFullScreen
+                    loader={<SingleSkeleton />}
                   />
                 </CardContent>
                 {auth.isAuthenticated && (
                   <CardAction>
                     <Button
                       isPrimary={false}
-                      onClick={() => handleUpdateClick(video.id)}
+                      onClick={() => handleUpdateClick(it.id)}
                     >
                       <EditIcon />
                     </Button>
                     <Button
                       isPrimary={false}
-                      onClick={() => handleDeleteClick(video.id)}
+                      onClick={() => handleDeleteClick(it.id)}
                     >
                       <DeleteIcon />
                     </Button>
@@ -78,7 +111,7 @@ const Videos: FunctionComponent = () => {
             </MasonryBrick>
           ))}
         </Masonry>
-      </Loader>
+      )}
     </Container>
   );
 };

@@ -85,6 +85,7 @@ const Songs: FunctionComponent = () => {
                     title={it.name}
                     src={it.url}
                     style={{ borderRadius: 30 }}
+                    height={236}
                     loader={<SingleSkeleton />}
                   />
                 </CardContent>
