@@ -8,12 +8,44 @@ import { Card, CardContent, CardAction } from "../styled/Card";
 import Header from "../components/Header";
 import Button from "../components/Button";
 import Fab from "../components/Fab";
-import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import useQueryResources from "../hooks/queries/useQueryResources";
 import useModal from "../hooks/useModal";
 import useAuth from "../hooks/useAuth";
+import LoadableIFrame from "../components/LoadableIFrame";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import theme from "../utils/theme";
+
+const SingleSkeleton = () => {
+  return (
+    <SkeletonTheme
+      baseColor={theme.colors.darkGrey}
+      highlightColor={theme.colors.grey}
+    >
+      <Skeleton height={236} borderRadius={30} />
+    </SkeletonTheme>
+  );
+};
+
+const Skeletons: FunctionComponent<{ isMobile: boolean }> = ({ isMobile }) => {
+  return (
+    <SkeletonTheme
+      baseColor={theme.colors.darkGrey}
+      highlightColor={theme.colors.grey}
+    >
+      <Masonry isMobile={isMobile}>
+        {[1, 2, 3, 4, 5, 6].map((it) => (
+          <MasonryBrick key={it}>
+            <Card>
+              <Skeleton height={236} borderRadius={30} />
+            </Card>
+          </MasonryBrick>
+        ))}
+      </Masonry>
+    </SkeletonTheme>
+  );
+};
 
 const Songs: FunctionComponent = () => {
   const auth = useAuth();
@@ -41,19 +73,19 @@ const Songs: FunctionComponent = () => {
     <Container>
       <Header title="Songs" />
       {auth.isAuthenticated && <Fab url="/admin/songs/create" />}
-      <Loader isLoading={songsLoading}>
+      {songsLoading ? (
+        <Skeletons isMobile={isMobile} />
+      ) : (
         <Masonry isMobile={isMobile}>
           {songsData?.map((it) => (
             <MasonryBrick key={it.id}>
               <Card>
                 <CardContent style={{ padding: 0 }}>
-                  <iframe
+                  <LoadableIFrame
                     title={it.name}
                     src={it.url}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    width="100%"
-                    height="236"
                     style={{ borderRadius: 30 }}
+                    loader={<SingleSkeleton />}
                   />
                 </CardContent>
                 {auth.isAuthenticated && (
@@ -76,7 +108,7 @@ const Songs: FunctionComponent = () => {
             </MasonryBrick>
           ))}
         </Masonry>
-      </Loader>
+      )}
     </Container>
   );
 };
