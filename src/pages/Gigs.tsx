@@ -30,12 +30,20 @@ const Skeletons: FunctionComponent<{ isMobile: boolean }> = ({ isMobile }) => {
         {[1, 2, 3, 4].map((it) => (
           <MasonryBrick key={it}>
             <Card>
-              <Skeleton height={200} />
+              <Skeleton
+                height={200}
+                style={{
+                  borderTopLeftRadius: 30,
+                  borderTopRightRadius: 30,
+                  borderBottomLeftRadius: 0,
+                  borderBottomRightRadius: 0,
+                }}
+              />
               <CardContent style={{ maxHeight: 202 }}>
                 <Skeleton count={1} style={{ marginBottom: 16 }} />
                 <Skeleton count={1} style={{ marginBottom: 16 }} />
                 <Skeleton count={1} style={{ marginBottom: 16 }} />
-                <Skeleton count={1} style={{ marginBottom: 40 }} />
+                <Skeleton count={1} style={{ marginBottom: 30 }} />
               </CardContent>
             </Card>
           </MasonryBrick>

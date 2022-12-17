@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 import useMediaQuery from "../hooks/useMediaQuery";
 import Container from "../styled/Container";
@@ -16,7 +17,6 @@ import HalfwayTab from "../styled/HalfwayTab";
 import Button from "../components/Button";
 import Header from "../components/Header";
 import Fab from "../components/Fab";
-import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import ShoppingCartIcon from "../components/icons/ShoppingCart";
@@ -25,6 +25,39 @@ import useModal from "../hooks/useModal";
 import useAuth from "../hooks/useAuth";
 import { formatCurrency } from "../utils/currency";
 import { getWebPImageURL } from "../utils/general";
+import theme from "../utils/theme";
+
+const Skeletons: FunctionComponent<{ isMobile: boolean }> = ({ isMobile }) => {
+  return (
+    <SkeletonTheme
+      baseColor={theme.colors.darkGrey}
+      highlightColor={theme.colors.grey}
+    >
+      <Masonry isMobile={isMobile}>
+        {[1, 2, 3, 4].map((it) => (
+          <MasonryBrick key={it}>
+            <Card>
+              <Skeleton
+                height={400}
+                style={{
+                  borderTopLeftRadius: 30,
+                  borderTopRightRadius: 30,
+                  borderBottomLeftRadius: 0,
+                  borderBottomRightRadius: 0,
+                }}
+              />
+              <CardContent style={{ maxHeight: 202 }}>
+                <Skeleton count={1} style={{ marginBottom: 16 }} />
+                <Skeleton count={1} style={{ marginBottom: 16 }} />
+                <Skeleton count={1} style={{ marginBottom: 40 }} />
+              </CardContent>
+            </Card>
+          </MasonryBrick>
+        ))}
+      </Masonry>
+    </SkeletonTheme>
+  );
+};
 
 const PriceContainer = styled.p({
   display: "flex",
@@ -58,7 +91,9 @@ const Merchandises: FunctionComponent = () => {
     <Container>
       <Header title="Merch" />
       {auth.isAuthenticated && <Fab url="/admin/merchandise/create" />}
-      <Loader isLoading={merchandiseLoading}>
+      {merchandiseLoading ? (
+        <Skeletons isMobile={isMobile} />
+      ) : (
         <Masonry isMobile={isMobile}>
           {merchandiseData?.map((it) => (
             <MasonryBrick key={it.id}>
@@ -110,7 +145,7 @@ const Merchandises: FunctionComponent = () => {
             </MasonryBrick>
           ))}
         </Masonry>
-      </Loader>
+      )}
     </Container>
   );
 };
