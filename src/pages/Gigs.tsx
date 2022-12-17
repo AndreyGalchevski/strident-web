@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 
 import useMediaQuery from "../hooks/useMediaQuery";
-import { formatDate, formatTime } from "../utils/general";
+import { formatDate, formatTime, getWebPImageURL } from "../utils/general";
 import Container from "../styled/Container";
 import { Masonry, MasonryBrick } from "../styled/Masonry";
 import { Card, CardContent, CardImage, CardAction } from "../styled/Card";
@@ -51,6 +51,10 @@ const Gigs: FunctionComponent = () => {
               <Card>
                 <div>
                   <picture>
+                    <source
+                      srcSet={getWebPImageURL(it.image)}
+                      type="image/webp"
+                    />
                     <source srcSet={it.image} type="image/jpeg" />
                     <CardImage src={it.image} alt="" />
                   </picture>

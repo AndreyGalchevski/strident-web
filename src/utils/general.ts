@@ -49,3 +49,13 @@ export const sleep = (ms: number) =>
       resolve();
     }, ms);
   });
+
+export const getWebPImageURL = (imageURL: string) => {
+  const [partOne, partTwo] = imageURL.split("upload");
+
+  if (!partOne || !partTwo) {
+    return imageURL;
+  }
+
+  return `${partOne}upload/f_auto${partTwo}`;
+};

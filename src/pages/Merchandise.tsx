@@ -24,6 +24,7 @@ import useQueryResources from "../hooks/queries/useQueryResources";
 import useModal from "../hooks/useModal";
 import useAuth from "../hooks/useAuth";
 import { formatCurrency } from "../utils/currency";
+import { getWebPImageURL } from "../utils/general";
 
 const PriceContainer = styled.p({
   display: "flex",
@@ -64,6 +65,10 @@ const Merchandises: FunctionComponent = () => {
               <Card>
                 <div>
                   <picture>
+                    <source
+                      srcSet={getWebPImageURL(it.image)}
+                      type="image/webp"
+                    />
                     <source srcSet={it.image} type="image/jpeg" />
                     <CardImage src={it.image} alt="" />
                   </picture>

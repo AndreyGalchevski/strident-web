@@ -20,6 +20,7 @@ import DeleteIcon from "../components/icons/Delete";
 import useQueryResources from "../hooks/queries/useQueryResources";
 import useModal from "../hooks/useModal";
 import useAuth from "../hooks/useAuth";
+import { getWebPImageURL } from "../utils/general";
 
 const MembersContainer = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   display: "flex",
@@ -65,6 +66,10 @@ const Members: FunctionComponent = () => {
               <Card>
                 <div>
                   <picture>
+                    <source
+                      srcSet={getWebPImageURL(it.image)}
+                      type="image/webp"
+                    />
                     <source srcSet={it.image} type="image/jpeg" />
                     <CardImage src={it.image} alt="" />
                   </picture>
