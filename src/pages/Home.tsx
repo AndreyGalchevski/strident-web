@@ -41,7 +41,7 @@ const Home: FunctionComponent = () => {
         <picture>
           <source
             media="(max-width: 785px)"
-            srcSet="https://res.cloudinary.com/dqvimfd8b/image/upload/v1572275145/strident/static/march-of-plague-banner-high-ng.webp"
+            srcSet="https://res.cloudinary.com/dqvimfd8b/image/upload/f_auto/v1572275145/strident/static/march-of-plague-banner-high.jpg"
             type="image/webp"
           />
           <source
@@ -51,7 +51,7 @@ const Home: FunctionComponent = () => {
           />
           <source
             media="(min-width: 786px)"
-            srcSet="https://res.cloudinary.com/dqvimfd8b/image/upload/v1572275146/strident/static/march-of-plague-banner-wide-ng.webp"
+            srcSet="https://res.cloudinary.com/dqvimfd8b/image/upload/f_auto/v1572275146/strident/static/march-of-plague-banner-wide.jpg"
             type="image/webp"
           />
           <source
