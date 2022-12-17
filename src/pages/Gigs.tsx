@@ -1,5 +1,6 @@
 import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 import useMediaQuery from "../hooks/useMediaQuery";
 import { formatDate, formatTime, getWebPImageURL } from "../utils/general";
@@ -10,7 +11,6 @@ import HalfwayTab from "../styled/HalfwayTab";
 import Button from "../components/Button";
 import Header from "../components/Header";
 import Fab from "../components/Fab";
-import Loader from "../components/Loader";
 import EditIcon from "../components/icons/Edit";
 import DeleteIcon from "../components/icons/Delete";
 import DirectionsIcon from "../components/icons/Directions";
@@ -18,6 +18,32 @@ import EventIcon from "../components/icons/Event";
 import useModal from "../hooks/useModal";
 import useAuth from "../hooks/useAuth";
 import useQueryResources from "../hooks/queries/useQueryResources";
+import theme from "../utils/theme";
+
+const Skeletons: FunctionComponent<{ isMobile: boolean }> = ({ isMobile }) => {
+  return (
+    <SkeletonTheme
+      baseColor={theme.colors.darkGrey}
+      highlightColor={theme.colors.grey}
+    >
+      <Masonry isMobile={isMobile}>
+        {[1, 2, 3, 4].map((it) => (
+          <MasonryBrick key={it}>
+            <Card>
+              <Skeleton height={200} />
+              <CardContent style={{ maxHeight: 202 }}>
+                <Skeleton count={1} style={{ marginBottom: 16 }} />
+                <Skeleton count={1} style={{ marginBottom: 16 }} />
+                <Skeleton count={1} style={{ marginBottom: 16 }} />
+                <Skeleton count={1} style={{ marginBottom: 40 }} />
+              </CardContent>
+            </Card>
+          </MasonryBrick>
+        ))}
+      </Masonry>
+    </SkeletonTheme>
+  );
+};
 
 const Gigs: FunctionComponent = () => {
   const auth = useAuth();
@@ -44,7 +70,9 @@ const Gigs: FunctionComponent = () => {
     <Container>
       <Header title="Gigs" />
       {auth.isAuthenticated && <Fab url="/admin/gigs/create" />}
-      <Loader isLoading={gigsLoading}>
+      {gigsLoading ? (
+        <Skeletons isMobile={isMobile} />
+      ) : (
         <Masonry isMobile={isMobile}>
           {gigsData?.map((it) => (
             <MasonryBrick key={it.id}>
@@ -102,7 +130,7 @@ const Gigs: FunctionComponent = () => {
             </MasonryBrick>
           ))}
         </Masonry>
-      </Loader>
+      )}
     </Container>
   );
 };
