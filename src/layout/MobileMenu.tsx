@@ -1,7 +1,8 @@
-import { FunctionComponent } from "react";
+import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 
 import Hamburger from "../components/Hamburger";
+import useSideMenu from "../hooks/useSideMenu";
 import Logo from "./Logo";
 
 const Wrapper = styled.div({
@@ -17,18 +18,22 @@ const Divider = styled.div({
   flex: 1,
 });
 
-interface Props {
-  onHamburgerClick: () => void;
-}
+const MobileMenu = () => {
+  const sideMenu = useSideMenu();
 
-const MobileMenu: FunctionComponent<Props> = ({ onHamburgerClick }) => (
-  <Wrapper>
-    <Hamburger onClick={onHamburgerClick} style={{ flex: 1 }} />
-    <LogoWrapper>
-      <Logo />
-    </LogoWrapper>
-    <Divider />
-  </Wrapper>
-);
+  const handleMenuClick = () => {
+    sideMenu.toggle();
+  };
 
-export default MobileMenu;
+  return (
+    <Wrapper>
+      <Hamburger onClick={handleMenuClick} style={{ flex: 1 }} />
+      <LogoWrapper>
+        <Logo />
+      </LogoWrapper>
+      <Divider />
+    </Wrapper>
+  );
+};
+
+export default observer(MobileMenu);

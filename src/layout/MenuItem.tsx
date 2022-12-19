@@ -5,7 +5,8 @@ import theme from "../utils/theme";
 
 const baseLinkStyle = {
   color: theme.colors.white,
-  margin: "auto",
+  paddingTop: 8,
+  paddingBottom: 8,
 };
 
 interface MenuItemProps {

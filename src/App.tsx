@@ -10,6 +10,7 @@ import theme from "./utils/theme";
 import { ModalProvider } from "./context/ModalContext";
 import SystemModal from "./components/SystemModal";
 import Router from "./Router";
+import { SideMenuProvider } from "./context/SideMenuContext";
 
 const Main = styled.main({
   overflowY: "scroll",
@@ -35,12 +36,14 @@ const App: FunctionComponent = () => {
         <QueryClientProvider client={queryClient}>
           <ModalProvider>
             <AuthProvider>
-              <Navbar />
-              <Main>
-                <Router />
-              </Main>
-              <Footer />
-              <SystemModal />
+              <SideMenuProvider>
+                <Navbar />
+                <Main id="main-app">
+                  <Router />
+                </Main>
+                <Footer />
+                <SystemModal />
+              </SideMenuProvider>
             </AuthProvider>
           </ModalProvider>
         </QueryClientProvider>

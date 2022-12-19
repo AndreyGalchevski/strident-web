@@ -30,6 +30,7 @@ const RightLinks = styled.div({
 });
 
 const menuItemStyle = {
+  margin: 16,
   marginRight: 16,
   marginLeft: 16,
 };

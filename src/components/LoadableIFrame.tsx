@@ -15,7 +15,6 @@ const LoadableIFrame: FunctionComponent<Props> = ({
 
   const handleLoad = () => {
     setIsLoading(false);
-    console.log("Loaded");
   };
 
   return (
