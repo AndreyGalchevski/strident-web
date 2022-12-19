@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Card = styled.div(({ theme: { colors } }) => ({
   position: "relative",
-  marginTop: 8,
   marginRight: 0,
   marginBottom: 16,
   marginLeft: 0,
