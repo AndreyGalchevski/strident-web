@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 import LyricForm from "./LyricForm";
 import { OnSaveClickParams } from "../../types";
-import { Lyric } from "../../api/types";
+import { LyricFormData } from "../../api/types";
 
 const LyricCreate: FunctionComponent = () => {
   const { mutateAsync: createResource, isLoading: createResourceLoading } =
@@ -12,7 +12,7 @@ const LyricCreate: FunctionComponent = () => {
 
   async function handleSaveClick({
     formData,
-  }: OnSaveClickParams<Lyric>): Promise<void> {
+  }: OnSaveClickParams<LyricFormData>): Promise<void> {
     await createResource({ resourceName: "lyrics", data: formData });
   }
 

@@ -6,7 +6,7 @@ import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
 import VideoForm from "./VideoForm";
 import { OnSaveClickParams } from "../../types";
-import { Video } from "../../api/types";
+import { VideoFormData } from "../../api/types";
 
 const VideoEdit: FunctionComponent = () => {
   const params = useParams<{ id: string }>();
@@ -24,7 +24,7 @@ const VideoEdit: FunctionComponent = () => {
 
   async function handleSaveClick({
     formData,
-  }: OnSaveClickParams<Video>): Promise<void> {
+  }: OnSaveClickParams<VideoFormData>): Promise<void> {
     if (params.id) {
       await updateResource({
         resourceName: "videos",

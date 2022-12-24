@@ -1,4 +1,4 @@
-import { ResourceName } from "../../../api/apiClient";
+import { ResourceName } from "../../../api/types";
 import useMutationDeleteResource from "../../../hooks/mutations/useMutationDeleteResource";
 import Button from "../../Button";
 

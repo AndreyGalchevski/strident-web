@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { ResourceName } from "../../../api/apiClient";
+import { ResourceName } from "../../../api/types";
 import Button from "../../Button";
 
 interface Props {

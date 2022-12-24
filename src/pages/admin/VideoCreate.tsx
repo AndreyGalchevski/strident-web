@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 
 import VideoForm from "./VideoForm";
 import { OnSaveClickParams } from "../../types";
-import { Video } from "../../api/types";
+import { VideoFormData } from "../../api/types";
 import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 
 const VideoCreate: FunctionComponent = () => {
@@ -12,7 +12,7 @@ const VideoCreate: FunctionComponent = () => {
 
   async function handleSaveClick({
     formData,
-  }: OnSaveClickParams<Video>): Promise<void> {
+  }: OnSaveClickParams<VideoFormData>): Promise<void> {
     await createResource({
       resourceName: "videos",
       data: formData,

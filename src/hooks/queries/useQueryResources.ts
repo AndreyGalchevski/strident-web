@@ -1,6 +1,7 @@
 import { useQuery, UseQueryOptions, UseQueryResult } from "react-query";
 
-import apiClient, { Resource, ResourceName } from "../../api/apiClient";
+import apiClient from "../../api/apiClient";
+import { Resource, ResourceName } from "../../api/types";
 import { resourcesQueryKey } from "../../utils/queryKeys";
 
 const useQueryResources = <T extends ResourceName>(

@@ -2,7 +2,7 @@ import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
-import { Video } from "../../api/types";
+import { Video, VideoFormData } from "../../api/types";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -21,7 +21,7 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 interface Props {
   title: string;
   isSaving: boolean;
-  onSaveClick: (params: OnSaveClickParams<Video>) => Promise<void>;
+  onSaveClick: (params: OnSaveClickParams<VideoFormData>) => Promise<void>;
   isLoading?: boolean;
   initialData?: Video;
 }
@@ -35,8 +35,7 @@ const VideoForm: FunctionComponent<Props> = ({
 }) => {
   const isMobile = useMediaQuery();
 
-  const [video, setVideo] = useState<Video>({
-    id: "",
+  const [video, setVideo] = useState<VideoFormData>({
     name: "",
     url: "",
   });
@@ -47,7 +46,7 @@ const VideoForm: FunctionComponent<Props> = ({
 
   useEffect(() => {
     if (initialData) {
-      setVideo(initialData);
+      setVideo({ name: initialData.name, url: initialData.url });
     }
   }, [initialData]);
 

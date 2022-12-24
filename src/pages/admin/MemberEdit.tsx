@@ -6,7 +6,7 @@ import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
 import MemberForm from "./MemberForm";
 import { OnSaveClickParams } from "../../types";
-import { Member } from "../../api/types";
+import { MemberFormData } from "../../api/types";
 
 const MemberEdit: FunctionComponent = () => {
   const params = useParams<{ id: string }>();
@@ -25,7 +25,7 @@ const MemberEdit: FunctionComponent = () => {
   async function handleSaveClick({
     formData,
     image,
-  }: OnSaveClickParams<Member>): Promise<void> {
+  }: OnSaveClickParams<MemberFormData>): Promise<void> {
     if (params.id) {
       await updateResource({
         resourceName: "members",

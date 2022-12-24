@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
-import { Merchandise } from "../../api/types";
+import { MerchandiseFormData } from "../../api/types";
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
 import MerchandiseForm from "./MerchandiseForm";
@@ -22,7 +22,7 @@ const MerchandiseEdit: FunctionComponent = () => {
   async function handleSaveClick({
     formData,
     image,
-  }: OnSaveClickParams<Merchandise>): Promise<void> {
+  }: OnSaveClickParams<MerchandiseFormData>): Promise<void> {
     if (params.id) {
       await updateResource({
         resourceName: "merchandise",

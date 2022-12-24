@@ -2,7 +2,7 @@ import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
-import { Lyric } from "../../api/types";
+import { Lyric, LyricFormData } from "../../api/types";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -22,7 +22,7 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 interface Props {
   title: string;
   isSaving: boolean;
-  onSaveClick: (params: OnSaveClickParams<Lyric>) => Promise<void>;
+  onSaveClick: (params: OnSaveClickParams<LyricFormData>) => Promise<void>;
   isLoading?: boolean;
   initialData?: Lyric;
 }
@@ -36,8 +36,7 @@ const LyricForm: FunctionComponent<Props> = ({
 }) => {
   const isMobile = useMediaQuery();
 
-  const [lyric, setLyric] = useState<Lyric>({
-    id: "",
+  const [lyric, setLyric] = useState<LyricFormData>({
     name: "",
     text: "",
   });
@@ -48,7 +47,7 @@ const LyricForm: FunctionComponent<Props> = ({
 
   useEffect(() => {
     if (initialData) {
-      setLyric(initialData);
+      setLyric({ name: initialData.name, text: initialData.text });
     }
   }, [initialData]);
 

@@ -1,9 +1,7 @@
 import { useMutation, useQueryClient } from "react-query";
 
-import apiClient, {
-  ResourceName,
-  CreateResourceParams,
-} from "../../api/apiClient";
+import apiClient, { CreateResourceParams } from "../../api/apiClient";
+import { ResourceName } from "../../api/types";
 import { resourcesQueryKey } from "../../utils/queryKeys";
 
 const useMutationCreateResource = <T extends ResourceName>() => {

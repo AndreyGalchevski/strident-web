@@ -1,7 +1,7 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
 
-import { Song } from "../../api/types";
+import { Song, SongFormData } from "../../api/types";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -21,7 +21,7 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 interface Props {
   title: string;
   isSaving: boolean;
-  onSaveClick: (params: OnSaveClickParams<Song>) => Promise<void>;
+  onSaveClick: (params: OnSaveClickParams<SongFormData>) => Promise<void>;
   isLoading?: boolean;
   initialData?: Song;
 }
@@ -35,8 +35,7 @@ const SongForm: FunctionComponent<Props> = ({
 }) => {
   const isMobile = useMediaQuery();
 
-  const [song, setSong] = useState<Song>({
-    id: "",
+  const [song, setSong] = useState<SongFormData>({
     album: "",
     name: "",
     url: "",
@@ -48,7 +47,11 @@ const SongForm: FunctionComponent<Props> = ({
 
   useEffect(() => {
     if (initialData) {
-      setSong(initialData);
+      setSong({
+        album: initialData.album,
+        name: initialData.name,
+        url: initialData.url,
+      });
     }
   }, [initialData]);
 

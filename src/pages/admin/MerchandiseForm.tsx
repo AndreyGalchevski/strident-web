@@ -2,7 +2,7 @@ import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
-import { Merchandise } from "../../api/types";
+import { Merchandise, MerchandiseFormData } from "../../api/types";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -22,7 +22,9 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 interface Props {
   title: string;
   isSaving: boolean;
-  onSaveClick: (params: OnSaveClickParams<Merchandise>) => Promise<void>;
+  onSaveClick: (
+    params: OnSaveClickParams<MerchandiseFormData>
+  ) => Promise<void>;
   isLoading?: boolean;
   initialData?: Merchandise;
 }
@@ -36,14 +38,11 @@ const MerchandiseForm: FunctionComponent<Props> = ({
 }) => {
   const isMobile = useMediaQuery();
 
-  const [merchandise, setMerchandise] = useState<Merchandise>({
-    id: "",
+  const [merchandise, setMerchandise] = useState<MerchandiseFormData>({
     name: "",
     type: "",
     price: 0,
     url: "",
-    image: "",
-    imageNG: "",
   });
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -54,7 +53,12 @@ const MerchandiseForm: FunctionComponent<Props> = ({
 
   useEffect(() => {
     if (initialData) {
-      setMerchandise(initialData);
+      setMerchandise({
+        name: initialData.name,
+        type: initialData.type,
+        price: initialData.price,
+        url: initialData.url,
+      });
     }
   }, [initialData]);
 

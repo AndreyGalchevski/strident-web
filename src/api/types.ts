@@ -35,7 +35,6 @@ export interface Merchandise extends Record<string, unknown> {
   price: number;
   url: string;
   image: string;
-  imageNG: string;
 }
 
 export interface Gig extends Record<string, unknown> {
@@ -54,3 +53,57 @@ export interface Lyric extends Record<string, unknown> {
   name: string;
   text: string;
 }
+
+export type ResourceName =
+  | "gigs"
+  | "lyrics"
+  | "members"
+  | "merchandise"
+  | "songs"
+  | "videos";
+
+export type Resource<T> = T extends "gigs"
+  ? Gig
+  : T extends "lyrics"
+  ? Lyric
+  : T extends "members"
+  ? Member
+  : T extends "merchandise"
+  ? Merchandise
+  : T extends "songs"
+  ? Song
+  : T extends "videos"
+  ? Video
+  : never;
+
+export type GigFormData = Pick<
+  Gig,
+  "name" | "venue" | "address" | "city" | "date" | "fbEvent"
+>;
+
+export type LyricFormData = Pick<Lyric, "name" | "text">;
+
+export type MemberFormData = Pick<Member, "name" | "instrument">;
+
+export type MerchandiseFormData = Pick<
+  Merchandise,
+  "name" | "type" | "price" | "url"
+>;
+
+export type SongFormData = Pick<Song, "name" | "album" | "url">;
+
+export type VideoFormData = Pick<Video, "name" | "url">;
+
+export type ResourceFormData<T> = T extends "gigs"
+  ? GigFormData
+  : T extends "lyrics"
+  ? LyricFormData
+  : T extends "members"
+  ? MemberFormData
+  : T extends "merchandise"
+  ? MerchandiseFormData
+  : T extends "songs"
+  ? SongFormData
+  : T extends "videos"
+  ? VideoFormData
+  : never;

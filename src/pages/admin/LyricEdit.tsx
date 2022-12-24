@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
 import LyricForm from "./LyricForm";
-import { Lyric } from "../../api/types";
+import { LyricFormData } from "../../api/types";
 import { OnSaveClickParams } from "../../types";
 
 const LyricEdit: FunctionComponent = () => {
@@ -24,7 +24,7 @@ const LyricEdit: FunctionComponent = () => {
 
   async function handleSaveClick({
     formData,
-  }: OnSaveClickParams<Lyric>): Promise<void> {
+  }: OnSaveClickParams<LyricFormData>): Promise<void> {
     if (params.id) {
       await updateResource({
         resourceName: "lyrics",

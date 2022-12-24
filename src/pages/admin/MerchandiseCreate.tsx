@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { observer } from "mobx-react-lite";
 
-import { Merchandise } from "../../api/types";
+import { MerchandiseFormData } from "../../api/types";
 import MerchandiseForm from "./MerchandiseForm";
 import { OnSaveClickParams } from "../../types";
 import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
@@ -14,7 +14,7 @@ const MerchandiseCreate: FunctionComponent = () => {
   async function handleSaveClick({
     formData,
     image,
-  }: OnSaveClickParams<Merchandise>): Promise<void> {
+  }: OnSaveClickParams<MerchandiseFormData>): Promise<void> {
     if (!image) {
       throw new Error(FILE_NOT_SELECTED_ERROR);
     }

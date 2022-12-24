@@ -2,7 +2,7 @@ import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
-import { Member } from "../../api/types";
+import { Member, MemberFormData } from "../../api/types";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
@@ -22,7 +22,7 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 interface Props {
   title: string;
   isSaving: boolean;
-  onSaveClick: (params: OnSaveClickParams<Member>) => Promise<void>;
+  onSaveClick: (params: OnSaveClickParams<MemberFormData>) => Promise<void>;
   isLoading?: boolean;
   initialData?: Member;
 }
@@ -36,11 +36,9 @@ const MemberForm: FunctionComponent<Props> = ({
 }) => {
   const isMobile = useMediaQuery();
 
-  const [member, setMember] = useState<Member>({
-    id: "",
+  const [member, setMember] = useState<MemberFormData>({
     name: "",
     instrument: "",
-    image: "",
   });
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -51,7 +49,7 @@ const MemberForm: FunctionComponent<Props> = ({
 
   useEffect(() => {
     if (initialData) {
-      setMember(initialData);
+      setMember({ name: initialData.name, instrument: initialData.instrument });
     }
   }, [initialData]);
 

@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 
 import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 import MemberForm from "./MemberForm";
-import { Member } from "../../api/types";
+import { MemberFormData } from "../../api/types";
 import { OnSaveClickParams } from "../../types";
 import { FILE_NOT_SELECTED_ERROR } from "../../utils/constants";
 
@@ -14,7 +14,7 @@ const MemberCreate: FunctionComponent = () => {
   async function handleSaveClick({
     formData,
     image,
-  }: OnSaveClickParams<Member>): Promise<void> {
+  }: OnSaveClickParams<MemberFormData>): Promise<void> {
     if (!image) {
       throw new Error(FILE_NOT_SELECTED_ERROR);
     }

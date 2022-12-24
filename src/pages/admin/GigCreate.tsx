@@ -3,9 +3,9 @@ import { observer } from "mobx-react-lite";
 
 import useMutationCreateResource from "../../hooks/mutations/useMutationCreateResource";
 import GigForm from "./GigForm";
-import { Gig } from "../../api/types";
 import { OnSaveClickParams } from "../../types";
 import { FILE_NOT_SELECTED_ERROR } from "../../utils/constants";
+import { GigFormData } from "../../api/types";
 
 const GigCreate: FunctionComponent = () => {
   const { mutateAsync: createResource, isLoading: createResourceLoading } =
@@ -14,7 +14,7 @@ const GigCreate: FunctionComponent = () => {
   async function handleSaveClick({
     formData,
     image,
-  }: OnSaveClickParams<Gig>): Promise<void> {
+  }: OnSaveClickParams<GigFormData>): Promise<void> {
     if (!image) {
       throw new Error(FILE_NOT_SELECTED_ERROR);
     }

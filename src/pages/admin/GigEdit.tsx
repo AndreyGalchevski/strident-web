@@ -3,10 +3,10 @@ import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
 
 import GigForm from "./GigForm";
-import { Gig } from "../../api/types";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import { OnSaveClickParams } from "../../types";
+import { GigFormData } from "../../api/types";
 
 const GigEdit: FunctionComponent = () => {
   const params = useParams<{ id: string }>();
@@ -25,7 +25,7 @@ const GigEdit: FunctionComponent = () => {
   async function handleSaveClick({
     formData,
     image,
-  }: OnSaveClickParams<Gig>): Promise<void> {
+  }: OnSaveClickParams<GigFormData>): Promise<void> {
     if (params.id) {
       await updateResource({
         resourceID: params.id,

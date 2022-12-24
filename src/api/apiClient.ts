@@ -1,11 +1,8 @@
 import {
-  Gig,
+  ResourceFormData,
   LoginCredentials,
-  Lyric,
-  Member,
-  Merchandise,
-  Song,
-  Video,
+  Resource,
+  ResourceName,
 } from "./types";
 
 const GENERAL_ERROR = "Something went wrong";
@@ -42,28 +39,6 @@ async function verifyAuth(): Promise<void> {
   }
 }
 
-export type ResourceName =
-  | "gigs"
-  | "lyrics"
-  | "members"
-  | "merchandise"
-  | "songs"
-  | "videos";
-
-export type Resource<T> = T extends "gigs"
-  ? Gig
-  : T extends "lyrics"
-  ? Lyric
-  : T extends "members"
-  ? Member
-  : T extends "merchandise"
-  ? Merchandise
-  : T extends "songs"
-  ? Song
-  : T extends "videos"
-  ? Video
-  : never;
-
 async function fetchResources<T extends ResourceName>(
   resourceName: T
 ): Promise<Resource<T>[]> {
@@ -94,8 +69,11 @@ async function fetchSingleResource<T extends ResourceName>(
   return responseBody.data;
 }
 
-const appendFormData = <T>(resource: Resource<T>, formData: FormData) => {
-  (Object.keys(resource) as Array<keyof Resource<T>>).forEach((key) => {
+const appendFormData = <T>(
+  resource: ResourceFormData<T>,
+  formData: FormData
+) => {
+  (Object.keys(resource) as Array<keyof ResourceFormData<T>>).forEach((key) => {
     if (typeof resource[key] === "string") {
       formData.append(key as string, resource[key] as string);
     }
@@ -113,7 +91,7 @@ const appendFormData = <T>(resource: Resource<T>, formData: FormData) => {
 
 export interface CreateResourceParams<T> {
   resourceName: T;
-  data: Resource<T>;
+  data: ResourceFormData<T>;
   image?: File | null;
 }
 
@@ -150,7 +128,7 @@ async function createResource<T extends ResourceName>({
 export interface UpdateResourceParams<T> {
   resourceName: T;
   resourceID: string;
-  data: Resource<T>;
+  data: ResourceFormData<T>;
   image?: File | null;
 }
 

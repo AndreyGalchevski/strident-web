@@ -2,7 +2,7 @@ import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 
-import { Gig } from "../../api/types";
+import { Gig, GigFormData } from "../../api/types";
 import { formatDate, formatTime } from "../../utils/general";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
@@ -23,7 +23,7 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 interface Props {
   title: string;
   isSaving: boolean;
-  onSaveClick: (params: OnSaveClickParams<Gig>) => Promise<void>;
+  onSaveClick: (params: OnSaveClickParams<GigFormData>) => Promise<void>;
   isLoading?: boolean;
   initialData?: Gig;
 }
@@ -37,15 +37,13 @@ const GigForm: FunctionComponent<Props> = ({
 }) => {
   const isMobile = useMediaQuery();
 
-  const [gig, setGig] = useState<Gig>({
-    id: "",
+  const [gig, setGig] = useState<GigFormData>({
     name: "",
     venue: "",
     address: "",
     city: "",
     date: new Date(),
     fbEvent: "",
-    image: "",
   });
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -56,7 +54,14 @@ const GigForm: FunctionComponent<Props> = ({
 
   useEffect(() => {
     if (initialData) {
-      setGig({ ...initialData, date: new Date(initialData.date) });
+      setGig({
+        name: initialData.name,
+        venue: initialData.venue,
+        address: initialData.address,
+        city: initialData.city,
+        date: new Date(initialData.date),
+        fbEvent: initialData.fbEvent,
+      });
     }
   }, [initialData]);
 
