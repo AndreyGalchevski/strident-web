@@ -36,6 +36,7 @@ const FileInput: FunctionComponent<Props> = ({ onChange }) => {
           onChange={handleChange}
           style={{ display: "none" }}
           ref={fileInputRef}
+          accept="image/png, image/jpeg"
         />
       </label>
       <p>{fileName}</p>
