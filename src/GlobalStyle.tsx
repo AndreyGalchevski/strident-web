@@ -1,5 +1,6 @@
 import { normalize } from "styled-normalize";
 import { createGlobalStyle } from "styled-components";
+import theme from "./utils/theme";
 
 const GlobalStyles = createGlobalStyle`
   ${normalize}
@@ -18,14 +19,9 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    overflow-y: hidden;
     font-family: "Special Elite", cursive;
     text-align: center;
-    background-image: url(https://res.cloudinary.com/dqvimfd8b/image/upload/o_80/v1570734567/strident/static/background.jpg);
-    background-image: url(https://res.cloudinary.com/dqvimfd8b/image/upload/o_80,f_auto/v1571164112/strident/static/background.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: repeat;
+    background-color: ${theme.colors.grey};
   }
 
   .image-gallery-right-nav, .image-gallery-left-nav, .image-gallery-play-button, .image-gallery-fullscreen-button {

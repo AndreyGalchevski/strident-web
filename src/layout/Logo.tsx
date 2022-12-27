@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const LogoImage = styled.img({
-  width: "88px",
-  height: "56px",
+  height: "90%",
 });
 
 const Logo: FunctionComponent = () => (

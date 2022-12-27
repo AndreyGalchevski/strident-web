@@ -12,6 +12,7 @@ const theme: DefaultTheme = {
     mobile: "768px",
     small: "992px",
   },
+  globals: { navbarHeight: "8vh" },
 };
 
 export default theme;

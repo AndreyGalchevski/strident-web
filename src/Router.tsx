@@ -1,4 +1,10 @@
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 
@@ -18,6 +24,8 @@ import AdminRouter from "./pages/admin/AdminRouter";
 const Router = () => {
   const navigate = useNavigate();
 
+  const location = useLocation();
+
   const auth = useAuth();
 
   const { isError: isVerifyAuthError } = useQueryVerifyAuth({
@@ -30,6 +38,10 @@ const Router = () => {
       navigate("/login");
     }
   }, [isVerifyAuthError, navigate, auth]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
 
   return (
     <Routes>

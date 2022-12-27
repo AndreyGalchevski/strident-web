@@ -11,11 +11,18 @@ import { ModalProvider } from "./context/ModalContext";
 import SystemModal from "./components/SystemModal";
 import Router from "./Router";
 import { SideMenuProvider } from "./context/SideMenuContext";
+import SideMenu from "./layout/SideMenu";
+import { MAIN_APP_ID } from "./utils/constants";
 
-const Main = styled.main({
-  overflowY: "scroll",
-  height: "100%",
-});
+const Main = styled.main(
+  ({
+    theme: {
+      globals: { navbarHeight },
+    },
+  }) => ({
+    marginTop: `calc(${navbarHeight} + 3vh)`,
+  })
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,7 +45,8 @@ const App: FunctionComponent = () => {
             <AuthProvider>
               <SideMenuProvider>
                 <Navbar />
-                <Main id="main-app">
+                <SideMenu pageWrapID={MAIN_APP_ID} />
+                <Main id={MAIN_APP_ID}>
                   <Router />
                 </Main>
                 <Footer />

@@ -2,6 +2,10 @@ import { ReactImageGalleryItem } from "react-image-gallery";
 
 export const FILE_NOT_SELECTED_ERROR = "Please select a file";
 
+export const MAIN_APP_ID = "main-app";
+
+export const APP_ROOT_ID = "root";
+
 const baseURL = "https://res.cloudinary.com/dqvimfd8b/image/upload";
 
 export const homeImages: Array<ReactImageGalleryItem> = [

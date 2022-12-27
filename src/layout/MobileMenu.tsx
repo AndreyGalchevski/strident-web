@@ -8,6 +8,7 @@ import Logo from "./Logo";
 const Wrapper = styled.div({
   display: "flex",
   height: "100%",
+  alignItems: "center",
 });
 
 const LogoWrapper = styled.div({

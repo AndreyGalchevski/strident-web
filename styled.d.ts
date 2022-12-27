@@ -14,5 +14,8 @@ declare module "styled-components" {
       mobile: string;
       small: string;
     };
+    globals: {
+      navbarHeight: string;
+    };
   }
 }

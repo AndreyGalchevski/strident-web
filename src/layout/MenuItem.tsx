@@ -3,10 +3,12 @@ import { NavLink } from "react-router-dom";
 
 import theme from "../utils/theme";
 
-const baseLinkStyle = {
+const baseLinkStyle: CSSProperties = {
   color: theme.colors.white,
   paddingTop: 8,
   paddingBottom: 8,
+  display: "flex",
+  alignItems: "center",
 };
 
 interface MenuItemProps {
