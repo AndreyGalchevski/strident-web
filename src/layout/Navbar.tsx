@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { CSSProperties, FunctionComponent } from "react";
 import styled from "styled-components";
 
 import useMediaQuery from "../hooks/useMediaQuery";
@@ -18,13 +18,18 @@ const Nav = styled.nav(
     top: "0",
     width: "100%",
     zIndex: 99,
+    transition: "height 0.5s ease-out",
   })
 );
 
-const Navbar: FunctionComponent = () => {
+interface Props {
+  style?: CSSProperties;
+}
+
+const Navbar: FunctionComponent<Props> = ({ style = {} }) => {
   const isMobile = useMediaQuery();
 
-  return <Nav>{isMobile ? <MobileMenu /> : <DesktopMenu />}</Nav>;
+  return <Nav style={style}>{isMobile ? <MobileMenu /> : <DesktopMenu />}</Nav>;
 };
 
 export default Navbar;

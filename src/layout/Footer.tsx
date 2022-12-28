@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { CSSProperties, FunctionComponent } from "react";
 import styled from "styled-components";
 
 import FacebookIcon from "../components/icons/Facebook";
@@ -15,6 +15,7 @@ const Container = styled.footer(({ theme: { colors } }) => ({
   backgroundColor: colors.black,
   color: colors.white,
   zIndex: 99,
+  transition: "height 0.5s ease-out",
 }));
 
 const Content = styled.p({
@@ -26,9 +27,13 @@ const SocialMediaLink = styled.a({
   paddingRight: "0.5em",
 });
 
-const Footer: FunctionComponent = () => {
+interface Props {
+  style?: CSSProperties;
+}
+
+const Footer: FunctionComponent<Props> = ({ style = {} }) => {
   return (
-    <Container>
+    <Container style={style}>
       <Content>
         <span>
           <SocialMediaLink

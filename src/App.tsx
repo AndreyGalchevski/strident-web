@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import styled, { ThemeProvider } from "styled-components";
@@ -13,6 +13,8 @@ import Router from "./Router";
 import { SideMenuProvider } from "./context/SideMenuContext";
 import SideMenu from "./layout/SideMenu";
 import { MAIN_APP_ID } from "./utils/constants";
+import useMediaQuery from "./hooks/useMediaQuery";
+import useScrollDirection from "./hooks/useScrollDirection";
 
 const Main = styled.main(
   ({
@@ -37,6 +39,14 @@ const queryClient = new QueryClient({
 });
 
 const App: FunctionComponent = () => {
+  const [hideNavigation, setHideNavigation] = useState(false);
+  const isMobile = useMediaQuery();
+  const scrollDirection = useScrollDirection();
+
+  useEffect(() => {
+    setHideNavigation(scrollDirection === "down" && isMobile);
+  }, [scrollDirection, isMobile]);
+
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
@@ -44,12 +54,12 @@ const App: FunctionComponent = () => {
           <ModalProvider>
             <AuthProvider>
               <SideMenuProvider>
-                <Navbar />
+                <Navbar style={hideNavigation ? { height: 0 } : {}} />
                 <SideMenu pageWrapID={MAIN_APP_ID} />
                 <Main id={MAIN_APP_ID}>
                   <Router />
                 </Main>
-                <Footer />
+                <Footer style={hideNavigation ? { height: 0 } : {}} />
                 <SystemModal />
               </SideMenuProvider>
             </AuthProvider>
