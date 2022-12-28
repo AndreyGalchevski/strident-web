@@ -29,7 +29,11 @@ interface Props {
 const Navbar: FunctionComponent<Props> = ({ style = {} }) => {
   const isMobile = useMediaQuery();
 
-  return <Nav style={style}>{isMobile ? <MobileMenu /> : <DesktopMenu />}</Nav>;
+  return (
+    <Nav style={style}>
+      {isMobile ? <MobileMenu iconHeight={style.height} /> : <DesktopMenu />}
+    </Nav>
+  );
 };
 
 export default Navbar;

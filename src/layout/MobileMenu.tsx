@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { CSSProperties, FunctionComponent } from "react";
 import styled from "styled-components";
 
 import Hamburger from "../components/Hamburger";
@@ -19,7 +20,11 @@ const Divider = styled.div({
   flex: 1,
 });
 
-const MobileMenu = () => {
+interface Props {
+  iconHeight?: CSSProperties["height"];
+}
+
+const MobileMenu: FunctionComponent<Props> = ({ iconHeight }) => {
   const sideMenu = useSideMenu();
 
   const handleMenuClick = () => {
@@ -28,7 +33,10 @@ const MobileMenu = () => {
 
   return (
     <Wrapper>
-      <Hamburger onClick={handleMenuClick} style={{ flex: 1 }} />
+      <Hamburger
+        onClick={handleMenuClick}
+        style={{ flex: 1, height: iconHeight }}
+      />
       <LogoWrapper>
         <Logo />
       </LogoWrapper>

@@ -6,6 +6,9 @@ import MenuIcon from "./icons/Menu";
 const Wrapper = styled.a({
   height: 56,
   width: 46,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 });
 
 interface Props {
@@ -15,7 +18,7 @@ interface Props {
 
 const Hamburger: FunctionComponent<Props> = ({ onClick, style = {} }) => (
   <Wrapper onClick={onClick} style={style}>
-    <MenuIcon style={{ marginTop: 16 }} />
+    <MenuIcon height={style.height} />
   </Wrapper>
 );
 
