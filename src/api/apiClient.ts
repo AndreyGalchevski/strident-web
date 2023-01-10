@@ -24,8 +24,8 @@ async function login(credentials: LoginCredentials): Promise<void> {
   });
 
   if (!response.ok) {
-    const responseBody = await response.json();
-    throw Error(responseBody.error || GENERAL_ERROR);
+    const error = await response.text();
+    throw Error(error || GENERAL_ERROR);
   }
 }
 
@@ -33,8 +33,8 @@ async function verifyAuth(): Promise<void> {
   const response = await fetch(`${baseURL}/auth/verify`, options);
 
   if (!response.ok) {
-    const responseBody = await response.json();
-    throw Error(responseBody.error || GENERAL_ERROR);
+    const error = await response.text();
+    throw Error(error || GENERAL_ERROR);
   }
 }
 
@@ -42,11 +42,13 @@ async function fetchResources<T extends ResourceName>(
   resourceName: T
 ): Promise<Resource<T>[]> {
   const response = await fetch(`${baseURL}/${resourceName}`, options);
-  const responseBody = await response.json();
 
   if (!response.ok) {
-    throw Error(responseBody.error || GENERAL_ERROR);
+    const error = await response.text();
+    throw Error(error || GENERAL_ERROR);
   }
+
+  const responseBody = await response.json();
 
   return responseBody.data;
 }
@@ -59,11 +61,13 @@ async function fetchSingleResource<T extends ResourceName>(
     `${baseURL}/${resourceName}/${resourceID}`,
     options
   );
-  const responseBody = await response.json();
 
   if (!response.ok) {
-    throw Error(responseBody.error || GENERAL_ERROR);
+    const error = await response.text();
+    throw Error(error || GENERAL_ERROR);
   }
+
+  const responseBody = await response.json();
 
   return responseBody.data;
 }
@@ -115,11 +119,12 @@ async function createResource<T extends ResourceName>({
     body: formData,
   });
 
-  const responseBody = await response.json();
-
   if (!response.ok) {
-    throw Error(responseBody.error || GENERAL_ERROR);
+    const error = await response.text();
+    throw Error(error || GENERAL_ERROR);
   }
+
+  const responseBody = await response.json();
 
   return responseBody.data;
 }
@@ -154,8 +159,8 @@ async function updateResource<T extends ResourceName>({
   });
 
   if (!response.ok) {
-    const responseBody = await response.json();
-    throw Error(responseBody.error || GENERAL_ERROR);
+    const error = await response.text();
+    throw Error(error || GENERAL_ERROR);
   }
 }
 
@@ -174,8 +179,8 @@ async function deleteResource({
   });
 
   if (!response.ok) {
-    const responseBody = await response.json();
-    throw Error(responseBody.error || GENERAL_ERROR);
+    const error = await response.text();
+    throw Error(error || GENERAL_ERROR);
   }
 }
 
