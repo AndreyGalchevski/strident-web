@@ -10,49 +10,49 @@ const baseURL = "https://res.cloudinary.com/dqvimfd8b/image/upload";
 
 export const homeImages: Array<ReactImageGalleryItem> = [
   {
-    original: `${baseURL}/v1570914457/strident/prod/home/1.jpg`,
-    thumbnail: `${baseURL}/c_thumb,w_200,g_face/v1570914457/strident/prod/home/1.jpg`,
-    originalAlt: "Strident performing in Kiev",
-    thumbnailAlt: "Strident performing in Kiev",
-    imageSet: [
-      {
-        srcSet: `${baseURL}/w_700,f_auto/v1571406645/strident/prod/home/1.jpg`,
-        media: "image/webp",
-      },
-      {
-        srcSet: `${baseURL}/v1570914457/strident/prod/home/1.jpg`,
-        media: "image/jpeg",
-      },
-    ],
-  },
-  {
-    original: `${baseURL}/v1570914452/strident/prod/home/2.jpg`,
-    thumbnail: `${baseURL}/c_thumb,w_200,g_face/v1570914452/strident/prod/home/2.jpg`,
-    originalAlt: "Strident performing in Kiev",
-    thumbnailAlt: "Strident performing in Kiev",
-    imageSet: [
-      {
-        srcSet: `${baseURL}/w_700,f_auto/v1571410056/strident/prod/home/2.jpg`,
-        media: "image/webp",
-      },
-      {
-        srcSet: `${baseURL}/v1570914452/strident/prod/home/2.jpg`,
-        media: "image/jpeg",
-      },
-    ],
-  },
-  {
-    original: `${baseURL}/v1570914449/strident/prod/home/3.jpg`,
-    thumbnail: `${baseURL}/c_thumb,w_200,g_face/v1570914449/strident/prod/home/3.jpg`,
+    original: `${baseURL}/v1674307966/strident/dev/home/IMG_1608.jpg`,
+    thumbnail: `${baseURL}/c_thumb,w_200/v1674307966/strident/dev/home/IMG_1608.jpg`,
     originalAlt: "Strident performing in Tel Aviv",
     thumbnailAlt: "Strident performing in Tel Aviv",
     imageSet: [
       {
-        srcSet: `${baseURL}/w_700,f_auto/v1571410056/strident/prod/home/3.jpg`,
+        srcSet: `${baseURL}/w_700,f_auto/v1674307966/strident/dev/home/IMG_1608.jpg`,
         media: "image/webp",
       },
       {
-        srcSet: `${baseURL}/v1570914449/strident/prod/home/3.jpg`,
+        srcSet: `${baseURL}/v1674307966/strident/dev/home/IMG_1608.jpg`,
+        media: "image/jpeg",
+      },
+    ],
+  },
+  {
+    original: `${baseURL}/v1674308005/strident/dev/home/IMG_1580.jpg`,
+    thumbnail: `${baseURL}/c_thumb,w_200,g_face/v1674308005/strident/dev/home/IMG_1580.jpg`,
+    originalAlt: "Strident performing in Tel Aviv",
+    thumbnailAlt: "Strident performing in Tel Aviv",
+    imageSet: [
+      {
+        srcSet: `${baseURL}/w_700,f_auto/v1674308005/strident/dev/home/IMG_1580.jpg`,
+        media: "image/webp",
+      },
+      {
+        srcSet: `${baseURL}/v1674308005/strident/dev/home/IMG_1580.jpg`,
+        media: "image/jpeg",
+      },
+    ],
+  },
+  {
+    original: `${baseURL}/v1674308017/strident/dev/home/IMG_1563.jpg`,
+    thumbnail: `${baseURL}/c_thumb,w_200,g_face/v1674308017/strident/dev/home/IMG_1563.jpg`,
+    originalAlt: "Strident performing in Tel Aviv",
+    thumbnailAlt: "Strident performing in Tel Aviv",
+    imageSet: [
+      {
+        srcSet: `${baseURL}/w_700,f_auto/v1674308017/strident/dev/home/IMG_1563.jpg`,
+        media: "image/webp",
+      },
+      {
+        srcSet: `${baseURL}/v1674308017/strident/dev/home/IMG_1563.jpg`,
         media: "image/jpeg",
       },
     ],
@@ -90,17 +90,17 @@ export const homeImages: Array<ReactImageGalleryItem> = [
     ],
   },
   {
-    original: `${baseURL}/v1570914457/strident/prod/home/6.jpg`,
-    thumbnail: `${baseURL}/c_thumb,w_200,g_face/v1570914457/strident/prod/home/6.jpg`,
+    original: `${baseURL}/v1674308035/strident/dev/home/andrey-1.jpg`,
+    thumbnail: `${baseURL}/c_thumb,w_200,g_face/v1674308035/strident/dev/home/andrey-1.jpg`,
     originalAlt: "Strident performing in Tel Aviv",
     thumbnailAlt: "Strident performing in Tel Aviv",
     imageSet: [
       {
-        srcSet: `${baseURL}/w_700,f_auto/v1571410058/strident/prod/home/6.jpg`,
+        srcSet: `${baseURL}/w_700,f_auto/v1674308035/strident/dev/home/andrey-1.jpg`,
         media: "image/webp",
       },
       {
-        srcSet: `${baseURL}/v1570914457/strident/prod/home/6.jpg`,
+        srcSet: `${baseURL}/v1674308035/strident/dev/home/andrey-1.jpg`,
         media: "image/jpeg",
       },
     ],
@@ -122,33 +122,17 @@ export const homeImages: Array<ReactImageGalleryItem> = [
     ],
   },
   {
-    original: `${baseURL}/v1570914451/strident/prod/home/8.jpg`,
-    thumbnail: `${baseURL}/c_thumb,w_200,g_face/v1570914451/strident/prod/home/8.jpg`,
-    originalAlt: "Strident performing in Kiev",
-    thumbnailAlt: "Strident performing in Kiev",
+    original: `${baseURL}/v1674307996/strident/dev/home/IMG_6641.jpg`,
+    thumbnail: `${baseURL}/c_thumb,w_200,g_face/v1674307996/strident/dev/home/IMG_6641.jpg`,
+    originalAlt: "Strident performing in Tel Aviv",
+    thumbnailAlt: "Strident performing in Tel Aviv",
     imageSet: [
       {
-        srcSet: `${baseURL}/w_700,f_auto/v1571410056/strident/prod/home/8.jpg`,
+        srcSet: `${baseURL}/w_700,f_auto/v1674307996/strident/dev/home/IMG_6641.jpg`,
         media: "image/webp",
       },
       {
-        srcSet: `${baseURL}/v1570914451/strident/prod/home/8.jpg`,
-        media: "image/jpeg",
-      },
-    ],
-  },
-  {
-    original: `${baseURL}/v1570914456/strident/prod/home/9.jpg`,
-    thumbnail: `${baseURL}/c_thumb,w_200,g_face/v1570914456/strident/prod/home/9.jpg`,
-    originalAlt: "Strident performing in Kiev",
-    thumbnailAlt: "Strident performing in Kiev",
-    imageSet: [
-      {
-        srcSet: `${baseURL}/w_700,f_auto/v1571410058/strident/prod/home/9.jpg`,
-        media: "image/webp",
-      },
-      {
-        srcSet: `${baseURL}/v1570914456/strident/prod/home/9.jpg`,
+        srcSet: `${baseURL}/v1674307996/strident/dev/home/IMG_6641.jpg`,
         media: "image/jpeg",
       },
     ],

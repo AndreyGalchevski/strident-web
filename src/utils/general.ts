@@ -57,5 +57,5 @@ export const getWebPImageURL = (imageURL: string) => {
     return imageURL;
   }
 
-  return `${partOne}upload/f_auto,w_600${partTwo}`;
+  return `${partOne}upload/f_auto${partTwo}`;
 };
