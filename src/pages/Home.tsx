@@ -13,21 +13,15 @@ import { homeImages } from "../utils/constants";
 import useQueryResources from "../hooks/queries/useQueryResources";
 import theme from "../utils/theme";
 
-const BannerContainer = styled.div({
-  marginBottom: 20,
-});
-
-const Banner = styled.img(({ theme: { colors } }) => ({
-  height: "74vh",
-  maxWidth: "90vw",
-  boxShadow: `0 4px 8px 0 ${colors.black}, 0 6px 20px 0 ${colors.black}`,
-}));
-
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   display: "flex",
   flexDirection: isMobile ? "column" : "row",
   marginBottom: 20,
 }));
+
+const ImageGalleryWrapper = styled.div({
+  marginBottom: 20,
+});
 
 const Home: FunctionComponent = () => {
   const isMobile = useMediaQuery();
@@ -37,47 +31,25 @@ const Home: FunctionComponent = () => {
   return (
     <Container>
       <Header title="Home" />
-      <BannerContainer>
-        <picture>
-          <source
-            media="(max-width: 785px)"
-            srcSet="https://res.cloudinary.com/dqvimfd8b/image/upload/f_auto/v1572275145/strident/static/march-of-plague-banner-high.jpg"
-            type="image/webp"
-          />
-          <source
-            media="(max-width: 785px)"
-            srcSet="https://res.cloudinary.com/dqvimfd8b/image/upload/v1572274125/strident/static/march-of-plague-banner-high.jpg"
-            type="image/jpeg"
-          />
-          <source
-            media="(min-width: 786px)"
-            srcSet="https://res.cloudinary.com/dqvimfd8b/image/upload/f_auto/v1572275146/strident/static/march-of-plague-banner-wide.jpg"
-            type="image/webp"
-          />
-          <source
-            media="(min-width: 786px)"
-            srcSet="https://res.cloudinary.com/dqvimfd8b/image/upload/v1572274888/strident/static/march-of-plague-banner-wide.jpg"
-            type="image/jpeg"
-          />
-          <Banner
-            src="https://res.cloudinary.com/dqvimfd8b/image/upload/v1572274125/strident/static/march-of-plague-banner-high.jpg"
-            alt="New Album banner"
-          />
-        </picture>
-      </BannerContainer>
+
+      <ImageGalleryWrapper>
+        <ImageGallery items={homeImages} />
+      </ImageGalleryWrapper>
+
       <Wrapper isMobile={isMobile}>
         <Card style={{ margin: 8, flex: 1 }}>
           <CardContent>
             <CardTitle>About</CardTitle>
             <ResponsiveText isMobile={isMobile}>
-              Strident is an Israeli Thrash Metal band with old-school riffing
-              and vibes from the 80s.
+              An Israeli Thrash Metal machine, Strident is heavily armed with
+              old school riffs and the 80s vibe.
             </ResponsiveText>
             <ResponsiveText isMobile={isMobile}>
-              We are not afraid to be ourselves and do what we want.
+              Since its inception in 2005, Strident has had three full-length
+              studio albums and a huge number of live performances.
             </ResponsiveText>
             <ResponsiveText isMobile={isMobile}>
-              Thrash Till Death
+              The band's debut LP entitled "On the Aim" came out in 2010...
             </ResponsiveText>
           </CardContent>
           <CardAction>
@@ -86,6 +58,7 @@ const Home: FunctionComponent = () => {
             </Link>
           </CardAction>
         </Card>
+
         <Card style={{ margin: 8, flex: 1 }}>
           <CardContent style={{ padding: 0, height: 343 }}>
             <iframe
@@ -105,7 +78,7 @@ const Home: FunctionComponent = () => {
           </CardAction>
         </Card>
       </Wrapper>
-      <ImageGallery items={homeImages} />
+
       <Wrapper isMobile={isMobile} style={{ marginTop: 20 }}>
         {gigsLoading ? (
           <p>Loading...</p>
@@ -131,6 +104,7 @@ const Home: FunctionComponent = () => {
             </CardAction>
           </Card>
         )}
+
         <Card style={{ margin: 8, flex: 1 }}>
           <CardContent style={{ padding: 0, height: 451 }}>
             <iframe
