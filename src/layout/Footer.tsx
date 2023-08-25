@@ -19,7 +19,12 @@ const Container = styled.footer(({ theme: { colors } }) => ({
 }));
 
 const Content = styled.p({
-  marginTop: "1vh",
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+  height: "5vh",
+  margin: "0",
 });
 
 const SocialMediaLink = styled.a({
