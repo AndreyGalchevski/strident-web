@@ -26,6 +26,54 @@ export const homeImages: Array<ReactImageGalleryItem> = [
     ],
   },
   {
+    original: `${baseURL}/v1692944566/strident/prod/home/Home-Sofia-1.jpg`,
+    thumbnail: `${baseURL}/c_thumb,w_200/v1692944566/strident/prod/home/Home-Sofia-1.jpg`,
+    originalAlt: "Strident performing in Sofia (BG)",
+    thumbnailAlt: "Strident performing in Sofia (BG)",
+    imageSet: [
+      {
+        srcSet: `${baseURL}/w_700,f_auto/v1692944566/strident/prod/home/Home-Sofia-1.jpg`,
+        media: "image/webp",
+      },
+      {
+        srcSet: `${baseURL}/v1692944566/strident/prod/home/Home-Sofia-1.jpg`,
+        media: "image/jpeg",
+      },
+    ],
+  },
+  {
+    original: `${baseURL}/v1692944566/strident/prod/home/Home-Sofia-2.jpg`,
+    thumbnail: `${baseURL}/c_thumb,w_200/v1692944566/strident/prod/home/Home-Sofia-2.jpg`,
+    originalAlt: "Strident performing in Sofia (BG)",
+    thumbnailAlt: "Strident performing in Sofia (BG)",
+    imageSet: [
+      {
+        srcSet: `${baseURL}/w_700,f_auto/v1692944566/strident/prod/home/Home-Sofia-2.jpg`,
+        media: "image/webp",
+      },
+      {
+        srcSet: `${baseURL}/v1692944566/strident/prod/home/Home-Sofia-2.jpg`,
+        media: "image/jpeg",
+      },
+    ],
+  },
+  {
+    original: `${baseURL}/v1692944566/strident/prod/home/Home-Sofia-3.jpg`,
+    thumbnail: `${baseURL}/c_thumb,w_200/v1692944566/strident/prod/home/Home-Sofia-3.jpg`,
+    originalAlt: "Strident performing in Sofia (BG)",
+    thumbnailAlt: "Strident performing in Sofia (BG)",
+    imageSet: [
+      {
+        srcSet: `${baseURL}/w_700,f_auto/v1692944566/strident/prod/home/Home-Sofia-3.jpg`,
+        media: "image/webp",
+      },
+      {
+        srcSet: `${baseURL}/v1692944566/strident/prod/home/Home-Sofia-3.jpg`,
+        media: "image/jpeg",
+      },
+    ],
+  },
+  {
     original: `${baseURL}/v1674308005/strident/dev/home/IMG_1580.jpg`,
     thumbnail: `${baseURL}/c_thumb,w_200,g_face/v1674308005/strident/dev/home/IMG_1580.jpg`,
     originalAlt: "Strident performing in Tel Aviv",
