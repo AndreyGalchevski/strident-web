@@ -62,10 +62,10 @@ const Home: FunctionComponent = () => {
         <Card style={{ margin: 8, flex: 1 }}>
           <CardContent style={{ padding: 0, height: 343 }}>
             <iframe
-              title="STRIDENT - No Faith No War"
+              title="STRIDENT - Hard-Bitten"
               width="100%"
               height="100%"
-              src="https://www.youtube.com/embed/3MpjGJpmG-Y"
+              src="https://www.youtube.com/embed/hcS-I-ECtNw"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               style={{ borderTopLeftRadius: 30, borderTopRightRadius: 30 }}
