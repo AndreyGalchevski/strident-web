@@ -48,7 +48,7 @@ const Skeletons: FunctionComponent<{ isMobile: boolean }> = ({ isMobile }) => {
 };
 
 const Text = styled.pre({
-  fontFamily: '"Special Elite", cursive',
+  fontFamily: '"Montserrat", sans-serif',
   fontSize: "13px",
   lineHeight: 1.5,
 });

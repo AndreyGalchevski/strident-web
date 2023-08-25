@@ -19,7 +19,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    font-family: "Special Elite", cursive;
+    font-family: "Montserrat", sans-serif;
     text-align: center;
     background-color: ${theme.colors.grey};
   }
