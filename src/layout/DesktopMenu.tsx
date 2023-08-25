@@ -41,7 +41,7 @@ const DesktopMenu: FunctionComponent = () => (
       <MenuItem path="/" text="Home" style={menuItemStyle} />
       <MenuItem path="/members" text="Members" style={menuItemStyle} />
       <MenuItem path="/videos" text="Videos" style={menuItemStyle} />
-      <MenuItem path="/songs" text="Songs" style={menuItemStyle} />
+      <MenuItem path="/music" text="Music" style={menuItemStyle} />
     </LeftLinks>
     <LogoContainer>
       <Logo />

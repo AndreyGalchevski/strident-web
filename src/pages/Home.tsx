@@ -117,8 +117,8 @@ const Home: FunctionComponent = () => {
             />
           </CardContent>
           <CardAction>
-            <Link to="/songs" style={{ color: theme.colors.white }}>
-              More songs
+            <Link to="/music" style={{ color: theme.colors.white }}>
+              More music
             </Link>
           </CardAction>
         </Card>

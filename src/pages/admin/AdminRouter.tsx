@@ -8,8 +8,8 @@ import MemberCreate from "./MemberCreate";
 import MemberEdit from "./MemberEdit";
 import MerchandiseCreate from "./MerchandiseCreate";
 import MerchandiseEdit from "./MerchandiseEdit";
-import SongCreate from "./SongCreate";
-import SongEdit from "./SongEdit";
+import AlbumCreate from "./AlbumCreate";
+import AlbumEdit from "./AlbumEdit";
 import VideoEdit from "./VideoEdit";
 import VideoCreate from "./VideoCreate";
 
@@ -18,8 +18,8 @@ const AdminRouter = () => {
     <Routes>
       <Route path="/members/create" element={<MemberCreate />} />
       <Route path="/members/edit/:id" element={<MemberEdit />} />
-      <Route path="/songs/create" element={<SongCreate />} />
-      <Route path="/songs/edit/:id" element={<SongEdit />} />
+      <Route path="/music/create" element={<AlbumCreate />} />
+      <Route path="/music/edit/:id" element={<AlbumEdit />} />
       <Route path="/videos/create" element={<VideoCreate />} />
       <Route path="/videos/edit/:id" element={<VideoEdit />} />
       <Route path="/merchandise/create" element={<MerchandiseCreate />} />

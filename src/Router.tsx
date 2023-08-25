@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import Home from "./pages/Home";
 import Members from "./pages/Members";
 import Videos from "./pages/Videos";
-import Songs from "./pages/Songs";
+import Albums from "./pages/Albums";
 import Merchandise from "./pages/Merchandise";
 import Gigs from "./pages/Gigs";
 import Lyrics from "./pages/Lyrics";
@@ -47,7 +47,7 @@ const Router = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/members" element={<Members />} />
-      <Route path="/songs" element={<Songs />} />
+      <Route path="/music" element={<Albums />} />
       <Route path="/videos" element={<Videos />} />
       <Route path="/merchandise" element={<Merchandise />} />
       <Route path="/gigs" element={<Gigs />} />

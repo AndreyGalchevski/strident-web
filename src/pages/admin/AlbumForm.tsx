@@ -1,14 +1,14 @@
 import { FunctionComponent, useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
+import { observer } from "mobx-react-lite";
 
-import { Song, SongFormData } from "../../api/types";
+import { Album, AlbumFormData } from "../../api/types";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import Container from "../../styled/Container";
 import { Card, CardContent, CardAction } from "../../styled/Card";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Loader from "../../components/Loader";
-import { observer } from "mobx-react-lite";
 import useModal from "../../hooks/useModal";
 import useQueryResources from "../../hooks/queries/useQueryResources";
 import { OnSaveClickParams } from "../../types";
@@ -21,12 +21,12 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 interface Props {
   title: string;
   isSaving: boolean;
-  onSaveClick: (params: OnSaveClickParams<SongFormData>) => Promise<void>;
+  onSaveClick: (params: OnSaveClickParams<AlbumFormData>) => Promise<void>;
   isLoading?: boolean;
-  initialData?: Song;
+  initialData?: Album;
 }
 
-const SongForm: FunctionComponent<Props> = ({
+const AlbumForm: FunctionComponent<Props> = ({
   title,
   isSaving,
   onSaveClick,
@@ -35,34 +35,34 @@ const SongForm: FunctionComponent<Props> = ({
 }) => {
   const isMobile = useMediaQuery();
 
-  const [song, setSong] = useState<SongFormData>({
-    album: "",
+  const [album, setAlbum] = useState<AlbumFormData>({
     name: "",
     url: "",
+    year: 0,
   });
 
   const modal = useModal();
 
-  useQueryResources("songs");
+  useQueryResources("albums");
 
   useEffect(() => {
     if (initialData) {
-      setSong({
-        album: initialData.album,
+      setAlbum({
         name: initialData.name,
         url: initialData.url,
+        year: initialData.year,
       });
     }
   }, [initialData]);
 
   function handleFormChange(e: ChangeEvent<HTMLInputElement>): void {
-    setSong({ ...song, [e.target.name]: e.target.value });
+    setAlbum({ ...album, [e.target.name]: e.target.value });
   }
 
   async function handleSaveClick(): Promise<void> {
     try {
-      await onSaveClick({ formData: song });
-      modal.showModal({ modalType: "RESOURCE_SAVED", resourceName: "songs" });
+      await onSaveClick({ formData: album });
+      modal.showModal({ modalType: "RESOURCE_SAVED", resourceName: "albums" });
     } catch (e) {
       modal.showModal({
         modalType: "ERROR",
@@ -83,19 +83,19 @@ const SongForm: FunctionComponent<Props> = ({
                   name="name"
                   type="text"
                   onChange={handleFormChange}
-                  value={song.name}
+                  value={album.name}
                 />
                 <Input
                   name="url"
                   type="text"
                   onChange={handleFormChange}
-                  value={song.url}
+                  value={album.url}
                 />
                 <Input
-                  name="album"
-                  type="text"
+                  name="year"
+                  type="number"
                   onChange={handleFormChange}
-                  value={song.album}
+                  value={album.year}
                 />
               </CardContent>
               <CardAction>
@@ -115,4 +115,4 @@ const SongForm: FunctionComponent<Props> = ({
   );
 };
 
-export default observer(SongForm);
+export default observer(AlbumForm);

@@ -15,11 +15,11 @@ export interface Member extends Record<string, unknown> {
   image: string;
 }
 
-export interface Song extends Record<string, unknown> {
+export interface Album extends Record<string, unknown> {
   id: string;
   name: string;
-  album: string;
   url: string;
+  year: number;
 }
 
 export interface Video extends Record<string, unknown> {
@@ -55,11 +55,12 @@ export interface Lyric extends Record<string, unknown> {
 }
 
 export type ResourceName =
+  | "albums"
   | "gigs"
   | "lyrics"
   | "members"
   | "merchandise"
-  | "songs"
+  | "albums"
   | "videos";
 
 export type Resource<T> = T extends "gigs"
@@ -70,8 +71,8 @@ export type Resource<T> = T extends "gigs"
   ? Member
   : T extends "merchandise"
   ? Merchandise
-  : T extends "songs"
-  ? Song
+  : T extends "albums"
+  ? Album
   : T extends "videos"
   ? Video
   : never;
@@ -90,7 +91,7 @@ export type MerchandiseFormData = Pick<
   "name" | "type" | "price" | "url"
 >;
 
-export type SongFormData = Pick<Song, "name" | "album" | "url">;
+export type AlbumFormData = Pick<Album, "name" | "url" | "year">;
 
 export type VideoFormData = Pick<Video, "name" | "url">;
 
@@ -102,8 +103,8 @@ export type ResourceFormData<T> = T extends "gigs"
   ? MemberFormData
   : T extends "merchandise"
   ? MerchandiseFormData
-  : T extends "songs"
-  ? SongFormData
+  : T extends "albums"
+  ? AlbumFormData
   : T extends "videos"
   ? VideoFormData
   : never;

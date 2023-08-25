@@ -4,15 +4,15 @@ import { observer } from "mobx-react-lite";
 
 import useQuerySingleResource from "../../hooks/queries/useQuerySingleResource";
 import useMutationUpdateResource from "../../hooks/mutations/useMutationUpdateResource";
-import SongForm from "./SongForm";
+import AlbumForm from "./AlbumForm";
 import { OnSaveClickParams } from "../../types";
-import { SongFormData } from "../../api/types";
+import { AlbumFormData } from "../../api/types";
 
-const SongEdit: FunctionComponent = () => {
+const AlbumEdit: FunctionComponent = () => {
   const params = useParams<{ id: string }>();
 
-  const { data: songData, isLoading: songLoading } = useQuerySingleResource(
-    "songs",
+  const { data: albumData, isLoading: albumLoading } = useQuerySingleResource(
+    "albums",
     params.id,
     {
       enabled: !!params?.id,
@@ -24,10 +24,10 @@ const SongEdit: FunctionComponent = () => {
 
   async function handleSaveClick({
     formData,
-  }: OnSaveClickParams<SongFormData>): Promise<void> {
+  }: OnSaveClickParams<AlbumFormData>): Promise<void> {
     if (params.id) {
       await updateResource({
-        resourceName: "songs",
+        resourceName: "albums",
         resourceID: params.id,
         data: formData,
       });
@@ -35,14 +35,14 @@ const SongEdit: FunctionComponent = () => {
   }
 
   return (
-    <SongForm
-      title="Edit Song"
+    <AlbumForm
+      title="Edit Album"
       isSaving={updateResourceLoading}
       onSaveClick={handleSaveClick}
-      isLoading={songLoading}
-      initialData={songData}
+      isLoading={albumLoading}
+      initialData={albumData}
     />
   );
 };
 
-export default observer(SongEdit);
+export default observer(AlbumEdit);

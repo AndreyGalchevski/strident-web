@@ -45,7 +45,7 @@ const SideMenu: FunctionComponent<Props> = ({ pageWrapID }) => {
       <MenuItem path="/" text="Home" onClick={handleMenuClose} />
       <MenuItem path="/members" text="Members" onClick={handleMenuClose} />
       <MenuItem path="/videos" text="Videos" onClick={handleMenuClose} />
-      <MenuItem path="/songs" text="Songs" onClick={handleMenuClose} />
+      <MenuItem path="/music" text="Music" onClick={handleMenuClose} />
       <MenuItem path="/gigs" text="Gigs" onClick={handleMenuClose} />
       <MenuItem path="/merchandise" text="Merch" onClick={handleMenuClose} />
       <MenuItem path="/lyrics" text="Lyrics" onClick={handleMenuClose} />
