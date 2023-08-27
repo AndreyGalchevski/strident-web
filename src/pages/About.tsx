@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import Container from "../styled/Container";
 import ResponsiveText from "../styled/ResponsiveText";
 import { Card, CardContent } from "../styled/Card";
+import Button from "../components/Button";
 
 const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
   width: isMobile ? "90vw" : "70vw",
@@ -15,12 +16,29 @@ const Wrapper = styled.div<{ isMobile: boolean }>(({ isMobile }) => ({
 const About: FunctionComponent = () => {
   const isMobile = useMediaQuery();
 
+  const handlePressKitClick = async () => {
+    const fileName = "Strident Press Kit 2023.pdf";
+
+    const response = await fetch(fileName);
+    const blob = await response.blob();
+
+    const fileURL = window.URL.createObjectURL(blob);
+
+    let alink = document.createElement("a");
+    alink.href = fileURL;
+    alink.download = fileName;
+    alink.click();
+  };
+
   return (
     <Container>
       <Header title="About" />
       <Wrapper isMobile={isMobile}>
         <Card>
           <CardContent>
+            <Button onClick={handlePressKitClick} style={{ marginBottom: 16 }}>
+              Download Press Kit
+            </Button>
             <ResponsiveText isMobile={isMobile}>
               An Israeli Thrash Metal machine, Strident is heavily armed with
               old school riffs and the 80s vibe, having been influenced by the
